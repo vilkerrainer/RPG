@@ -1,6 +1,4 @@
 
-
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
   Character, AttributeName, ATTRIBUTE_NAMES, ATTRIBUTE_LABELS, MagicInfo, Spell, 
@@ -15,7 +13,7 @@ import {
     getMaxRages, getMaxBardicInspirations, getMaxChannelDivinityUses,
     getMaxRelentlessEnduranceUses, getMaxSecondWindUses, getMaxActionSurgeUses,
     getMaxBreathWeaponUses, getMaxKiPoints, getMaxLayOnHandsPool,
-    CLASS_SKILL_OPTIONS, BACKGROUND_DETAILS, BACKGROUNDS
+    CLASS_SKILL_OPTIONS, BACKGROUND_DETAILS, BACKGROUNDS, calculateRaceAttributeBonuses
 } from '../dndOptions';
 import { ALL_AVAILABLE_SPELLS, getCantripsByClass, getSpellsByClassAndLevel } from '../spells'; 
 import { ALL_FEATS, ALL_FEATS_MAP } from '../feats';
@@ -39,8 +37,62 @@ interface CharacterFormProps {
   initialData?: Character | null; 
 }
 
+interface SelectInputProps {
+  label: string;
+  name: string;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  options: { value: string | number; label: string; description?: string }[];
+  required?: boolean;
+  disabled?: boolean;
+}
+
+const SelectInput: React.FC<SelectInputProps> = ({ label, name, value, onChange, options, required, disabled }) => (
+  <div className="mb-4">
+    <label htmlFor={name} className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+      {label}
+    </label>
+    <select
+      id={name}
+      name={name}
+      value={value}
+      onChange={onChange}
+      required={required}
+      disabled={disabled}
+      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+    >
+      <option value="" disabled>Selecione...</option>
+      {options.map((opt) => (
+        <option key={opt.value} value={opt.value} title={opt.description}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+interface StringSelectInputProps {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  options: string[];
+  required?: boolean;
+}
+
+const StringSelectInput: React.FC<StringSelectInputProps> = ({ label, name, value, onChange, options, required }) => (
+  <SelectInput
+    label={label}
+    name={name}
+    value={value}
+    onChange={onChange}
+    options={options.map(opt => ({ value: opt, label: opt }))}
+    required={required}
+  />
+);
+
 const initialCharacterValues: Omit<Character, 'id' | 'magic' | 'classFeatures' | 'racialFeatures' | 'feats'> & { id?: string; magic: MagicInfo; classFeatures: ClassFeatureSelection[]; racialFeatures: RacialFeatureSelection[]; feats: FeatSelection[]; rank: Rank } = {
-  photoUrl: '', // Generic placeholder for new characters
+  photoUrl: '',
   name: '',
   background: BACKGROUNDS[0],
   race: RACES[0],
@@ -82,10 +134,9 @@ const initialCharacterValues: Omit<Character, 'id' | 'magic' | 'classFeatures' |
   maxHitDice: 1,
   currentHitDice: 1,
   hitDieType: getHitDieTypeForClass(CLASSES[0]),
-  // Limited use abilities initialized based on L1 defaults
   maxRages: getMaxRages(1),
   currentRages: getMaxRages(1),
-  maxBardicInspirations: getMaxBardicInspirations(10), // Assuming default CHA 10 for initial calc
+  maxBardicInspirations: getMaxBardicInspirations(10),
   currentBardicInspirations: getMaxBardicInspirations(10),
   maxChannelDivinityUses: getMaxChannelDivinityUses(CLASSES[0], 1),
   currentChannelDivinityUses: getMaxChannelDivinityUses(CLASSES[0], 1),
@@ -131,7 +182,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
           hitDieType: getHitDieTypeForClass(initialCharacterValues.charClass),
         };
     
-    // Initialize magic with currentSpellSlots
     const initialSpellSlots = getClassSpellSlots(baseData.charClass, baseData.level);
     baseData.magic = {
       ...(initialCharacterValues.magic), 
@@ -139,7 +189,7 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
       spellSlots: initialSpellSlots,
       currentSpellSlots: baseData.magic?.currentSpellSlots && baseData.magic.currentSpellSlots.length === 9 
                          ? baseData.magic.currentSpellSlots
-                         : [...initialSpellSlots], // Initialize current to max
+                         : [...initialSpellSlots],
       cantripsKnown: baseData.magic?.cantripsKnown || [],
       spellsKnownPrepared: baseData.magic?.spellsKnownPrepared || [],
       spellbook: baseData.magic?.spellbook || [],
@@ -153,7 +203,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
         baseData.fightingStyle = FIGHTING_STYLE_OPTIONS.find(fso => fso.name === "")?.name || FIGHTING_STYLE_OPTIONS[0].name;
     }
 
-    // Initialize limited use abilities
     baseData.maxRages = initialData?.maxRages ?? getMaxRages(baseData.level);
     baseData.currentRages = initialData?.currentRages ?? baseData.maxRages;
     baseData.maxBardicInspirations = initialData?.maxBardicInspirations ?? getMaxBardicInspirations(baseData.attributes.charisma);
@@ -178,6 +227,8 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
 
   const [chosenClassSkills, setChosenClassSkills] = useState<string[]>([]);
   const [chosenHalfElfSkills, setChosenHalfElfSkills] = useState<string[]>([]);
+  
+  const [prevRace, setPrevRace] = useState<string>(initialData?.race || RACES[0]);
 
   const [availableCantrips, setAvailableCantrips] = useState<Spell[]>([]);
   const [numCantripsAllowed, setNumCantripsAllowed] = useState<number>(0);
@@ -203,17 +254,14 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
     return ALL_RACIAL_FEATURES_MAP[formData.race] || [];
   }, [formData.race]);
 
-  // --- Skill System Logic ---
   const autoGrantedSkills = useMemo(() => {
-    const skills = new Map<string, string>(); // Map<skillKey, source>
-    // From Background
+    const skills = new Map<string, string>(); 
     const backgroundDetails = BACKGROUND_DETAILS[formData.background];
     if (backgroundDetails) {
         backgroundDetails.skillProficiencies.forEach(skillKey => {
             skills.set(skillKey, 'do Antecedente');
         });
     }
-    // From Race
     const racialFeatures = ALL_RACIAL_FEATURES_MAP[formData.race] || [];
     racialFeatures.forEach(feature => {
         if (feature.grantsSkillProficiency) {
@@ -226,10 +274,9 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
   const classSkillConfig = useMemo(() => CLASS_SKILL_OPTIONS[formData.charClass], [formData.charClass]);
   const isHalfElf = useMemo(() => formData.race === 'Meio-Elfo', [formData.race]);
 
-  // Initialize chosen skills from initialData
   useEffect(() => {
     if (initialData?.proficientSkills) {
-      const autoSkills = autoGrantedSkills; // Use memoized version
+      const autoSkills = autoGrantedSkills; 
       const chosen = initialData.proficientSkills.filter(s => !autoSkills.has(s));
       
       const classChoices: string[] = [];
@@ -249,15 +296,13 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
       setChosenClassSkills(classChoices);
       setChosenHalfElfSkills(halfElfChoices);
     }
-  }, [initialData]); // Depends on initialData only once
+  }, [initialData]); 
 
-  // Reset chosen skills when class or race changes
   useEffect(() => {
     setChosenClassSkills([]);
     setChosenHalfElfSkills([]);
   }, [formData.charClass, formData.race]);
 
-  // Combine auto and chosen skills into formData
   useEffect(() => {
     const finalSkills = new Set([
         ...Array.from(autoGrantedSkills.keys()),
@@ -273,22 +318,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
     });
   }, [autoGrantedSkills, chosenClassSkills, chosenHalfElfSkills]);
 
-  const handleSkillChoiceChange = useCallback((skillKey: string, type: 'class' | 'half-elf') => {
-    const updater = type === 'class' ? setChosenClassSkills : setChosenHalfElfSkills;
-    const choices = type === 'class' ? chosenClassSkills : chosenHalfElfSkills;
-    const limit = type === 'class' ? (classSkillConfig?.count || 0) : (isHalfElf ? 2 : 0);
-
-    updater(prev => {
-      if (prev.includes(skillKey)) {
-        return prev.filter(s => s !== skillKey);
-      } else if (prev.length < limit) {
-        return [...prev, skillKey];
-      }
-      return prev;
-    });
-  }, [chosenClassSkills, chosenHalfElfSkills, classSkillConfig, isHalfElf]);
-
-  // --- End of Skill System Logic ---
 
   useEffect(() => {
     const baseData = initialData && initialData.id 
@@ -361,7 +390,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
   }, [initialData]);
 
 
-  // Update Fighting Style description and formData.fightingStyle based on class feature selection
   useEffect(() => {
     const fightingStyleFeatureSelection = formData.classFeatures?.find(
       cf => cf.featureId.includes('fighting_style') 
@@ -426,7 +454,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
     setAvailableSpellsForSelection(currentAvailableSpellsForSelection);
     setNumSpellsKnownAllowed(currentNumSpellsKnownAllowed);
 
-    // Auto-add/update class features AND racial features
     setFormData(prev => {
       const currentClass = prev.charClass;
       const currentRace = prev.race;
@@ -436,7 +463,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
       let updatedRacialFeatures = [...(prev.racialFeatures || [])];
       let fightingStyleFromFeature: string | undefined = undefined;
 
-      // Class Features
       const featuresForClass = ALL_CLASS_FEATURES_MAP[currentClass] || [];
       featuresForClass.forEach(featureDef => {
         if (featureDef.level <= currentLevel) {
@@ -468,7 +494,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
         const featureDef = featuresForClass.find(fdef => fdef.id === cf.featureId);
         if(!featureDef) return false;
 
-        // If it is a feat choice, don't remove it on level down, just if class changes
         if(featureDef.type === 'asi' && cf.asiChoice === 'feat') {
              const originalFeatureDef = (ALL_CLASS_FEATURES_MAP[prev.charClass] || []).find(fdef => fdef.id === cf.featureId);
              return !!originalFeatureDef;
@@ -477,7 +502,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
         return featureDef.level <= currentLevel; 
       });
 
-      // Racial Features
       const featuresForRace = ALL_RACIAL_FEATURES_MAP[currentRace] || [];
       const newRacialFeatures: RacialFeatureSelection[] = [];
       featuresForRace.forEach(racialDef => {
@@ -491,6 +515,13 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
               });
           } else if (racialDef.type === 'choice' && existingSelection) {
               newRacialFeatures.push(existingSelection);
+          } else if (racialDef.type === 'choice' && !existingSelection) {
+              newRacialFeatures.push({
+                  featureId: racialDef.id,
+                  featureName: racialDef.name,
+                  type: racialDef.type,
+                  description: racialDef.description,
+              });
           }
       });
       updatedRacialFeatures = newRacialFeatures;
@@ -507,7 +538,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
         
       const newMaxSpellSlots = getClassSpellSlots(currentClass, currentLevel);
       updatedMagic.spellSlots = newMaxSpellSlots;
-      // Reset current spell slots to new max if max spell slots changed (e.g. level up)
       if(JSON.stringify(prev.magic?.spellSlots) !== JSON.stringify(newMaxSpellSlots)) {
         updatedMagic.currentSpellSlots = [...newMaxSpellSlots];
       }
@@ -562,7 +592,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
         finalFightingStyle = fightingStyleFromFeature;
       }
 
-      // Hit Dice Update Logic
       const newMaxHitDice = currentLevel > 0 ? currentLevel : 1;
       const newHitDieType = getHitDieTypeForClass(currentClass);
       let newCurrentHitDice = prev.currentHitDice;
@@ -573,7 +602,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
       }
       newCurrentHitDice = Math.min(newCurrentHitDice, newMaxHitDice);
 
-      // Limited Use Abilities Update Logic
       const newMaxRages = getMaxRages(currentLevel);
       const newMaxBardicInspirations = getMaxBardicInspirations(currentAttributes.charisma);
       const newMaxChannelDivinityUses = getMaxChannelDivinityUses(currentClass, currentLevel);
@@ -681,7 +709,11 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
 
     if (spellcastingAbility && attributes[spellcastingAbility] && level >= 1) {
       const abilityScore = attributes[spellcastingAbility];
-      const modifier = calculateModifier(abilityScore);
+      const racialBonuses = calculateRaceAttributeBonuses(formData.race, formData.racialFeatures);
+      const bonus = racialBonuses[spellcastingAbility] || 0;
+      const totalScore = abilityScore + bonus;
+
+      const modifier = calculateModifier(totalScore);
       const proficiency = calculateProficiencyBonus(level);
 
       setCalculatedSpellSaveDC(8 + proficiency + modifier);
@@ -690,44 +722,28 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
       setCalculatedSpellSaveDC(null);
       setCalculatedSpellAttackBonus(null);
     }
-  }, [formData.magic?.spellcastingAbilityName, formData.attributes, formData.level]);
+  }, [formData.magic?.spellcastingAbilityName, formData.attributes, formData.level, formData.race, formData.racialFeatures]);
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     
     if (type === 'file' && name === 'photoUrlFile') {
-      const inputElement = e.target as HTMLInputElement;
-      if (inputElement.files && inputElement.files[0]) {
-        const file = inputElement.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setFormData(prev => ({
-            ...prev,
-            photoUrl: reader.result as string,
-          }));
-        };
-        reader.readAsDataURL(file);
-      } else {
-        setFormData(prev => ({
-          ...prev,
-          photoUrl: initialData?.photoUrl || initialCharacterValues.photoUrl,
-        }));
-      }
       return; 
     }
     
     if (name.startsWith('attributes.')) {
       const attributeName = name.split('.')[1] as AttributeName;
-      let newCharisma = formData.attributes.charisma;
-      if(attributeName === 'charisma') newCharisma = parseInt(value) || 0;
-
       setFormData(prev => {
         const updatedAttributes = {
             ...prev.attributes,
             [attributeName]: type === 'number' ? parseInt(value) || 0 : value,
         };
-        const newMaxBardic = getMaxBardicInspirations(updatedAttributes.charisma);
+        const racialBonuses = calculateRaceAttributeBonuses(prev.race, prev.racialFeatures);
+        const chaBonus = racialBonuses.charisma || 0;
+        const totalCharisma = (updatedAttributes.charisma || 0) + chaBonus;
+
+        const newMaxBardic = getMaxBardicInspirations(totalCharisma);
         return {
             ...prev,
             attributes: updatedAttributes,
@@ -736,45 +752,41 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
         }
       });
     } else if (name.startsWith('magic.')) {
-      const magicField = name.split('.')[1];
-      if (magicField === 'spellSlots' || magicField === 'currentSpellSlots') { // Also handle currentSpellSlots if edited directly
-        const slotIndex = parseInt(name.split('.')[2]);
-        const slotArrayName = magicField as 'spellSlots' | 'currentSpellSlots';
-        const newSpellSlotsArray = [...(formData.magic?.[slotArrayName] || Array(9).fill(0))];
-        newSpellSlotsArray[slotIndex] = parseInt(value) || 0;
-        setFormData(prev => ({
-          ...prev,
-          magic: {
-            ...(prev.magic || initialCharacterValues.magic),
-            [slotArrayName]: newSpellSlotsArray,
-          }
-        }));
-      } else if (magicField === 'spellcastingAbilityName') {
-          setFormData(prev => ({
-            ...prev,
-            magic: {
-              ...(prev.magic || initialCharacterValues.magic),
-              spellcastingAbilityName: value as AttributeName || undefined,
+        const magicField = name.split('.')[1];
+        if (magicField === 'spellSlots' || magicField === 'currentSpellSlots') {
+            if (magicField === 'currentSpellSlots') {
+               const index = parseInt(name.split('.')[2]);
+               setFormData(prev => {
+                   const newSlots = [...(prev.magic?.currentSpellSlots || [])];
+                   newSlots[index] = parseInt(value) || 0;
+                   return { ...prev, magic: { ...prev.magic!, currentSpellSlots: newSlots }};
+               });
             }
-          }));
-      } else if (['cantripsKnown', 'spellsKnownPrepared', 'spellbook'].includes(magicField) && e.target.type === 'textarea') {
-         setFormData(prev => ({
+        } else if (magicField === 'spellcastingAbilityName') {
+            setFormData(prev => ({
+                ...prev,
+                magic: {
+                ...(prev.magic || initialCharacterValues.magic),
+                spellcastingAbilityName: value as AttributeName || undefined,
+                }
+            }));
+        } else if (['cantripsKnown', 'spellsKnownPrepared', 'spellbook'].includes(magicField) && e.target.type === 'textarea') {
+            setFormData(prev => ({
+                ...prev,
+                magic: {
+                    ...(prev.magic || initialCharacterValues.magic),
+                    [magicField]: value.split(',').map(s => s.trim()).filter(s => s),
+                }
+            }));
+        } else {
+            setFormData(prev => ({
             ...prev,
             magic: {
                 ...(prev.magic || initialCharacterValues.magic),
-                [magicField]: value.split(',').map(s => s.trim()).filter(s => s),
+                [magicField]: type === 'number' ? parseInt(value) || 0 : value,
             }
-        }));
-      }
-       else {
-        setFormData(prev => ({
-          ...prev,
-          magic: {
-            ...(prev.magic || initialCharacterValues.magic),
-            [magicField]: type === 'number' ? parseInt(value) || 0 : value,
-          }
-        }));
-      }
+            }));
+        }
     } else {
       setFormData(prev => ({
         ...prev,
@@ -783,80 +795,32 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
     }
   };
 
-  const handleAsiChange = (featureId: string, asiChoice: 'asi' | 'feat', featValue?: string) => {
+  const handleClassFeatureChange = (featureId: string, choiceValue: string) => {
     setFormData(prev => {
         const featureDef = (ALL_CLASS_FEATURES_MAP[prev.charClass] || []).find(f => f.id === featureId);
-        if (!featureDef || featureDef.type !== 'asi') return prev;
+        if (!featureDef) return prev;
 
+        const choiceDef = featureDef.choices?.find(c => c.value === choiceValue);
         const newClassFeatures = [...(prev.classFeatures || [])];
         const existingFeatureIndex = newClassFeatures.findIndex(cf => cf.featureId === featureId);
 
+        const selection: ClassFeatureSelection = {
+            featureId: featureDef.id,
+            featureName: featureDef.name,
+            levelAcquired: featureDef.level,
+            type: featureDef.type,
+            choiceValue: choiceValue,
+            choiceLabel: choiceDef?.label || choiceValue,
+            description: choiceDef?.description || featureDef.description, 
+        };
+
         if (existingFeatureIndex !== -1) {
-            const updatedFeature = { ...newClassFeatures[existingFeatureIndex] };
-            updatedFeature.asiChoice = asiChoice;
-            if (asiChoice === 'feat' && featValue) {
-                const feat = ALL_FEATS.find(f => f.id === featValue);
-                updatedFeature.choiceValue = feat?.id;
-                updatedFeature.choiceLabel = feat?.name;
-            } else {
-                delete updatedFeature.choiceValue;
-                delete updatedFeature.choiceLabel;
-            }
-            newClassFeatures[existingFeatureIndex] = updatedFeature;
+            newClassFeatures[existingFeatureIndex] = selection;
         } else {
-            const newSelection: ClassFeatureSelection = {
-                featureId: featureDef.id,
-                featureName: featureDef.name,
-                levelAcquired: featureDef.level,
-                type: 'asi',
-                asiChoice: asiChoice,
-            };
-            if (asiChoice === 'feat' && featValue) {
-                const feat = ALL_FEATS.find(f => f.id === featValue);
-                newSelection.choiceValue = feat?.id;
-                newSelection.choiceLabel = feat?.name;
-            }
-            newClassFeatures.push(newSelection);
+            newClassFeatures.push(selection);
         }
+
         return { ...prev, classFeatures: newClassFeatures };
-    });
-};
-
-  const handleClassFeatureChange = (featureId: string, choiceValue: string) => {
-    setFormData(prev => {
-      const featureDef = (ALL_CLASS_FEATURES_MAP[prev.charClass] || []).find(f => f.id === featureId);
-      if (!featureDef) return prev;
-
-      const choiceDef = featureDef.choices?.find(c => c.value === choiceValue);
-      const newClassFeatures = [...(prev.classFeatures || [])];
-      const existingFeatureIndex = newClassFeatures.findIndex(cf => cf.featureId === featureId);
-
-      const selection: ClassFeatureSelection = {
-        featureId: featureDef.id,
-        featureName: featureDef.name,
-        levelAcquired: featureDef.level,
-        type: featureDef.type,
-        choiceValue: choiceValue,
-        choiceLabel: choiceDef?.label || choiceValue,
-        description: choiceDef?.description || featureDef.description, 
-      };
-      
-      if (featureDef.id.includes('fighting_style')) {
-           setSelectedFightingStyleDescription(choiceDef?.description || '');
-      }
-
-      if (existingFeatureIndex !== -1) {
-        newClassFeatures[existingFeatureIndex] = selection;
-      } else {
-        newClassFeatures.push(selection);
-      }
-      
-      let updatedFightingStyle = prev.fightingStyle;
-      if (featureDef.id.includes('fighting_style') || featureDef.name.toLowerCase().includes("estilo de luta")) {
-        updatedFightingStyle = choiceValue;
-      }
-
-      return { ...prev, classFeatures: newClassFeatures, fightingStyle: updatedFightingStyle };
     });
   };
 
@@ -906,6 +870,42 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
     });
   };
 
+  const handleAsiChange = (featureId: string, type: 'asi' | 'feat', value: string) => {
+      setFormData(prev => {
+          const featureDef = (ALL_CLASS_FEATURES_MAP[prev.charClass] || []).find(f => f.id === featureId);
+          if(!featureDef) return prev;
+
+          const newClassFeatures = [...(prev.classFeatures || [])];
+          const existingFeatureIndex = newClassFeatures.findIndex(cf => cf.featureId === featureId);
+
+          let selection: ClassFeatureSelection = {
+              featureId: featureDef.id,
+              featureName: featureDef.name,
+              levelAcquired: featureDef.level,
+              type: 'asi',
+              asiChoice: type,
+              description: featureDef.description
+          };
+
+          if (type === 'feat') {
+              const feat = ALL_FEATS.find(f => f.id === value);
+              selection.choiceValue = value;
+              selection.choiceLabel = feat?.name;
+              selection.description = feat?.description; 
+          } else {
+              selection.choiceValue = undefined;
+              selection.choiceLabel = undefined;
+          }
+
+          if(existingFeatureIndex !== -1) {
+              newClassFeatures[existingFeatureIndex] = selection;
+          } else {
+              newClassFeatures.push(selection);
+          }
+          return { ...prev, classFeatures: newClassFeatures };
+      });
+  };
+
   const handleRacialFeatureChange = (featureId: string, choiceValue: string) => {
     setFormData(prev => {
         const featureDef = (ALL_RACIAL_FEATURES_MAP[prev.race] || []).find(f => f.id === featureId);
@@ -946,168 +946,108 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
         return { ...prev, racialFeatures: newRacialFeatures, magic: updatedMagic };
     });
   };
-  
-  const handleMagicArrayChange = (fieldName: 'cantripsKnown' | 'spellbook' | 'spellsKnownPrepared', spellName: string) => {
+
+  const handleRacialFeatureMultiChoiceChange = (featureId: string, choiceValue: string, isChecked: boolean) => {
     setFormData(prev => {
-        const currentArray: string[] = prev.magic?.[fieldName as keyof MagicInfo] as string[] || [];
+        const featureDef = (ALL_RACIAL_FEATURES_MAP[prev.race] || []).find(f => f.id === featureId);
+        if (!featureDef) return prev;
+
+        const newRacialFeatures = [...(prev.racialFeatures || [])];
+        const existingFeatureIndex = newRacialFeatures.findIndex(rf => rf.featureId === featureId);
         
-        const highElfCantripSelection = prev.racialFeatures?.find(rf => rf.featureId === 'high_elf_cantrip');
-        if (fieldName === 'cantripsKnown' && highElfCantripSelection?.choiceValue === spellName) {
-            console.warn("High Elf Cantrip cannot be removed from here. Change racial feature choice instead.");
-            return prev; 
+        let selection: RacialFeatureSelection;
+        if (existingFeatureIndex !== -1) {
+            selection = { ...newRacialFeatures[existingFeatureIndex] };
+        } else {
+            selection = {
+                featureId: featureDef.id,
+                featureName: featureDef.name,
+                type: featureDef.type,
+                description: featureDef.description,
+                customChoiceText: '',
+            };
         }
 
-        const newArray = currentArray.includes(spellName)
-            ? currentArray.filter(s => s !== spellName)
-            : [...currentArray, spellName];
-        
-        let limit = Infinity;
-        if (fieldName === 'cantripsKnown') {
-            limit = numCantripsAllowed;
-        } else if (fieldName === 'spellbook' && prev.charClass === 'Mago') {
-            limit = numInitialWizardSpellbookSpells; 
-        } else if (fieldName === 'spellsKnownPrepared' && ['Patrulheiro', 'Feiticeiro', 'Bardo', 'Bruxo'].includes(prev.charClass)) {
-            limit = numSpellsKnownAllowed;
-        }
-        
-        const addingNewSpell = !currentArray.includes(spellName);
-        let currentCountForLimit = currentArray.length;
-        if (fieldName === 'cantripsKnown' && highElfCantripSelection?.choiceValue && currentArray.includes(highElfCantripSelection.choiceValue)) {
-            currentCountForLimit--; 
-        }
-
-        if (addingNewSpell && currentCountForLimit >= limit && limit !== Infinity) {
-             console.warn(`Cannot add ${spellName}. Limit of ${limit} for ${fieldName} reached (current: ${currentCountForLimit}).`);
-             return prev; 
-        }
-
-
-        return {
-            ...prev,
-            magic: {
-                ...(prev.magic || initialCharacterValues.magic),
-                [fieldName]: newArray,
+        let currentChoices = selection.customChoiceText ? selection.customChoiceText.split(',').filter(c => c) : [];
+        if (isChecked) {
+            if (currentChoices.length < (featureDef.maxChoices || 0) && !currentChoices.includes(choiceValue)) {
+                currentChoices.push(choiceValue);
             }
-        };
+        } else {
+            const index = currentChoices.indexOf(choiceValue);
+            if (index > -1) {
+                currentChoices.splice(index, 1);
+            }
+        }
+        
+        selection.customChoiceText = currentChoices.join(',');
+
+        if (existingFeatureIndex !== -1) {
+            newRacialFeatures[existingFeatureIndex] = selection;
+        } else {
+            newRacialFeatures.push(selection);
+        }
+
+        return { ...prev, racialFeatures: newRacialFeatures };
     });
   };
+  
+  const handleMagicArrayChange = (field: keyof MagicInfo, value: string, isChecked: boolean, limit: number) => {
+      setFormData(prev => {
+          const currentArray = (prev.magic?.[field] as string[]) || [];
+          let newArray = [...currentArray];
+          
+          if (isChecked) {
+              if (newArray.length < limit && !newArray.includes(value)) {
+                  newArray.push(value);
+              }
+          } else {
+              newArray = newArray.filter(item => item !== value);
+          }
+          
+          return {
+              ...prev,
+              magic: {
+                  ...(prev.magic || initialCharacterValues.magic),
+                  [field]: newArray
+              }
+          };
+      });
+  };
 
+  const handleSkillChoiceChange = (skillKey: string, type: 'class' | 'half-elf') => {
+    if (type === 'class') {
+      setChosenClassSkills(prev => {
+        if (prev.includes(skillKey)) {
+          return prev.filter(s => s !== skillKey);
+        } else {
+          if (prev.length < (classSkillConfig?.count || 0)) {
+            return [...prev, skillKey];
+          }
+          return prev;
+        }
+      });
+    } else if (type === 'half-elf') {
+      setChosenHalfElfSkills(prev => {
+        if (prev.includes(skillKey)) {
+          return prev.filter(s => s !== skillKey);
+        } else {
+          if (prev.length < 2) {
+            return [...prev, skillKey];
+          }
+          return prev;
+        }
+      });
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const selectedFeats: FeatSelection[] = [];
-    if (formData.classFeatures) {
-        for (const feature of formData.classFeatures) {
-            if (feature.type === 'asi' && feature.asiChoice === 'feat' && feature.choiceValue) {
-                const featData = ALL_FEATS_MAP[feature.choiceValue];
-                if (featData) {
-                    selectedFeats.push({
-                        featId: featData.id,
-                        featName: featData.name,
-                        description: featData.description,
-                        levelAcquired: feature.levelAcquired,
-                    });
-                }
-            }
-        }
-    }
-
-    const characterToSave: Character = { 
-        ...formData, 
-        feats: selectedFeats,
-        id: formData.id || `char_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`, 
-        magic: { 
-            ...(formData.magic || initialCharacterValues.magic),
-            spellcastingAbilityName: formData.magic?.spellcastingAbilityName || CLASS_SPELLCASTING_ABILITIES[formData.charClass] || undefined,
-            spellSaveDC: formData.magic?.spellSaveDC || calculatedSpellSaveDC || 0,
-            spellAttackBonus: formData.magic?.spellAttackBonus || (calculatedSpellAttackBonus ? parseFloat(calculatedSpellAttackBonus) : 0),
-            cantripsKnown: Array.isArray(formData.magic?.cantripsKnown) 
-                ? formData.magic.cantripsKnown 
-                : ((formData.magic?.cantripsKnown as unknown as string)?.split(',').map(s=>s.trim()).filter(s=>s) || []),
-            spellsKnownPrepared: Array.isArray(formData.magic?.spellsKnownPrepared) 
-                ? formData.magic.spellsKnownPrepared 
-                : ((formData.magic?.spellsKnownPrepared as unknown as string)?.split(',').map(s=>s.trim()).filter(s=>s) || []),
-            spellbook: Array.isArray(formData.magic?.spellbook) 
-                ? formData.magic.spellbook 
-                : ((formData.magic?.spellbook as unknown as string)?.split(',').map(s=>s.trim()).filter(s=>s) || []),
-            spellSlots: formData.magic?.spellSlots && formData.magic.spellSlots.length === 9 ? formData.magic.spellSlots : Array(9).fill(0),
-            currentSpellSlots: formData.magic?.currentSpellSlots && formData.magic.currentSpellSlots.length === 9 ? formData.magic.currentSpellSlots : [...(formData.magic?.spellSlots || Array(9).fill(0))],
-        },
-        classFeatures: formData.classFeatures || [],
-        racialFeatures: formData.racialFeatures || [],
-        rank: formData.rank || RANKS[0],
-        maxHitDice: formData.level > 0 ? formData.level : 1,
-        currentHitDice: formData.currentHitDice > (formData.level > 0 ? formData.level : 1) ? (formData.level > 0 ? formData.level : 1) : formData.currentHitDice,
-        hitDieType: formData.hitDieType || getHitDieTypeForClass(formData.charClass),
-        maxRages: formData.maxRages ?? getMaxRages(formData.level),
-        currentRages: formData.currentRages ?? (formData.maxRages ?? getMaxRages(formData.level)),
-        maxBardicInspirations: formData.maxBardicInspirations ?? getMaxBardicInspirations(formData.attributes.charisma),
-        currentBardicInspirations: formData.currentBardicInspirations ?? (formData.maxBardicInspirations ?? getMaxBardicInspirations(formData.attributes.charisma)),
-        maxChannelDivinityUses: formData.maxChannelDivinityUses ?? getMaxChannelDivinityUses(formData.charClass, formData.level),
-        currentChannelDivinityUses: formData.currentChannelDivinityUses ?? (formData.maxChannelDivinityUses ?? getMaxChannelDivinityUses(formData.charClass, formData.level)),
-        maxSecondWindUses: formData.maxSecondWindUses ?? getMaxSecondWindUses(formData.charClass),
-        currentSecondWindUses: formData.currentSecondWindUses ?? (formData.maxSecondWindUses ?? getMaxSecondWindUses(formData.charClass)),
-        maxActionSurgeUses: formData.maxActionSurgeUses ?? getMaxActionSurgeUses(formData.charClass, formData.level),
-        currentActionSurgeUses: formData.currentActionSurgeUses ?? (formData.maxActionSurgeUses ?? getMaxActionSurgeUses(formData.charClass, formData.level)),
-        maxKiPoints: formData.maxKiPoints ?? getMaxKiPoints(formData.charClass, formData.level),
-        currentKiPoints: formData.currentKiPoints ?? (formData.maxKiPoints ?? getMaxKiPoints(formData.charClass, formData.level)),
-        maxLayOnHandsPool: formData.maxLayOnHandsPool ?? getMaxLayOnHandsPool(formData.charClass, formData.level),
-        currentLayOnHandsPool: formData.currentLayOnHandsPool ?? (formData.maxLayOnHandsPool ?? getMaxLayOnHandsPool(formData.charClass, formData.level)),
-        maxRelentlessEnduranceUses: formData.maxRelentlessEnduranceUses ?? getMaxRelentlessEnduranceUses(formData.race),
-        currentRelentlessEnduranceUses: formData.currentRelentlessEnduranceUses ?? (formData.maxRelentlessEnduranceUses ?? getMaxRelentlessEnduranceUses(formData.race)),
-        maxBreathWeaponUses: formData.maxBreathWeaponUses ?? getMaxBreathWeaponUses(formData.race),
-        currentBreathWeaponUses: formData.currentBreathWeaponUses ?? (formData.maxBreathWeaponUses ?? getMaxBreathWeaponUses(formData.race)),
-    };
-    onSave(characterToSave);
+    onSave(formData);
   };
 
-  const SelectInput: React.FC<{label: string, name: string, value: string | undefined, options: {value: string, label: string, description?: string}[], onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void, required?: boolean, disabled?: boolean}> = 
-    ({label, name, value, options, onChange, required = false, disabled = false}) => (
-    <div className="mb-4">
-      <label htmlFor={name} className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-        {label}
-      </label>
-      <select
-        id={name}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="mt-1 block w-full px-3 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 dark:focus:ring-sky-500 dark:focus:border-sky-500 sm:text-sm text-slate-900 dark:text-slate-100 disabled:bg-slate-50 dark:disabled:bg-slate-700/50 disabled:text-slate-400 dark:disabled:text-slate-500"
-        required={required}
-        disabled={disabled}
-      >
-        <option value="" disabled={required}>-- Selecione --</option>
-        {options.map(option => (
-          <option key={option.value} value={option.value} title={option.description}>{option.label}</option>
-        ))}
-      </select>
-    </div>
-  );
-
-  const StringSelectInput: React.FC<{label: string, name: keyof Character | string, value: string, options: readonly string[] | string[], onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void, required?: boolean}> = 
-  ({label, name, value, options, onChange, required = false}) => (
-  <div className="mb-4">
-    <label htmlFor={name as string} className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-      {label}
-    </label>
-    <select
-      id={name as string}
-      name={name as string}
-      value={value}
-      onChange={onChange}
-      className="mt-1 block w-full px-3 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 dark:focus:ring-sky-500 dark:focus:border-sky-500 sm:text-sm text-slate-900 dark:text-slate-100"
-      required={required}
-    >
-      {options.map(option => (
-        <option key={option} value={option}>{option || "Nenhum"}</option>
-      ))}
-    </select>
-  </div>
-);
-
   const renderSpellDetails = (spell: Spell) => (
-    <div id={`details-${spell.name.replace(/\W/g, '-')}`} className="mt-2 p-3 bg-sky-50 dark:bg-slate-700 rounded text-xs text-slate-700 dark:text-slate-300 space-y-1 shadow-inner">
+    <div className="mt-2 p-3 bg-sky-100 dark:bg-slate-600/80 rounded text-xs text-slate-700 dark:text-slate-300 space-y-1 shadow-inner">
       <p><strong>Nível:</strong> {spell.level === 0 ? "Truque" : spell.level}</p>
       <p><strong>Escola:</strong> {spell.school}</p>
       <p><strong>Tempo de Conjuração:</strong> {spell.castingTime}</p>
@@ -1118,201 +1058,160 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
     </div>
   );
 
-  const renderSpellListItem = (spell: Spell, listType: 'cantripsKnown' | 'spellbook' | 'spellsKnownPrepared', currentSelected: string[] | undefined, limit: number) => {
-    const spellIdSafe = spell.name.replace(/\W/g, '-');
-    const isChecked = currentSelected?.includes(spell.name) || false;
-
-    const highElfCantripSelection = formData.racialFeatures?.find(rf => rf.featureId === 'high_elf_cantrip');
-    const isHighElfRacialCantrip = listType === 'cantripsKnown' && highElfCantripSelection?.choiceValue === spell.name;
-    
-    let actualLimit = limit;
-    let countForLimit = currentSelected?.length || 0;
-
-    if (listType === 'cantripsKnown' && highElfCantripSelection?.choiceValue && currentSelected?.includes(highElfCantripSelection.choiceValue)) {
-      countForLimit--;
-    }
-    
-    const isDisabled = !isChecked && countForLimit >= actualLimit && actualLimit !== Infinity && !isHighElfRacialCantrip;
-
+  const renderSpellListItem = (spell: Spell, field: keyof MagicInfo, selectedList: string[] | undefined, limit: number) => {
+    const isSelected = selectedList?.includes(spell.name) || false;
+    const isLimitReached = (selectedList?.length || 0) >= limit;
+    const isDisabled = !isSelected && isLimitReached;
 
     return (
-      <div key={`${listType}-${spell.name}`} className="p-3 border border-slate-200 dark:border-slate-700 rounded-md shadow-sm bg-white dark:bg-slate-800">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id={`${listType}-${spellIdSafe}`}
-              checked={isChecked}
-              onChange={() => handleMagicArrayChange(listType, spell.name)}
-              disabled={isDisabled || isHighElfRacialCantrip} 
-              className="h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 dark:text-sky-500 dark:border-slate-500 dark:focus:ring-sky-500 dark:bg-slate-600"
-            />
-            <label htmlFor={`${listType}-${spellIdSafe}`} className={`ml-3 text-sm font-medium text-slate-800 dark:text-slate-200 ${isDisabled && !isChecked ? 'text-slate-400 dark:text-slate-500 cursor-not-allowed' : ''}`}>
-              {spell.name} {spell.level > 0 ? `(${spell.level}º Nível)` : ''} {isHighElfRacialCantrip ? '(Racial)' : ''}
-            </label>
+      <div key={spell.name} className="border border-slate-200 dark:border-slate-700 rounded-md p-2 mb-2 bg-white dark:bg-slate-800">
+        <div className="flex items-start">
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={(e) => handleMagicArrayChange(field, spell.name, e.target.checked, limit)}
+            disabled={isDisabled}
+            className="mt-1 h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 disabled:opacity-50"
+          />
+          <div className="ml-2 flex-grow">
+            <div className="flex justify-between items-center cursor-pointer" onClick={() => setExpandedSpellName(expandedSpellName === spell.name ? null : spell.name)}>
+               <label className={`text-sm font-medium ${isDisabled ? 'text-slate-400' : 'text-slate-700 dark:text-slate-200'} cursor-pointer`}>
+                {spell.name}
+              </label>
+              <span className="text-xs text-sky-600 dark:text-sky-400 hover:underline">
+                  {expandedSpellName === spell.name ? 'Ocultar' : 'Ver'}
+              </span>
+            </div>
+            {expandedSpellName === spell.name && renderSpellDetails(spell)}
           </div>
-          <button 
-            type="button" 
-            onClick={() => setExpandedSpellName(expandedSpellName === spell.name ? null : spell.name)}
-            className="px-2 py-1 text-xs text-sky-700 dark:text-sky-300 hover:text-sky-600 dark:hover:text-sky-200 rounded bg-sky-100 dark:bg-sky-800 hover:bg-sky-200 dark:hover:bg-sky-700 transition-colors"
-            aria-expanded={expandedSpellName === spell.name}
-            aria-controls={`details-${spellIdSafe}`}
-          >
-            {expandedSpellName === spell.name ? 'Esconder' : 'Detalhes'}
-          </button>
         </div>
-        {expandedSpellName === spell.name && renderSpellDetails(spell)}
       </div>
     );
-  }
+  };
 
   const renderClassFeatures = () => {
-    if (!formData.charClass || formData.level < 1) {
-      return (
-        <div className="my-4 p-4 bg-sky-100 dark:bg-sky-900 border border-sky-200 dark:border-sky-800 rounded-md text-center">
-            <p className="text-sm text-sky-700 dark:text-sky-300">
-              Selecione Classe e Nível para ver as Características de Classe.
-            </p>
-        </div>
-      );
+    if (!formData.charClass) {
+        return (
+            <div className="my-4 p-4 bg-sky-100 dark:bg-sky-900 border border-sky-200 dark:border-sky-800 rounded-md text-center">
+                <p className="text-sm text-sky-700 dark:text-sky-300">
+                    Selecione uma Classe e Nível para ver as Características de Classe.
+                </p>
+            </div>
+        );
+    }
+    if (currentClassFeaturesDefinitions.length === 0) {
+        return <p className="text-sm text-slate-500 dark:text-slate-400">Nenhuma característica de classe listada para {formData.charClass} até este nível.</p>;
     }
 
-    const featuresToShow = currentClassFeaturesDefinitions
-      .filter(featureDef => {
-        if (featureDef.level > formData.level) return false;
-
+    return currentClassFeaturesDefinitions.filter(f => f.level <= formData.level).map(featureDef => {
+        const currentSelection = formData.classFeatures?.find(cf => cf.featureId === featureDef.id);
+        const choiceDescription = currentSelection?.choiceValue ? featureDef.choices?.find(c => c.value === currentSelection.choiceValue)?.description : null;
+        
         if (featureDef.subclassPrerequisite) {
-            const prereqFeature = formData.classFeatures?.find(f => f.featureId === featureDef.subclassPrerequisite!.featureId);
-            if (!prereqFeature || prereqFeature.choiceValue !== featureDef.subclassPrerequisite.choiceValue) {
-                return false;
+            const prereqSelection = formData.classFeatures?.find(cf => cf.featureId === featureDef.subclassPrerequisite!.featureId);
+            if (prereqSelection?.choiceValue !== featureDef.subclassPrerequisite.choiceValue) {
+                return null;
             }
         }
-        
-        // Hide a feature if it has been replaced by a higher-level version
-        const isReplaced = currentClassFeaturesDefinitions.some(otherFeature =>
-            otherFeature.prerequisiteFeatureId === featureDef.id && otherFeature.level <= formData.level
-        );
-        if (isReplaced) return false;
 
-        return true;
-      })
-      .sort((a,b) => a.level - b.level || a.name.localeCompare(b.name));
-
-    if (featuresToShow.length === 0) {
-      return <p className="text-sm text-slate-500 dark:text-slate-400">Nenhuma característica de classe para esta combinação de classe/nível.</p>;
-    }
-    
-    const featuresByLevel: Record<number, ClassFeatureDefinition[]> = {};
-    featuresToShow.forEach(feature => {
-        if (!featuresByLevel[feature.level]) {
-            featuresByLevel[feature.level] = [];
-        }
-        featuresByLevel[feature.level].push(feature);
-    });
-
-    return Object.entries(featuresByLevel).map(([level, features]) => (
-        <div key={`level-${level}-features`} className="mb-6 p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-            <h5 className="text-md font-semibold text-sky-600 dark:text-sky-400 mb-3">Nível {level}</h5>
-            {features.map(featureDef => {
-                const currentSelection = formData.classFeatures?.find(cf => cf.featureId === featureDef.id);
-                const isFightingStyleFeature = featureDef.id.includes('fighting_style');
-                let choiceDescription: string | undefined | null = null;
-                if (currentSelection?.choiceValue) {
-                    choiceDescription = featureDef.choices?.find(c => c.value === currentSelection.choiceValue)?.description;
-                } else if (currentSelection?.customChoiceText) {
-                    // For multi-choice, we show description on the choice items themselves.
-                }
-
-                return (
-                <div key={featureDef.id} className="mb-4 p-3 bg-slate-50 dark:bg-slate-700/50 rounded-md shadow-sm">
-                    <h6 className="font-semibold text-slate-700 dark:text-slate-200">{featureDef.name}</h6>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mb-2 whitespace-pre-wrap">{featureDef.description}</p>
-                    
-                    {featureDef.type === 'choice' && featureDef.choices && (!featureDef.maxChoices || featureDef.maxChoices === 1) && (
+        return (
+            <div key={featureDef.id} className="mb-4 p-3 bg-slate-50 dark:bg-slate-700/50 rounded-md shadow-sm">
+                <h6 className="font-semibold text-slate-700 dark:text-slate-200">{featureDef.name} (Nível {featureDef.level})</h6>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mb-2 whitespace-pre-wrap">{featureDef.description}</p>
+                
+                {featureDef.type === 'choice' && featureDef.choices && (!featureDef.maxChoices || featureDef.maxChoices === 1) && (
                     <>
-                      <SelectInput
-                          label={featureDef.selectionPrompt || `Escolha para ${featureDef.name}:`}
-                          name={`classFeature-${featureDef.id}`}
-                          value={currentSelection?.choiceValue || ""}
-                          options={featureDef.choices.map(c => ({ value: c.value, label: c.label, description: `${c.description}${c.damage ? ` (Dano: ${c.damage})` : ''}`}))}
-                          onChange={(e) => handleClassFeatureChange(featureDef.id, e.target.value)}
-                          required
-                      />
-                      {isFightingStyleFeature && selectedFightingStyleDescription && currentSelection?.choiceValue && (
-                          <div className="mt-2 p-2 bg-sky-50 dark:bg-sky-900/50 rounded text-xs text-slate-700 dark:text-slate-300 shadow-inner">
-                              <p className="font-semibold">Descrição do Estilo de Luta:</p>
-                              <p className="whitespace-pre-wrap text-justify">{selectedFightingStyleDescription}</p>
-                          </div>
-                      )}
-                      {!isFightingStyleFeature && choiceDescription && (
-                          <div className="mt-2 p-2 bg-sky-50 dark:bg-sky-900/50 rounded text-xs text-slate-700 dark:text-slate-300 shadow-inner">
-                              <p className="font-semibold">Detalhes da Escolha ({currentSelection?.choiceLabel}):</p>
-                              <p className="whitespace-pre-wrap text-justify">{choiceDescription}</p>
-                          </div>
-                      )}
-                    </>
-                    )}
-
-                    {featureDef.type === 'choice' && featureDef.choices && featureDef.maxChoices && featureDef.maxChoices > 1 && (
-                      <div className="mt-2 space-y-2">
-                        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{featureDef.selectionPrompt}</p>
-                        {featureDef.choices.map(choice => {
-                          const selectedChoices = currentSelection?.customChoiceText?.split(',') || [];
-                          const isChecked = selectedChoices.includes(choice.value);
-                          const isDisabled = !isChecked && selectedChoices.length >= (featureDef.maxChoices || 0);
-                          return (
-                            <div key={choice.value} className="flex items-start p-2 rounded-md bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
-                              <input
-                                type="checkbox"
-                                id={`feature-${featureDef.id}-${choice.value}`}
-                                checked={isChecked}
-                                disabled={isDisabled}
-                                onChange={(e) => handleClassFeatureMultiChoiceChange(featureDef.id, choice.value, e.target.checked)}
-                                className="h-4 w-4 mt-0.5 text-sky-600 border-slate-300 rounded focus:ring-sky-500"
-                              />
-                              <label htmlFor={`feature-${featureDef.id}-${choice.value}`} className={`ml-3 block text-sm ${isDisabled ? 'text-slate-400 dark:text-slate-500' : 'text-slate-800 dark:text-slate-200'}`}>
-                                <span className="font-semibold">{choice.label}</span>
-                                <p className="text-xs text-slate-600 dark:text-slate-400 whitespace-pre-wrap">{choice.description}</p>
-                              </label>
+                        <SelectInput
+                            label={featureDef.selectionPrompt || `Escolha para ${featureDef.name}:`}
+                            name={`classFeature-${featureDef.id}`}
+                            value={currentSelection?.choiceValue || ""}
+                            options={featureDef.choices.map(c => ({ value: c.value, label: c.label, description: c.description }))}
+                            onChange={(e) => handleClassFeatureChange(featureDef.id, e.target.value)}
+                            required
+                        />
+                        {choiceDescription && (
+                             <div className="mt-2 p-2 bg-sky-50 dark:bg-sky-900/50 rounded text-xs text-slate-700 dark:text-slate-300 shadow-inner">
+                                <p className="font-semibold">Detalhes da Escolha ({currentSelection?.choiceLabel}):</p>
+                                <p className="whitespace-pre-wrap text-justify">{choiceDescription}</p>
                             </div>
-                          );
-                        })}
-                      </div>
-                    )}
+                        )}
+                    </>
+                )}
 
-                    {featureDef.type === 'asi' && (
-                      <div className="mt-2 space-y-3">
-                          <SelectInput 
-                              label="Escolha de Melhoria"
-                              name={`asiDecision-${featureDef.id}`}
-                              value={currentSelection?.asiChoice || 'asi'}
-                              onChange={(e) => handleAsiChange(featureDef.id, e.target.value as 'asi' | 'feat', currentSelection?.choiceValue)}
-                              options={[
-                                  { value: 'asi', label: 'Incremento no Valor de Habilidade' },
-                                  { value: 'feat', label: 'Pegar um Talento' }
-                              ]}
-                          />
-                          {currentSelection?.asiChoice === 'feat' ? (
-                              <SelectInput
-                                  label="Escolha o Talento"
-                                  name={`featChoice-${featureDef.id}`}
-                                  value={currentSelection.choiceValue || ""}
-                                  onChange={(e) => handleAsiChange(featureDef.id, 'feat', e.target.value)}
-                                  options={ALL_FEATS.map(feat => ({ value: feat.id, label: feat.name, description: feat.description }))}
-                                  required
-                              />
-                          ) : (
-                              <p className="text-sm font-medium text-sky-700 dark:text-sky-300">
-                                  Lembre-se de ajustar seus valores de atributo diretamente na seção Atributos.
-                              </p>
-                          )}
-                      </div>
-                    )}
-                </div>
-                );
-            })}
-        </div>
-    ));
+                {featureDef.type === 'choice' && featureDef.choices && featureDef.maxChoices && featureDef.maxChoices > 1 && (
+                    <div className="mt-2 space-y-2">
+                        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{featureDef.selectionPrompt || `Escolha até ${featureDef.maxChoices}:`}</p>
+                        {featureDef.choices.map(choice => {
+                            const selectedChoices = currentSelection?.customChoiceText?.split(',') || [];
+                            const isChecked = selectedChoices.includes(choice.value);
+                            const isDisabled = !isChecked && selectedChoices.length >= (featureDef.maxChoices || 0);
+                            return (
+                                <div key={choice.value} className="flex items-start p-2 rounded-md bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
+                                    <input
+                                        type="checkbox"
+                                        id={`class-feature-${featureDef.id}-${choice.value}`}
+                                        checked={isChecked}
+                                        disabled={isDisabled}
+                                        onChange={(e) => handleClassFeatureMultiChoiceChange(featureDef.id, choice.value, e.target.checked)}
+                                        className="h-4 w-4 mt-0.5 text-sky-600 border-slate-300 rounded focus:ring-sky-500"
+                                    />
+                                    <label htmlFor={`class-feature-${featureDef.id}-${choice.value}`} className={`ml-3 block text-sm ${isDisabled ? 'text-slate-400 dark:text-slate-500' : 'text-slate-800 dark:text-slate-200'}`}>
+                                        <span className="font-semibold">{choice.label}</span>
+                                        {choice.description && <p className="text-xs text-slate-600 dark:text-slate-400 whitespace-pre-wrap">{choice.description}</p>}
+                                    </label>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+
+                {featureDef.type === 'asi' && (
+                    <div className="mt-2 space-y-2">
+                        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Escolha: Incremento no Valor de Habilidade ou Talento</p>
+                        <div className="flex space-x-4">
+                            <label className="inline-flex items-center">
+                                <input type="radio" className="form-radio text-sky-600" name={`asi-type-${featureDef.id}`} value="asi" 
+                                    checked={!currentSelection?.asiChoice || currentSelection.asiChoice === 'asi'} 
+                                    onChange={() => handleAsiChange(featureDef.id, 'asi', '')} 
+                                />
+                                <span className="ml-2 text-sm text-slate-800 dark:text-slate-200">Atributos</span>
+                            </label>
+                            <label className="inline-flex items-center">
+                                <input type="radio" className="form-radio text-sky-600" name={`asi-type-${featureDef.id}`} value="feat"
+                                    checked={currentSelection?.asiChoice === 'feat'}
+                                    onChange={() => {}} 
+                                    onClick={() => handleAsiChange(featureDef.id, 'feat', currentSelection?.choiceValue || '')}
+                                />
+                                <span className="ml-2 text-sm text-slate-800 dark:text-slate-200">Talento</span>
+                            </label>
+                        </div>
+                        
+                        {currentSelection?.asiChoice === 'feat' && (
+                            <div className="mt-2">
+                                <SelectInput 
+                                    label="Selecione um Talento" 
+                                    name={`feat-select-${featureDef.id}`}
+                                    value={currentSelection?.choiceValue || ''}
+                                    options={ALL_FEATS.map(f => ({value: f.id, label: f.name, description: f.description}))}
+                                    onChange={(e) => handleAsiChange(featureDef.id, 'feat', e.target.value)}
+                                />
+                                {currentSelection.choiceValue && (
+                                    <div className="mt-1 p-2 bg-slate-100 dark:bg-slate-800 rounded text-xs text-slate-700 dark:text-slate-300">
+                                        {ALL_FEATS.find(f => f.id === currentSelection.choiceValue)?.description}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        {(!currentSelection?.asiChoice || currentSelection.asiChoice === 'asi') && (
+                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 italic">
+                                Ajuste seus atributos na seção de "Atributos" acima.
+                            </p>
+                        )}
+                    </div>
+                )}
+            </div>
+        );
+    });
   };
 
   const renderRacialFeatures = () => {
@@ -1337,7 +1236,7 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
             <div key={featureDef.id} className="mb-4 p-3 bg-slate-50 dark:bg-slate-700/50 rounded-md shadow-sm">
                 <h6 className="font-semibold text-slate-700 dark:text-slate-200">{featureDef.name}</h6>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-2 whitespace-pre-wrap">{featureDef.description}</p>
-                {featureDef.type === 'choice' && featureDef.choices && (
+                {featureDef.type === 'choice' && featureDef.choices && (!featureDef.maxChoices || featureDef.maxChoices === 1) && (
                     <>
                         <SelectInput
                             label={featureDef.selectionPrompt || `Escolha para ${featureDef.name}:`}
@@ -1354,6 +1253,32 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
                             </div>
                         )}
                     </>
+                )}
+                {featureDef.type === 'choice' && featureDef.choices && featureDef.maxChoices && featureDef.maxChoices > 1 && (
+                    <div className="mt-2 space-y-2">
+                        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{featureDef.selectionPrompt || `Escolha até ${featureDef.maxChoices}:`}</p>
+                        {featureDef.choices.map(choice => {
+                            const selectedChoices = currentSelection?.customChoiceText?.split(',') || [];
+                            const isChecked = selectedChoices.includes(choice.value);
+                            const isDisabled = !isChecked && selectedChoices.length >= (featureDef.maxChoices || 0);
+                            return (
+                                <div key={choice.value} className="flex items-start p-2 rounded-md bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
+                                    <input
+                                        type="checkbox"
+                                        id={`racial-feature-${featureDef.id}-${choice.value}`}
+                                        checked={isChecked}
+                                        disabled={isDisabled}
+                                        onChange={(e) => handleRacialFeatureMultiChoiceChange(featureDef.id, choice.value, e.target.checked)}
+                                        className="h-4 w-4 mt-0.5 text-sky-600 border-slate-300 rounded focus:ring-sky-500"
+                                    />
+                                    <label htmlFor={`racial-feature-${featureDef.id}-${choice.value}`} className={`ml-3 block text-sm ${isDisabled ? 'text-slate-400 dark:text-slate-500' : 'text-slate-800 dark:text-slate-200'}`}>
+                                        <span className="font-semibold">{choice.label}</span>
+                                        {choice.description && <p className="text-xs text-slate-600 dark:text-slate-400 whitespace-pre-wrap">{choice.description}</p>}
+                                    </label>
+                                </div>
+                            );
+                        })}
+                    </div>
                 )}
             </div>
         );
@@ -1411,20 +1336,35 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
         <Input label="Moedas" name="coins" type="number" value={formData.coins} onChange={handleChange} />
       </div>
 
-      <div>
-        <h3 className="text-lg font-semibold text-sky-600 dark:text-sky-400 mb-2">Atributos</h3>
+      <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm bg-slate-50 dark:bg-slate-800/50">
+        <h3 className="text-lg font-semibold text-sky-600 dark:text-sky-400 mb-2">Atributos (Valor Base)</h3>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Insira o valor base. O total com bônus raciais é mostrado ao lado.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-          {ATTRIBUTE_NAMES.map(attrName => (
-            <Input
-              key={attrName}
-              label={ATTRIBUTE_LABELS[attrName]}
-              name={`attributes.${attrName}`}
-              type="number"
-              value={formData.attributes[attrName]}
-              onChange={handleChange}
-              min="1" max="30"
-            />
-          ))}
+          {ATTRIBUTE_NAMES.map(attrName => {
+            const racialBonuses = calculateRaceAttributeBonuses(formData.race, formData.racialFeatures);
+            const bonus = racialBonuses[attrName] || 0;
+            const baseVal = formData.attributes[attrName] || 10;
+            const total = baseVal + bonus;
+
+            return (
+                <div key={attrName} className="flex flex-col">
+                    <Input
+                    label={ATTRIBUTE_LABELS[attrName]}
+                    name={`attributes.${attrName}`}
+                    type="number"
+                    value={baseVal}
+                    onChange={handleChange}
+                    min="1" max="30"
+                    />
+                    <div className="text-xs text-right mt-[-10px] mr-2 font-medium text-slate-600 dark:text-slate-400">
+                        {bonus > 0 
+                            ? <span className="text-sky-600 dark:text-sky-400">{baseVal} (+{bonus} Racial) = {total}</span> 
+                            : <span>Total: {total}</span>
+                        }
+                    </div>
+                </div>
+            );
+          })}
         </div>
       </div>
 
@@ -1462,7 +1402,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
       <div>
         <h3 className="text-lg font-semibold text-sky-600 dark:text-sky-400 mb-3">Perícias</h3>
         
-        {/* Automated Skills Section */}
         <div className="mb-4">
             <h4 className="text-md font-medium text-slate-700 dark:text-slate-300 mb-2">Perícias Concedidas Automaticamente:</h4>
             {autoGrantedSkills.size > 0 ? (
@@ -1475,7 +1414,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
             ) : <p className="text-sm text-slate-500 dark:text-slate-400 italic">Nenhuma por enquanto.</p>}
         </div>
 
-        {/* Class Skill Choices */}
         {classSkillConfig && classSkillConfig.count > 0 && (
             <div className="mb-4 p-4 border border-sky-200 dark:border-sky-800 rounded-md bg-sky-50 dark:bg-sky-900/50">
                 <h4 className="text-md font-medium text-slate-800 dark:text-slate-200 mb-2">
@@ -1488,7 +1426,7 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
                         if (!skill) return null;
                         
                         const isAuto = autoGrantedSkills.has(skillKey);
-                        if (isAuto) return null; // Don't show class options if already granted
+                        if (isAuto) return null; 
 
                         const isChecked = chosenClassSkills.includes(skillKey);
                         const isDisabled = !isChecked && chosenClassSkills.length >= classSkillConfig.count;
@@ -1513,7 +1451,6 @@ export const CharacterForm: React.FC<CharacterFormProps> = ({ onSave, initialDat
             </div>
         )}
         
-        {/* Half-Elf Skill Choices */}
         {isHalfElf && (
              <div className="mb-4 p-4 border border-emerald-200 dark:border-emerald-800 rounded-md bg-emerald-50 dark:bg-emerald-900/50">
                 <h4 className="text-md font-medium text-slate-800 dark:text-slate-200 mb-2">

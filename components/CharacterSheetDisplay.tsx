@@ -1,6 +1,4 @@
 
-
-
 import React, { useState, useEffect } from 'react';
 import { Character, ATTRIBUTE_NAMES, ATTRIBUTE_LABELS, AttributeName, MagicInfo, Spell, ClassFeatureSelection, RacialFeatureSelection, RANKS, Rank, FeatSelection } from '../types';
 import AttributeField, { calculateModifier, formatModifier } from './AttributeField';
@@ -13,7 +11,7 @@ import {
     getMaxRages, getMaxBardicInspirations, getMaxChannelDivinityUses,
     getMaxRelentlessEnduranceUses, getMaxSecondWindUses, getMaxActionSurgeUses,
     getMaxBreathWeaponUses, getMaxKiPoints, getMaxLayOnHandsPool,
-    CLASS_SAVING_THROWS
+    CLASS_SAVING_THROWS, calculateRaceAttributeBonuses
 } from '../dndOptions'; 
 import { ALL_SPELLS_MAP } from '../spells'; 
 import { getClassSpellSlots, WARLOCK_PACT_SLOT_LEVEL } from '../classFeatures';
@@ -81,9 +79,8 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
     spellbook: [] 
   } as MagicInfo;
   
-  // Ensure currentSpellSlots array exists and has 9 elements, defaulting to spellSlots if not fully defined
   if (!magicInfo.currentSpellSlots || magicInfo.currentSpellSlots.length !== 9) {
-    magicInfo.currentSpellSlots = [...magicInfo.spellSlots]; // Default to max if undefined/malformed
+    magicInfo.currentSpellSlots = [...magicInfo.spellSlots];
   }
 
 
@@ -100,12 +97,15 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
   let spellcastingAbilityLabel: string | null = null;
 
   if (magicInfo.spellcastingAbilityName && character.attributes[magicInfo.spellcastingAbilityName]) {
-    const spellcastingModifier = calculateModifier(character.attributes[magicInfo.spellcastingAbilityName]);
+    const racialBonuses = calculateRaceAttributeBonuses(character.race, character.racialFeatures);
+    const attrScore = character.attributes[magicInfo.spellcastingAbilityName] + (racialBonuses[magicInfo.spellcastingAbilityName] || 0);
+    const spellcastingModifier = calculateModifier(attrScore);
     calculatedSpellSaveDC = 8 + proficiencyBonus + spellcastingModifier;
     calculatedSpellAttackBonus = proficiencyBonus + spellcastingModifier;
     spellcastingAbilityLabel = ATTRIBUTE_LABELS[magicInfo.spellcastingAbilityName];
   }
 
+  // ... (renderSpellDetails, displaySpellListWithDetails remain same) ...
   const renderSpellDetails = (spell: Spell) => (
     <div className="mt-2 p-3 bg-sky-100 dark:bg-slate-600/80 rounded text-xs text-slate-700 dark:text-slate-300 space-y-1 shadow-inner">
       <p><strong>Nível:</strong> {spell.level === 0 ? "Truque" : spell.level}</p>
@@ -157,7 +157,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
     );
   };
 
-
+  // ... (handlePlayerHeal, handlePlayerTakeDamage, etc. remain same) ...
   const handlePlayerHeal = () => {
     if (!onCharacterUpdate || !healAmount) return;
     const amount = parseInt(healAmount, 10);
@@ -332,7 +332,10 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
       return;
     }
 
-    const conModifier = calculateModifier(character.attributes.constitution);
+    const racialBonuses = calculateRaceAttributeBonuses(character.race, character.racialFeatures);
+    const conBonus = racialBonuses.constitution || 0;
+    const conModifier = calculateModifier(character.attributes.constitution + conBonus);
+    
     const hitDieType = character.hitDieType;
     let totalHealedThisAction = 0;
     const currentRollResults: string[] = [];
@@ -365,6 +368,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
         messages.push("Espaços de Magia de Pacto do Bruxo recuperados.");
     }
     
+    // ... (rest of short rest logic) ...
     if (character.charClass === 'Clérigo' || character.charClass === 'Paladino') {
         if(character.maxChannelDivinityUses !== undefined) updates.currentChannelDivinityUses = character.maxChannelDivinityUses;
         messages.push("Usos de Canalizar Divindade recuperados.");
@@ -401,6 +405,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
   };
 
   const applyLongRestBenefits = () => {
+    // ... (long rest logic) ...
     if (!onCharacterUpdate) return;
     const updates: Partial<Character> = { ...character };
     let messages = ["Descanso Longo finalizado."];
@@ -440,6 +445,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
 
 
   const renderClassFeatures = (features?: ClassFeatureSelection[]) => {
+    // ... (same as original) ...
     if (!features || features.length === 0) {
       return <p className="text-slate-800 dark:text-slate-100">Nenhuma característica de classe específica listada.</p>;
     }
@@ -489,16 +495,25 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
   };
   
   const renderRacialFeaturesDisplay = (features?: RacialFeatureSelection[]) => {
+    // ... (same as original) ...
     if (!features || features.length === 0) {
         return <p className="text-slate-800 dark:text-slate-100">Nenhuma característica racial específica listada.</p>;
     }
     return (
         <ul className="list-disc list-inside ml-4 space-y-1">
-            {features.map(feature => (
+            {features.map(feature => {
+                let displayLabel = feature.choiceLabel;
+                // Specifically for ASI choice type where we use customChoiceText
+                if ((feature.featureId === 'half_elf_asi') && feature.customChoiceText) {
+                    const chosenAttrs = feature.customChoiceText.split(',').map(attr => ATTRIBUTE_LABELS[attr as AttributeName]).join(', ');
+                    displayLabel = chosenAttrs;
+                }
+
+                return (
                 <li key={feature.featureId} className="text-sm text-slate-800 dark:text-slate-100">
                     <span className="font-medium">{feature.featureName}</span>
-                    {feature.type === 'choice' && feature.choiceLabel && (
-                        <span>: <span className="italic">{feature.choiceLabel}</span></span>
+                    {feature.type === 'choice' && displayLabel && (
+                        <span>: <span className="italic">{displayLabel}</span></span>
                     )}
                     {feature.description && (
                         <details className="text-xs text-slate-600 dark:text-slate-400 pl-2 cursor-pointer">
@@ -507,7 +522,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
                         </details>
                     )}
                 </li>
-            ))}
+            )})}
         </ul>
     );
   };
@@ -549,6 +564,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
       </div>
 
        <Section title="Recursos e Habilidades de Uso Limitado">
+            {/* ... (Limited use abilities UI remains same) ... */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Class Abilities */}
                 {character.charClass === 'Bárbaro' && character.maxRages !== undefined && (
@@ -665,6 +681,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
       
       {onCharacterUpdate && ( 
         <Section title="Ações do Personagem">
+          {/* ... (Actions UI remains same) ... */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
             <div className="p-3 bg-slate-100 dark:bg-slate-600/50 rounded-md">
               <Input 
@@ -706,6 +723,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
         </Section>
       )}
 
+      {/* ... (Rest Section remains same) ... */}
       {onCharacterUpdate && (
         <Section title="Descanso">
           <div className="flex space-x-2 mb-4">
@@ -771,13 +789,35 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Section title="Atributos">
           <div className="grid grid-cols-1 gap-2">
-            {ATTRIBUTE_NAMES.map(attrName => (
-              <AttributeField 
-                key={attrName}
-                label={ATTRIBUTE_LABELS[attrName]}
-                score={character.attributes[attrName]}
-              />
-            ))}
+            {ATTRIBUTE_NAMES.map(attrName => {
+              // Calculate Racial Bonus for Display
+              const racialBonuses = calculateRaceAttributeBonuses(character.race, character.racialFeatures);
+              const racialBonus = racialBonuses[attrName] || 0;
+              const bonusText = racialBonus > 0 ? ` (+${racialBonus} Racial)` : '';
+              
+              const baseScore = character.attributes[attrName];
+              const totalScore = baseScore + racialBonus;
+
+              return (
+              <div key={attrName} className="flex justify-between items-center p-2 bg-slate-100 dark:bg-slate-700 rounded mb-1">
+                  <span className="font-medium text-slate-700 dark:text-slate-300">
+                      {ATTRIBUTE_LABELS[attrName]}:
+                  </span>
+                  <div className="text-right">
+                      <span className="text-slate-800 dark:text-slate-100 font-bold text-lg">
+                          {totalScore}
+                      </span>
+                      <span className="ml-2 text-slate-600 dark:text-slate-300">
+                          ({formatModifier(calculateModifier(totalScore))})
+                      </span>
+                      {racialBonus > 0 && (
+                          <span className="text-xs text-sky-600 dark:text-sky-400 ml-2 block">
+                              ({baseScore} Base {bonusText})
+                          </span>
+                      )}
+                  </div>
+              </div>
+            )})}
           </div>
         </Section>
 
@@ -785,7 +825,11 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
           <InfoItem label="Bônus de Proficiência" value={formatModifier(proficiencyBonus)} />
           <div className="grid grid-cols-1 gap-2 mt-2">
             {ALL_SKILLS.map((skill: SkillDefinition) => {
-              const attributeScore = character.attributes[skill.attribute];
+              // Calculate attributes including racial bonus
+              const racialBonuses = calculateRaceAttributeBonuses(character.race, character.racialFeatures);
+              const attrBonus = racialBonuses[skill.attribute] || 0;
+              const attributeScore = character.attributes[skill.attribute] + attrBonus;
+              
               const attributeModifier = calculateModifier(attributeScore);
               const isProficient = character.proficientSkills.includes(skill.key);
               const skillModifier = attributeModifier + (isProficient ? proficiencyBonus : 0);
@@ -808,7 +852,11 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
           {ATTRIBUTE_NAMES.map(attrName => {
             const proficientSaves = CLASS_SAVING_THROWS[character.charClass] || [];
             const isProficient = proficientSaves.includes(attrName);
-            const attributeScore = character.attributes[attrName];
+            
+            const racialBonuses = calculateRaceAttributeBonuses(character.race, character.racialFeatures);
+            const attrBonus = racialBonuses[attrName] || 0;
+            const attributeScore = character.attributes[attrName] + attrBonus;
+
             const attributeModifier = calculateModifier(attributeScore);
             const saveModifier = attributeModifier + (isProficient ? proficiencyBonus : 0);
             
@@ -848,6 +896,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
         {renderClassFeatures(character.classFeatures)}
       </Section>
       
+      {/* ... (Items, Abilities, Notes, Fighting Style sections remain same) ... */}
       <Section 
         title="Inventário (Itens)"
         titleActions={onCharacterUpdate && (
@@ -926,6 +975,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
             <h4 className="font-semibold text-slate-700 dark:text-slate-300 mb-1">Espaços de Magia por Nível:</h4>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {magicInfo.spellSlots?.map((maxSlots, i) => {
+                // ... (spell slot rendering logic remains same) ...
                 if (maxSlots === 0 && (magicInfo.currentSpellSlots?.[i] ?? 0) === 0 && character.charClass !== 'Bruxo') return null; 
                 
                 let displayLevel = i + 1;

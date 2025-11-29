@@ -1,87 +1,41 @@
 
-
-
 import { Spell } from './types';
 
-// Example spells - a full list would be extensive
+// Lista expandida com PHB, Xanathar e Tasha
 export const ALL_AVAILABLE_SPELLS: Spell[] = [
-  // Cantrips (Level 0)
+  // --- TRUQUES (NÍVEL 0) ---
   {
-    name: "Rajada de Fogo (Fire Bolt)",
+    name: "Amizade (Friends)",
     level: 0,
-    school: "Evocação",
+    school: "Encantamento",
     castingTime: "1 ação",
-    range: "36 metros",
-    components: "V, S",
-    duration: "Instantânea",
-    description: "Você arremessa uma partícula de fogo em uma criatura ou objeto dentro do alcance. Faça um ataque à distância com magia contra o alvo. Se atingir, o alvo sofre 1d10 de dano de fogo. Um objeto inflamável atingido por esta magia se incendeia se não estiver sendo vestido ou carregado.",
-    classes: ["Mago", "Feiticeiro"]
+    range: "Pessoal",
+    components: "S, M (uma pequena quantidade de maquiagem)",
+    duration: "Concentração, até 1 minuto",
+    description: "Pela duração, você tem vantagem em todos os testes de Carisma direcionados a uma criatura, à sua escolha, que não seja hostil a você. Quando a magia acabar, a criatura perceberá que você usou magia para influenciar o humor dela e ficará hostil a você.",
+    classes: ["Bardo", "Feiticeiro", "Mago", "Bruxo"]
   },
   {
-    name: "Raio de Gelo (Ray of Frost)",
+    name: "Ataque Certeiro (True Strike)",
     level: 0,
-    school: "Evocação",
-    castingTime: "1 ação",
-    range: "18 metros",
-    components: "V, S",
-    duration: "Instantânea",
-    description: "Um raio de energia frígida parte em direção de uma criatura dentro do alcance. Realize uma jogada de ataque mágico à distância contra o alvo. Se atingir, o alvo sofre 1d8 de dano de frio e seu deslocamento é reduzido em 3 metros até o início do seu próximo turno.",
-    classes: ["Mago", "Feiticeiro", "Bruxo"] // Bruxo pode pegar com Pact of the Tome
-  },
-  {
-    name: "Toque Arrepiante (Chill Touch)",
-    level: 0,
-    school: "Necromancia",
-    castingTime: "1 ação",
-    range: "36 metros",
-    components: "V, S",
-    duration: "1 rodada",
-    description: "Você cria uma mão esquelética fantasmagórica no espaço de uma criatura dentro do alcance. Faça um ataque à distância com magia contra a criatura para atingi-la com o toque fantasmagórico. Se atingir, a criatura sofre 1d8 de dano necrótico, e não pode recuperar pontos de vida até o início do seu próximo turno. Até lá, a mão se agarra ao alvo. Se você atingir um alvo morto-vivo, ele também tem desvantagem nas jogadas de ataque contra você até o final do seu próximo turno.",
-    classes: ["Mago", "Feiticeiro", "Bruxo"]
-  },
-  {
-    name: "Mãos Mágicas (Mage Hand)",
-    level: 0,
-    school: "Conjuração",
+    school: "Adivinhação",
     castingTime: "1 ação",
     range: "9 metros",
-    components: "V, S",
-    duration: "1 minuto",
-    description: "Uma mão espectral flutuante aparece num ponto, à sua escolha, dentro do alcance. A mão permanece pela duração ou até você dissipa-la com uma ação. A mão some se estiver a mais de 9 metros de você ou se você conjurar essa magia novamente. Você pode usar sua ação para controlar a mão. Você pode usar a mão para manipular um objeto, abrir uma porta ou recipiente destrancado, guardar ou pegar um item de um recipiente aberto, ou derramar o conteúdo de um frasco. Você pode mover a mão até 9 metros cada vez que a usa. A mão não pode atacar, ativar itens mágicos, ou carregar mais de 5 quilos.",
-    classes: ["Mago", "Bardo", "Bruxo", "Feiticeiro"]
+    components: "S",
+    duration: "Concentração, até 1 rodada",
+    description: "Você aponta o dedo para um alvo ao alcance. Sua magia garante uma breve intuição sobre as defesas do alvo. Em seu próximo turno, você ganha vantagem na primeira jogada de ataque contra o alvo, desde que a magia não tenha acabado.",
+    classes: ["Bardo", "Feiticeiro", "Mago", "Bruxo"]
   },
   {
-    name: "Luz (Light)",
+    name: "Chicote Elétrico (Lightning Lure)",
     level: 0,
     school: "Evocação",
     castingTime: "1 ação",
-    range: "Toque",
-    components: "V, M (um vaga-lume ou musgo fosforescente)",
-    duration: "1 hora",
-    description: "Você toca um objeto que não tenha mais 3 metros em qualquer dimensão. Até a magia acabar, o objeto emite luz plena num raio de 6 metros e penumbra por 6 metros adicionais. A magia termina se você conjurá-la novamente ou dissipá-la com uma ação.",
-    classes: ["Mago", "Bardo", "Clérigo", "Feiticeiro"]
-  },
-  {
-    name: "Prestidigitação (Prestidigitation)",
-    level: 0,
-    school: "Transmutação",
-    castingTime: "1 ação",
-    range: "3 metros",
-    components: "V, S",
-    duration: "Até 1 hora",
-    description: "Essa magia é um truque mágico simples que conjuradores iniciantes usam para praticar. Você cria um dos seguintes efeitos mágicos dentro do alcance: Você cria um efeito sensorial inofensivo instantâneo, como uma chuva de faíscas, um sopro de vento, notas musicais fracas, ou um odor estranho. Você instantaneamente acende ou apaga uma vela, uma tocha, ou uma pequena fogueira. Você instantaneamente limpa ou suja um objeto de não mais que 1 pé cúbico. Você esfria, esquenta, ou tempera até 1 pé cúbico de matéria não viva por 1 hora. Você faz uma cor, uma pequena marca, ou um símbolo aparecer em um objeto ou superfície por 1 hora. Você cria uma bugiganga não mágica ou uma imagem ilusória que caiba na sua mão e que dura até o final do seu próximo turno. Se você conjurar esta magia múltiplas vezes, você pode ter até três de seus efeitos não instantâneos ativos ao mesmo tempo, e você pode dissipar tal efeito com uma ação.",
-    classes: ["Mago", "Bardo", "Bruxo", "Feiticeiro", "Druida"]
-  },
-  {
-    name: "Consertar (Mending)",
-    level: 0,
-    school: "Transmutação",
-    castingTime: "1 minuto",
-    range: "Toque",
-    components: "V, S, M (dois ímãs)",
+    range: "4,5 metros (Pessoal)",
+    components: "V",
     duration: "Instantânea",
-    description: "Esta magia repara um única quebra ou rasgo em um objeto que você toca, como um elo quebrado de uma corrente, duas metades de uma chave partida, um manto rasgado ou o vazamento em um odre. Contanto que a quebra ou rasgo não seja maior que 30 centímetros em qualquer dimensão, você o remenda, não deixando qualquer vestígio do dano anterior.",
-    classes: ["Bardo", "Clérigo", "Druida", "Mago", "Feiticeiro"] // Artífice removido, pois não está na lista de classes
+    description: "Você cria um chicote de energia elétrica que atinge uma criatura à sua escolha, que você possa ver, a até 4,5 metros de você. O alvo deve ser bem-sucedido num teste de resistência de Força ou será puxado até 3 metros em linha reta em sua direção e sofrerá 1d8 de dano elétrico se estiver a até 1,5 metro de você.",
+    classes: ["Feiticeiro", "Bruxo", "Mago", "Artífice"]
   },
   {
     name: "Chama Sagrada (Sacred Flame)",
@@ -95,37 +49,70 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Clérigo"]
   },
   {
-    name: "Orientação (Guidance)",
+    name: "Chicote de Espinhos (Thorn Whip)",
     level: 0,
-    school: "Adivinhação",
+    school: "Transmutação",
     castingTime: "1 ação",
-    range: "Toque",
-    components: "V, S",
-    duration: "Concentração, até 1 minuto",
-    description: "Você toca uma criatura voluntária. Uma vez, antes da magia acabar, o alvo pode rolar um d4 e adicionar o número rolado a um teste de habilidade à escolha dele. Ele pode rolar o dado antes ou depois de realizar o teste de habilidade. Então, a magia termina.",
-    classes: ["Clérigo", "Druida"]
+    range: "9 metros",
+    components: "V, S, M (o caule de uma planta com espinhos)",
+    duration: "Instantânea",
+    description: "Você cria um longo chicote de vinhas coberto de espinhos que açoita ao seu comando em direção a uma criatura dentro do alcance. Faça um ataque à distância com magia contra o alvo. Se o ataque atingir, a criatura sofre 1d6 de dano perfurante, e se a criatura for Grande ou menor, você a puxa até 3 metros para perto de você.",
+    classes: ["Druida", "Artífice"]
   },
   {
-    name: "Rajada Mística (Eldritch Blast)",
+    name: "Consertar (Mending)",
     level: 0,
-    school: "Evocação",
+    school: "Transmutação",
+    castingTime: "1 minuto",
+    range: "Toque",
+    components: "V, S, M (dois ímãs)",
+    duration: "Instantânea",
+    description: "Esta magia repara um única quebra ou rasgo em um objeto que você toca, como um elo quebrado de uma corrente, duas metades de uma chave partida, um manto rasgado ou o vazamento em um odre. Contanto que a quebra ou rasgo não seja maior que 30 centímetros em qualquer dimensão, você o remenda, não deixando qualquer vestígio do dano anterior.",
+    classes: ["Bardo", "Clérigo", "Druida", "Mago", "Feiticeiro", "Artífice"]
+  },
+  {
+    name: "Controlar Chamas (Control Flames)",
+    level: 0,
+    school: "Transmutação",
     castingTime: "1 ação",
-    range: "36 metros",
+    range: "18 metros",
+    components: "S",
+    duration: "Instantânea ou 1 hora",
+    description: "Você escolhe uma chama não mágica que possa ver dentro do alcance e que caiba num cubo de 1,5 metro. Você a afeta de uma das seguintes formas: expande a chama em 1,5m; apaga a chama; dobra ou reduz pela metade a luz emitida; muda a cor ou formas simples na chama.",
+    classes: ["Druida", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Criar Fogueira (Create Bonfire)",
+    level: 0,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S",
+    duration: "Concentração, até 1 minuto",
+    description: "Você cria uma fogueira mágica em um cubo de 1,5 metro no chão que você possa ver dentro do alcance. Qualquer criatura no espaço da fogueira quando você a conjura deve ser bem-sucedida em um teste de resistência de Destreza ou sofrerá 1d8 de dano de fogo. Uma criatura também deve fazer o teste de resistência quando se mover para o espaço da fogueira pela primeira vez em um turno ou terminar seu turno lá.",
+    classes: ["Druida", "Feiticeiro", "Bruxo", "Mago", "Artífice"]
+  },
+  {
+    name: "Dobrar o Destino (Toll the Dead)",
+    level: 0,
+    school: "Necromancia",
+    castingTime: "1 ação",
+    range: "18 metros",
     components: "V, S",
     duration: "Instantânea",
-    description: "Um feixe de energia crepitante voa em direção a uma criatura dentro do alcance. Faça um ataque à distância com magia contra o alvo. Se atingir, o alvo sofre 1d10 de dano de energia. A magia cria mais de um feixe quando você alcança níveis mais altos: dois feixes no 5º nível, três feixes no 11º nível, e quatro feixes no 17º nível. Você pode direcionar os feixes para o mesmo alvo ou para diferentes. Faça uma jogada de ataque separada para cada feixe.",
-    classes: ["Bruxo"]
+    description: "Você aponta para uma criatura que possa ver dentro do alcance, e o som de um sino doloroso preenche o ar ao redor dela por um momento. O alvo deve ser bem-sucedido num teste de resistência de Sabedoria ou sofrerá 1d8 de dano necrótico. Se o alvo estiver com qualquer quantidade de pontos de vida faltando, ele sofre 1d12 de dano necrótico.",
+    classes: ["Clérigo", "Bruxo", "Mago"]
   },
   {
-    name: "Resistência (Resistance)",
+    name: "Druidismo (Druidcraft)",
     level: 0,
-    school: "Abjuração",
+    school: "Transmutação",
     castingTime: "1 ação",
-    range: "Toque",
-    components: "V, S, M (um manto em miniatura)",
-    duration: "Concentração, até 1 minuto",
-    description: "Você toca uma criatura voluntária. Uma vez antes da magia acabar, o alvo pode rolar um d4 e adicionar o número rolado a um teste de resistência de sua escolha. Ele pode rolar o dado antes ou depois de fazer o teste de resistência. Então a magia acaba.",
-    classes: ["Clérigo", "Druida"]
+    range: "Pessoal (raio de 9m para alguns efeitos)",
+    components: "V, S",
+    duration: "Instantânea ou 1 rodada (ver descrição)",
+    description: "Sussurrando para os espíritos da natureza, você cria um dos seguintes efeitos: Previsão do tempo (efeito sensorial minúsculo); Fazer uma flor desabrochar/semente brotar; Efeito sensorial instantâneo (folhas caindo, sopro de vento, odor de gambá); Acender/apagar vela, tocha ou pequena fogueira.",
+    classes: ["Druida"]
   },
   {
     name: "Espadanada Ácida (Acid Splash)",
@@ -136,7 +123,282 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     components: "V, S",
     duration: "Instantânea",
     description: "Você arremessa uma bolha de ácido. Escolha uma ou duas criaturas que você possa ver dentro do alcance que estejam a até 1,5 metro uma da outra. Um alvo deve ser bem-sucedido em um teste de resistência de Destreza ou sofrerá 1d6 de dano de ácido.",
-    classes: ["Mago", "Feiticeiro"]
+    classes: ["Mago", "Feiticeiro", "Artífice"]
+  },
+  {
+    name: "Estouro de Trovão (Thunderclap)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "1,5 metro (pessoal)",
+    components: "S",
+    duration: "Instantânea",
+    description: "Você cria um estouro de som trovejante que pode ser ouvido a até 30 metros de distância. Cada criatura a até 1,5 metro de você, exceto você, deve ser bem-sucedida em um teste de resistência de Constituição ou sofrerá 1d6 de dano trovejante.",
+    classes: ["Bardo", "Druida", "Feiticeiro", "Bruxo", "Mago", "Artífice"]
+  },
+  {
+    name: "Farpas Mentais (Mind Sliver)",
+    level: 0,
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V",
+    duration: "1 rodada",
+    description: "Você lança uma lança psíquica desorientadora na mente de uma criatura que você possa ver dentro do alcance. O alvo deve passar num teste de resistência de Inteligência ou sofrer 1d6 de dano psíquico e subtrair 1d4 da próxima jogada de resistência que fizer antes do final do seu próximo turno.",
+    classes: ["Feiticeiro", "Bruxo", "Mago"]
+  },
+  {
+    name: "Golpe Certeiro (Boaming Blade - Lâmina Estrondosa)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Pessoal (1,5 metro)",
+    components: "S, M (uma arma)",
+    duration: "1 rodada",
+    description: "Você realiza um ataque corpo-a-corpo com uma arma. Se acertar, o alvo sofre o efeito normal do ataque e fica envolto em energia estrondosa até o início do seu próximo turno. Se o alvo se mover voluntariamente antes disso, ele sofre imediatamente 1d8 de dano trovejante e a magia termina. O dano aumenta com o nível.",
+    classes: ["Feiticeiro", "Bruxo", "Mago", "Artífice"]
+  },
+  {
+    name: "Ilusão Menor (Minor Illusion)",
+    level: 0,
+    school: "Ilusão",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "S, M (um pouco de lã de ovelha)",
+    duration: "1 minuto",
+    description: "Você cria um som ou uma imagem de um objeto dentro do alcance que dura pela duração. A ilusão termina se você a dissipar com uma ação ou conjurar essa magia novamente. Se for um som, pode ser desde um sussurro até um grito. Se for uma imagem, deve caber num cubo de 1,5m e não pode criar som, luz, cheiro ou temperatura.",
+    classes: ["Bardo", "Feiticeiro", "Bruxo", "Mago"]
+  },
+  {
+    name: "Infestação (Infestation)",
+    level: 0,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S, M (uma pulga viva)",
+    duration: "Instantânea",
+    description: "Você faz com que ácaros, pulgas e outros parasitas apareçam momentaneamente em uma criatura que você possa ver dentro do alcance. O alvo deve ser bem-sucedido em um teste de resistência de Constituição ou sofrerá 1d6 de dano de veneno e se moverá 1,5 metro em uma direção aleatória se puder se mover e sua velocidade for de pelo menos 1,5 metro.",
+    classes: ["Druida", "Feiticeiro", "Bruxo", "Mago"]
+  },
+  {
+    name: "Lâmina de Chama Esverdeada (Green-Flame Blade)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Pessoal (1,5 metro)",
+    components: "S, M (uma arma)",
+    duration: "Instantânea",
+    description: "Como parte da ação usada para conjurar esta magia, você deve realizar um ataque corpo-a-corpo com uma arma contra uma criatura dentro do alcance da arma. Se acertar, o ataque causa o dano normal da arma e uma chama verde salta para uma criatura diferente à sua escolha que você possa ver a até 1,5 metro do alvo original. A segunda criatura sofre dano de fogo igual ao seu modificador de habilidade de conjuração. O dano aumenta com o nível.",
+    classes: ["Feiticeiro", "Bruxo", "Mago", "Artífice"]
+  },
+  {
+    name: "Luz (Light)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, M (um vaga-lume ou musgo fosforescente)",
+    duration: "1 hora",
+    description: "Você toca um objeto que não tenha mais 3 metros em qualquer dimensão. Até a magia acabar, o objeto emite luz plena num raio de 6 metros e penumbra por 6 metros adicionais. A magia termina se você conjurá-la novamente ou dissipá-la com uma ação.",
+    classes: ["Mago", "Bardo", "Clérigo", "Feiticeiro", "Artífice"]
+  },
+  {
+    name: "Mãos Mágicas (Mage Hand)",
+    level: 0,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S",
+    duration: "1 minuto",
+    description: "Uma mão espectral flutuante aparece num ponto, à sua escolha, dentro do alcance. A mão permanece pela duração ou até você dissipa-la com uma ação. Você pode usar sua ação para controlar a mão. A mão não pode atacar, ativar itens mágicos, ou carregar mais de 5 quilos.",
+    classes: ["Mago", "Bardo", "Bruxo", "Feiticeiro", "Artífice"]
+  },
+  {
+    name: "Mensagem (Message)",
+    level: 0,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S, M (um pedaço curto de fio de cobre)",
+    duration: "1 rodada",
+    description: "Você aponta o dedo para uma criatura dentro do alcance e sussurra uma mensagem. O alvo (e apenas o alvo) ouve a mensagem e pode responder num sussurro que apenas você ouve. Você pode conjurar essa magia através de objetos sólidos se você tiver familiaridade com o alvo.",
+    classes: ["Bardo", "Feiticeiro", "Mago", "Artífice"]
+  },
+  {
+    name: "Moldar Água (Shape Water)",
+    level: 0,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "S",
+    duration: "Instantânea ou 1 hora",
+    description: "Você escolhe uma área de água que possa ver e que caiba num cubo de 1,5m. Você pode mover a água, formar formas simples, mudar a cor ou opacidade, ou congelar a água (se não houver criaturas nela).",
+    classes: ["Druida", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Moldar Terra (Mold Earth)",
+    level: 0,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "S",
+    duration: "Instantânea ou 1 hora",
+    description: "Você escolhe uma porção de terra ou pedra solta que caiba num cubo de 1,5m. Você pode escavar e mover a terra, causar formas/cores/letras a aparecerem na terra, ou transformar terra normal em terreno difícil (ou vice-versa).",
+    classes: ["Druida", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Mordida Congelante (Frostbite)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Você causa um frio entorpecente se formar em uma criatura que você possa ver dentro do alcance. A criatura deve ser bem-sucedida em um teste de resistência de Constituição ou sofrerá 1d6 de dano de frio e terá desvantagem na próxima jogada de ataque com arma que fizer antes do final do próximo turno dela.",
+    classes: ["Druida", "Feiticeiro", "Bruxo", "Mago", "Artífice"]
+  },
+  {
+    name: "Orientação (Guidance)",
+    level: 0,
+    school: "Adivinhação",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S",
+    duration: "Concentração, até 1 minuto",
+    description: "Você toca uma criatura voluntária. Uma vez, antes da magia acabar, o alvo pode rolar um d4 e adicionar o número rolado a um teste de habilidade à escolha dele. Ele pode rolar o dado antes ou depois de realizar o teste de habilidade. Então, a magia termina.",
+    classes: ["Clérigo", "Druida", "Artífice"]
+  },
+  {
+    name: "Palavra Radiante (Word of Radiance)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "1,5 metro",
+    components: "V, M (um símbolo sagrado)",
+    duration: "Instantânea",
+    description: "Você pronuncia uma palavra divina, e uma radiação ardente irrompe de você. Cada criatura à sua escolha que você possa ver a até 1,5 metro de você deve ser bem-sucedida em um teste de resistência de Constituição ou sofrerá 1d6 de dano radiante.",
+    classes: ["Clérigo"]
+  },
+  {
+    name: "Pedra Mágica (Magic Stone)",
+    level: 0,
+    school: "Transmutação",
+    castingTime: "1 ação bônus",
+    range: "Toque",
+    components: "V, S",
+    duration: "1 minuto",
+    description: "Você toca uma a três pedras e as imbui com magia. Você ou outra pessoa pode fazer um ataque de magia à distância com uma das pedras arremessando-a ou lançando-a com uma funda. Se arremessada, o alcance é de 18 metros. Se atingir, o alvo sofre dano de concussão igual a 1d6 + seu modificador de habilidade de conjuração.",
+    classes: ["Druida", "Bruxo", "Artífice"]
+  },
+  {
+    name: "Prestidigitação (Prestidigitation)",
+    level: 0,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "3 metros",
+    components: "V, S",
+    duration: "Até 1 hora",
+    description: "Você cria um efeito mágico menor: efeito sensorial inofensivo, acender/apagar vela/tocha, limpar/sujar objeto pequeno, esquentar/esfriar/temperar material não vivo, fazer aparecer símbolo ou cor, ou criar uma bugiganga ilusória que cabe na mão.",
+    classes: ["Mago", "Bardo", "Bruxo", "Feiticeiro", "Druida", "Artífice"]
+  },
+  {
+    name: "Raio de Gelo (Ray of Frost)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Um raio de energia frígida parte em direção de uma criatura dentro do alcance. Realize uma jogada de ataque mágico à distância contra o alvo. Se atingir, o alvo sofre 1d8 de dano de frio e seu deslocamento é reduzido em 3 metros até o início do seu próximo turno.",
+    classes: ["Mago", "Feiticeiro", "Bruxo", "Artífice"] 
+  },
+  {
+    name: "Rajada de Fogo (Fire Bolt)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Você arremessa uma partícula de fogo em uma criatura ou objeto dentro do alcance. Faça um ataque à distância com magia contra o alvo. Se atingir, o alvo sofre 1d10 de dano de fogo.",
+    classes: ["Mago", "Feiticeiro", "Artífice"]
+  },
+  {
+    name: "Rajada de Veneno (Poison Spray)",
+    level: 0,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "3 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Você estende a mão e projeta um sopro de gás nocivo da palma. Uma criatura que você possa ver dentro do alcance deve ser bem-sucedida num teste de resistência de Constituição ou sofrerá 1d12 de dano de veneno.",
+    classes: ["Druida", "Feiticeiro", "Bruxo", "Mago", "Artífice"]
+  },
+  {
+    name: "Rajada de Vento (Gust)",
+    level: 0,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Você agarra o ar e compele-o a criar um dos efeitos: Empurrar criatura Média ou menor a até 1,5m (Teste de FOR); Empurrar objeto de até 2,5kg a 3m; Efeito sensorial inofensivo de vento.",
+    classes: ["Druida", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Rajada Mística (Eldritch Blast)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Um feixe de energia crepitante voa em direção a uma criatura dentro do alcance. Faça um ataque à distância com magia contra o alvo. Se atingir, o alvo sofre 1d10 de dano de energia. (Aumenta o número de feixes nos níveis 5, 11 e 17).",
+    classes: ["Bruxo"]
+  },
+  {
+    name: "Rajada de Espadas (Sword Burst)",
+    level: 0,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "1,5 metro (Pessoal)",
+    components: "V",
+    duration: "Instantânea",
+    description: "Você cria um círculo momentâneo de lâminas espectrais que varrem ao seu redor. Todas as outras criaturas a até 1,5 metro de você devem ser bem-sucedidas num teste de resistência de Destreza ou sofrerão 1d6 de dano de energia.",
+    classes: ["Feiticeiro", "Bruxo", "Mago", "Artífice"]
+  },
+  {
+    name: "Resistência (Resistance)",
+    level: 0,
+    school: "Abjuração",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S, M (um manto em miniatura)",
+    duration: "Concentração, até 1 minuto",
+    description: "Você toca uma criatura voluntária. Uma vez antes da magia acabar, o alvo pode rolar um d4 e adicionar o número rolado a um teste de resistência de sua escolha. Ele pode rolar o dado antes ou depois de fazer o teste de resistência. Então a magia acaba.",
+    classes: ["Clérigo", "Druida", "Artífice"]
+  },
+  {
+    name: "Selvageria Primal (Primal Savagery)",
+    level: 0,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "S",
+    duration: "Instantânea",
+    description: "Você canaliza magia primal para fazer com que seus dentes ou unhas se afiem, prontos para entregar um ataque corrosivo. Faça um ataque corpo a corpo com magia contra uma criatura a até 1,5 metro de você. Se atingir, o alvo sofre 1d10 de dano ácido.",
+    classes: ["Druida"]
+  },
+  {
+    name: "Toque Arrepiante (Chill Touch)",
+    level: 0,
+    school: "Necromancia",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S",
+    duration: "1 rodada",
+    description: "Você cria uma mão esquelética fantasmagórica no espaço de uma criatura dentro do alcance. Faça um ataque à distância com magia contra a criatura para atingi-la com o toque fantasmagórico. Se atingir, a criatura sofre 1d8 de dano necrótico, e não pode recuperar pontos de vida até o início do seu próximo turno. Se você atingir um alvo morto-vivo, ele também tem desvantagem nas jogadas de ataque contra você até o final do seu próximo turno.",
+    classes: ["Mago", "Feiticeiro", "Bruxo"]
   },
   {
     name: "Zombaria Viciosa (Vicious Mockery)",
@@ -146,98 +408,21 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     range: "18 metros",
     components: "V",
     duration: "Instantânea",
-    description: "Você desfere uma série de insultos atados com sutis encantamentos em uma criatura que você pode ver dentro do alcance. Se o alvo puder ouvi-lo (embora não precise entendê-lo), ele deve ser bem-sucedido em um teste de resistência de Sabedoria ou sofrerá 1d4 de dano psíquico e terá desvantagem na próxima jogada de ataque que fizer antes do final de seu próximo turno.",
+    description: "Você desfere uma série de insultos atados com sutis encantamentos em uma criatura que você pode ver dentro do alcance. Se o alvo puder ouvi-lo, ele deve ser bem-sucedido em um teste de resistência de Sabedoria ou sofrerá 1d4 de dano psíquico e terá desvantagem na próxima jogada de ataque que fizer antes do final de seu próximo turno.",
     classes: ["Bardo"]
   },
-  {
-    name: "Druidismo (Druidcraft)",
-    level: 0,
-    school: "Transmutação",
-    castingTime: "1 ação",
-    range: "Pessoal (raio de 9m para alguns efeitos)",
-    components: "V, S",
-    duration: "Instantânea ou 1 rodada (ver descrição)",
-    description: "Sussurrando para os espíritos da natureza, você cria um dos seguintes efeitos: Você cria um efeito sensorial minúsculo e inofensivo que prevê como será o clima em sua localização nas próximas 24 horas. O efeito pode se manifestar como um globo dourado para céu claro, uma nuvem para chuva, flocos de neve para neve, e assim por diante. Este efeito persiste por 1 rodada. Você instantaneamente faz uma flor desabrochar, uma semente brotar, ou uma folha amadurecer. Você cria um efeito sensorial instantâneo, como folhas caindo, um sopro de vento, o som de um pequeno animal, ou o leve odor de um gambá. O efeito deve caber em um cubo de 1,5 metro. Você instantaneamente acende ou apaga uma vela, uma tocha ou uma pequena fogueira.",
-    classes: ["Druida"]
-  },
-  {
-    name: "Chicote de Espinhos (Thorn Whip)",
-    level: 0,
-    school: "Transmutação",
-    castingTime: "1 ação",
-    range: "9 metros",
-    components: "V, S, M (o caule de uma planta com espinhos)",
-    duration: "Instantânea",
-    description: "Você cria um longo chicote de vinhas coberto de espinhos que açoita ao seu comando em direção a uma criatura dentro do alcance. Faça um ataque à distância com magia contra o alvo. Se o ataque atingir, a criatura sofre 1d6 de dano perfurante, e se a criatura for Grande ou menor, você a puxa até 3 metros para perto de você.",
-    classes: ["Druida"]
-  },
 
-  // 1st Level Spells
+  // --- NÍVEL 1 ---
   {
-    name: "Mísseis Mágicos (Magic Missile)",
-    level: 1,
-    school: "Evocação",
-    castingTime: "1 ação",
-    range: "36 metros",
-    components: "V, S",
-    duration: "Instantânea",
-    description: "Você cria três dardos brilhantes de energia mística. Cada dardo atinge uma criatura, à sua escolha, que você possa ver, dentro do alcance. Um dardo causa 1d4 + 1 de dano de energia ao alvo. Os dardos atingem simultaneamente e você pode direcioná-los para um ou vários alvos.",
-    classes: ["Mago", "Feiticeiro"]
-  },
-  {
-    name: "Escudo Arcano (Shield)",
+    name: "Absorver Elementos (Absorb Elements)",
     level: 1,
     school: "Abjuração",
-    castingTime: "1 reação, que você faz quando é atingido por um ataque ou alvo da magia mísseis mágicos",
+    castingTime: "1 reação",
     range: "Pessoal",
-    components: "V, S",
+    components: "S",
     duration: "1 rodada",
-    description: "Uma barreira de energia invisível aparece e protege você. Até o início do seu próximo turno, você recebe +5 de bônus na CA, incluindo contra o ataque que desencadeou a magia, e você não sofre dano de mísseis mágicos.",
-    classes: ["Mago", "Feiticeiro"]
-  },
-  {
-    name: "Sono (Sleep)",
-    level: 1,
-    school: "Encantamento",
-    castingTime: "1 ação",
-    range: "27 metros",
-    components: "V, S, M (uma pitada de areia fina, pétalas de rosas ou um grilo)",
-    duration: "1 minuto",
-    description: "Essa magia põem as criaturas num entorpecimento mágico. Jogue 5d8; o total é a quantidade de pontos de vida de criaturas afetados pela magia. As criaturas dentro de 6 metros de um ponto que você escolher dentro do alcance são afetadas em ordem ascendente de seus pontos de vida atuais (ignorando criaturas inconscientes). Começando pela criatura com menos pontos de vida atuais, cada criatura afetada por esta magia cai inconsciente até a magia acabar, o adormecido sofrer dano, ou alguém usar uma ação para sacudir ou esbofetear o adormecido para acordá-lo. Subtraia os pontos de vida de cada criatura do total antes de passar para a próxima criatura com menos pontos de vida. Os pontos de vida de uma criatura devem ser iguais ou menores que o total restante para que ela seja afetada. Mortos-vivos e criaturas imunes a serem enfeitiçadas não são afetados por esta magia.",
-    classes: ["Mago", "Bardo", "Feiticeiro"]
-  },
-  {
-    name: "Armadura Arcana (Mage Armor)",
-    level: 1,
-    school: "Abjuração",
-    castingTime: "1 ação",
-    range: "Toque",
-    components: "V, S, M (um pedaço de couro curado)",
-    duration: "8 horas",
-    description: "Você toca uma criatura voluntária que não esteja vestindo armadura e uma energia mágica protetora a envolve até a magia acabar. A CA base do alvo se torna 13 + o modificador de Destreza dele. A magia termina se o alvo vestir armadura ou se você dissipar a magia com uma ação.",
-    classes: ["Mago", "Feiticeiro"]
-  },
-   {
-    name: "Detectar Magia (Detect Magic)",
-    level: 1,
-    school: "Adivinhação (ritual)",
-    castingTime: "1 ação",
-    range: "Pessoal",
-    components: "V, S",
-    duration: "Concentração, até 10 minutos",
-    description: "Pela duração, você sente a presença de magia a até 9 metros de você. Se você sentir magia dessa maneira, você pode usar sua ação para ver uma aura tênue em volta de qualquer criatura ou objeto visível na área que porte magia, e você aprende sua escola de magia, se houver. A magia pode penetrar a maioria das barreiras, mas é bloqueada por 1 pé de pedra, 1 polegada de metal comum, uma fina folha de chumbo, ou 3 pés de madeira ou terra.",
-    classes: ["Mago", "Bardo", "Clérigo", "Druida", "Paladino", "Patrulheiro", "Feiticeiro", "Bruxo"]
-  },
-  {
-    name: "Área Escorregadia (Grease)",
-    level: 1,
-    school: "Conjuração",
-    castingTime: "1 ação",
-    range: "18 metros",
-    components: "V, S, M (um pouco de pele de porco ou manteiga)",
-    duration: "1 minuto",
-    description: "Graxa escorregadia cobre o solo em um quadrado de 3 metros centrado em um ponto, dentro do alcance, tornando essa área em terreno difícil pela duração. Quando a graxa aparece, cada criatura parada em sua área deve ser bem-sucedida em um teste de resistência de Destreza ou cairá. Uma criatura que entrar na área ou terminar seu turno lá deve também ser bem-sucedida em um teste de resistência de Destreza ou cairá.",
-    classes: ["Mago"]
+    description: "A magia captura parte da energia que está vindo em sua direção, diminuindo seu efeito em você e armazenando-a para seu próximo ataque corpo-a-corpo. Você tem resistência ao tipo de dano desencadeador até o início do seu próximo turno. Além disso, a primeira vez que você atingir com um ataque corpo-a-corpo em seu próximo turno, o alvo sofre 1d6 de dano extra do tipo desencadeador.",
+    classes: ["Druida", "Patrulheiro", "Feiticeiro", "Mago", "Artífice"]
   },
   {
     name: "Alarme (Alarm)",
@@ -247,30 +432,63 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     range: "9 metros",
     components: "V, S, M (um pequeno sino e um pequeno fio de prata)",
     duration: "8 horas",
-    description: "Você coloca um alarme para intrusos desavisados. Escolha uma porta, uma janela, ou uma área dentro do alcance que não seja maior que um cubo de 6 metros. Até a magia acabar, um alarme alerta você sempre que uma criatura Miúda ou maior tocar ou entrar na área protegida. Quando você conjura a magia, você pode designar criaturas que não ativarão o alarme. Você também escolhe se o alarme é mental ou audível. Um alarme mental alerta você com um silvo em sua mente se você estiver a até 1,5 quilômetro da área protegida. Este silvo o acorda se você estiver dormindo. Um alarme audível produz o som de um sino de mão por 10 segundos dentro de 18 metros.",
-    classes: ["Mago", "Patrulheiro"]
+    description: "Você coloca um alarme para intrusos desavisados. Escolha uma porta, uma janela, ou uma área dentro do alcance que não seja maior que um cubo de 6 metros. Até a magia acabar, um alarme alerta você sempre que uma criatura Miúda ou maior tocar ou entrar na área protegida.",
+    classes: ["Mago", "Patrulheiro", "Artífice"]
   },
   {
-    name: "Curar Ferimentos (Cure Wounds)",
+    name: "Amizade Animal (Animal Friendship)",
     level: 1,
-    school: "Evocação",
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S, M (um punhado de comida)",
+    duration: "24 horas",
+    description: "Esta magia permite que você convença uma besta que você não é uma ameaça. Se a Inteligência da besta for 4 ou maior, a magia falha. Caso contrário, a besta deve ser bem-sucedida em um teste de resistência de Sabedoria ou ficará enfeitiçada por você pela duração.",
+    classes: ["Bardo", "Druida", "Patrulheiro"]
+  },
+  {
+    name: "Área Escorregadia (Grease)",
+    level: 1,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S, M (um pouco de pele de porco ou manteiga)",
+    duration: "1 minuto",
+    description: "Graxa escorregadia cobre o solo em um quadrado de 3 metros centrado em um ponto, dentro do alcance, tornando essa área em terreno difícil pela duração. Quando a graxa aparece, cada criatura parada em sua área deve ser bem-sucedida em um teste de resistência de Destreza ou cairá.",
+    classes: ["Mago", "Artífice"]
+  },
+  {
+    name: "Armadura Arcana (Mage Armor)",
+    level: 1,
+    school: "Abjuração",
     castingTime: "1 ação",
     range: "Toque",
-    components: "V, S",
-    duration: "Instantânea",
-    description: "Uma criatura que você tocar recupera um número de pontos de vida igual a 1d8 + seu modificador de habilidade de conjuração. Essa magia não produz efeito em mortos-vivos ou construtos.",
-    classes: ["Bardo", "Clérigo", "Druida", "Paladino", "Patrulheiro"]
+    components: "V, S, M (um pedaço de couro curado)",
+    duration: "8 horas",
+    description: "Você toca uma criatura voluntária que não esteja vestindo armadura e uma energia mágica protetora a envolve até a magia acabar. A CA base do alvo se torna 13 + o modificador de Destreza dele.",
+    classes: ["Mago", "Feiticeiro"]
   },
   {
-    name: "Palavra Curativa (Healing Word)",
+    name: "Armadura de Agathys (Armor of Agathys)",
+    level: 1,
+    school: "Abjuração",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S, M (um pouco de água de um copo)",
+    duration: "1 hora",
+    description: "Uma força mágica protetora envolve você, manifestando-se como um frio espectral que o cobre e o seu equipamento. Você ganha 5 pontos de vida temporários pela duração. Se uma criatura atingir você com um ataque corpo-a-corpo enquanto você tiver esses pontos de vida temporários, a criatura sofre 5 de dano de frio.",
+    classes: ["Bruxo"]
+  },
+  {
+    name: "Auxílio Divino (Divine Favor)",
     level: 1,
     school: "Evocação",
     castingTime: "1 ação bônus",
-    range: "18 metros",
-    components: "V",
-    duration: "Instantânea",
-    description: "Uma criatura de sua escolha que você possa ver dentro do alcance recupera pontos de vida iguais a 1d4 + seu modificador de habilidade de conjuração. Esta magia não tem efeito em mortos-vivos ou construtos.",
-    classes: ["Bardo", "Clérigo", "Druida"]
+    range: "Pessoal",
+    components: "V, S",
+    duration: "Concentração, até 1 minuto",
+    description: "Sua oração fortalece você com radiação divina. Até a magia acabar, seus ataques com arma causam 1d4 de dano radiante extra ao atingir.",
+    classes: ["Paladino"]
   },
   {
     name: "Bênção (Bless)",
@@ -284,28 +502,6 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Clérigo", "Paladino"]
   },
   {
-    name: "Comando (Command)",
-    level: 1,
-    school: "Encantamento",
-    castingTime: "1 ação",
-    range: "18 metros",
-    components: "V",
-    duration: "1 rodada",
-    description: "Você pronuncia uma palavra de comando para uma criatura que você possa ver dentro do alcance. O alvo deve ser bem sucedido num teste de resistência de Sabedoria ou seguirá o comando no próximo turno dele. A magia não produz efeito se o alvo for um morto-vivo, se ele não compreender seu idioma ou se seu comando for diretamente nocivo a ele. Exemplos de comando: Aproxime-se, Largue, Fuja, Deite-se, Pare.",
-    classes: ["Clérigo", "Paladino", "Bruxo"]
-  },
-  {
-    name: "Marca do Caçador (Hunter's Mark)",
-    level: 1,
-    school: "Adivinhação",
-    castingTime: "1 ação bônus",
-    range: "27 metros",
-    components: "V",
-    duration: "Concentração, até 1 hora",
-    description: "Você escolhe uma criatura que possa ver dentro do alcance e a marca misticamente como sua presa. Até a magia acabar, você causa 1d6 de dano extra ao alvo sempre que o atingir com um ataque com arma e você tem vantagem em qualquer teste de Sabedoria (Percepção) ou Sabedoria (Sobrevivência) feito para encontrá-lo. Se o alvo cair a 0 pontos de vida antes desta magia acabar, você pode usar uma ação bônus em um turno subsequente seu para marcar uma nova criatura.",
-    classes: ["Patrulheiro"]
-  },
-  {
     name: "Bom Fruto (Goodberry)",
     level: 1,
     school: "Transmutação",
@@ -313,30 +509,206 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     range: "Toque",
     components: "V, S, M (um raminho de visco)",
     duration: "Instantânea",
-    description: "Até dez bagas surgem em sua mão e são infundidas com magia pela duração. Uma criatura pode usar sua ação para comer uma baga. Comer uma baga restaura 1 ponto de vida, e a baga fornece sustento suficiente para um dia. As bagas perdem sua potência se não forem consumidas em 24 horas.",
+    description: "Até dez bagas surgem em sua mão e são infundidas com magia pela duração. Uma criatura pode usar sua ação para comer uma baga. Comer uma baga restaura 1 ponto de vida, e a baga fornece sustento suficiente para um dia.",
     classes: ["Druida", "Patrulheiro"]
   },
   {
-    name: "Amizade Animal (Animal Friendship)",
+    name: "Braços de Hadar (Arms of Hadar)",
+    level: 1,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "Pessoal (3 metros)",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Você invoca o poder de Hadar, o Faminto Sombrio. Tentáculos de energia escura irrompem de você. Cada criatura a até 3 metros de você deve fazer um teste de resistência de Força. Se falhar, sofre 2d6 de dano necrótico e não pode realizar reações até o próximo turno dela. Se passar, sofre metade do dano.",
+    classes: ["Bruxo"]
+  },
+  {
+    name: "Catapulta (Catapult)",
+    level: 1,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "45 metros",
+    components: "S",
+    duration: "Instantânea",
+    description: "Escolha um objeto pesando entre 0,5 e 2,5 kg dentro do alcance que não esteja sendo vestido ou carregado. O objeto voa em linha reta até 27 metros numa direção que você escolher antes de cair. Se o objeto atingir uma criatura, essa criatura deve passar num teste de DES ou sofrer 3d8 de dano de concussão.",
+    classes: ["Feiticeiro", "Mago", "Artífice"]
+  },
+  {
+    name: "Causar Medo (Cause Fear)",
+    level: 1,
+    school: "Necromancia",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V",
+    duration: "Concentração, até 1 minuto",
+    description: "Você desperta o senso de mortalidade em uma criatura que você possa ver dentro do alcance. Um construto ou morto-vivo é imune a este efeito. O alvo deve ser bem-sucedido em um teste de resistência de Sabedoria ou ficará amedrontado por você até a magia acabar.",
+    classes: ["Bruxo", "Mago"]
+  },
+  {
+    name: "Comando (Command)",
     level: 1,
     school: "Encantamento",
     castingTime: "1 ação",
-    range: "9 metros",
-    components: "V, S, M (um punhado de comida)",
-    duration: "24 horas",
-    description: "Esta magia permite que você convença uma besta que você não é uma ameaça. Escolha uma besta que você pode ver dentro do alcance. Ela deve ver e ouvir você. Se a Inteligência da besta for 4 ou maior, a magia falha. Caso contrário, a besta deve ser bem-sucedida em um teste de resistência de Sabedoria ou ficará enfeitiçada por você pela duração. Se você ou um de seus companheiros ferir o alvo, a magia termina.",
-    classes: ["Bardo", "Druida", "Patrulheiro"]
+    range: "18 metros",
+    components: "V",
+    duration: "1 rodada",
+    description: "Você pronuncia uma palavra de comando para uma criatura que você possa ver dentro do alcance. O alvo deve ser bem sucedido num teste de resistência de Sabedoria ou seguirá o comando no próximo turno dele. Exemplos de comando: Aproxime-se, Largue, Fuja, Deite-se, Pare.",
+    classes: ["Clérigo", "Paladino", "Bruxo"]
   },
   {
-    name: "Falar com Animais (Speak with Animals)",
+    name: "Compreender Idiomas (Comprehend Languages)",
+    level: 1,
+    school: "Adivinhação (ritual)",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S, M (uma pitada de fuligem e sal)",
+    duration: "1 hora",
+    description: "Pela duração, você entende o significado literal de qualquer idioma falado que você ouvir. Você também entende qualquer idioma escrito que vir, mas deve tocar a superfície em que as palavras estão escritas. Leva cerca de 1 minuto para ler uma página de texto.",
+    classes: ["Bardo", "Feiticeiro", "Bruxo", "Mago", "Artífice"]
+  },
+  {
+    name: "Constrição (Entangle)",
+    level: 1,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "27 metros",
+    components: "V, S",
+    duration: "Concentração, até 1 minuto",
+    description: "Ervas e vinhas surgem do solo em um quadrado de 6 metros a partir de um ponto no alcance. A área se torna terreno difícil. Criaturas na área devem passar num teste de Força ou ficarão impedidas. Uma criatura impedida pode usar sua ação para fazer um teste de Força e se libertar.",
+    classes: ["Druida"]
+  },
+  {
+    name: "Criar ou Destruir Água (Create or Destroy Water)",
+    level: 1,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S, M (uma gota de água ou um grão de areia)",
+    duration: "Instantânea",
+    description: "Você cria 40 litros de água em um recipiente aberto, ou cria chuva num cubo de 9 metros (apagando chamas). Alternativamente, destrói 40 litros de água ou neblina num cubo de 9 metros.",
+    classes: ["Clérigo", "Druida"]
+  },
+  {
+    name: "Curar Ferimentos (Cure Wounds)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Uma criatura que você tocar recupera um número de pontos de vida igual a 1d8 + seu modificador de habilidade de conjuração. Essa magia não produz efeito em mortos-vivos ou construtos.",
+    classes: ["Bardo", "Clérigo", "Druida", "Paladino", "Patrulheiro", "Artífice"]
+  },
+  {
+    name: "Destruição Calcinante (Searing Smite)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação bônus",
+    range: "Pessoal",
+    components: "V",
+    duration: "Concentração, até 1 minuto",
+    description: "A próxima vez que atingir uma criatura com ataque corpo-a-corpo, sua arma flameja com calor intenso. O ataque causa 1d6 de dano de fogo extra e o alvo pega fogo. No início de cada turno dele, ele faz um teste de CON ou sofre 1d6 de fogo. Se passar ou se alguém gastar ação para apagar, a magia acaba.",
+    classes: ["Paladino"]
+  },
+  {
+    name: "Destruição Colérica (Wrathful Smite)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação bônus",
+    range: "Pessoal",
+    components: "V",
+    duration: "Concentração, até 1 minuto",
+    description: "No próximo ataque corpo-a-corpo que acertar, causa 1d6 de dano psíquico extra. O alvo deve fazer um teste de Sabedoria ou ficará amedrontado por você. Como uma ação, a criatura pode fazer um teste de Sabedoria para encerrar o efeito.",
+    classes: ["Paladino"]
+  },
+  {
+    name: "Destruição Trovejante (Thunderous Smite)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação bônus",
+    range: "Pessoal",
+    components: "V",
+    duration: "Concentração, até 1 minuto",
+    description: "No próximo ataque corpo-a-corpo que acertar, a arma emite um estrondo. O ataque causa 2d6 de dano trovejante extra. Se o alvo for uma criatura, deve passar num teste de Força ou ser empurrado 3 metros e cair no chão.",
+    classes: ["Paladino"]
+  },
+  {
+    name: "Detectar o Bem e Mal (Detect Evil and Good)",
+    level: 1,
+    school: "Adivinhação",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "Concentração, até 10 minutos",
+    description: "Pela duração, você sabe se há aberrações, celestiais, elementais, fadas, demônios ou mortos-vivos a até 9 metros de você, bem como onde a criatura está localizada.",
+    classes: ["Clérigo", "Paladino"]
+  },
+  {
+    name: "Detectar Magia (Detect Magic)",
     level: 1,
     school: "Adivinhação (ritual)",
     castingTime: "1 ação",
     range: "Pessoal",
     components: "V, S",
-    duration: "10 minutos",
-    description: "Você adquire a habilidade de compreender e se comunicar verbalmente com bestas pela duração. O conhecimento e consciência de muitas bestas é limitado por sua inteligência, mas, no mínimo, bestas podem dar informações sobre locais próximos e monstros, incluindo qualquer coisa que eles possam perceber ou que tenham percebido no dia passado. A seu critério, você pode tentar persuadir uma besta a fazer um pequeno favor para você.",
-    classes: ["Bardo", "Druida", "Patrulheiro"]
+    duration: "Concentração, até 10 minutos",
+    description: "Pela duração, você sente a presença de magia a até 9 metros de você. Se você sentir magia dessa maneira, você pode usar sua ação para ver uma aura tênue em volta de qualquer criatura ou objeto visível na área que porte magia, e você aprende sua escola de magia, se houver.",
+    classes: ["Mago", "Bardo", "Clérigo", "Druida", "Paladino", "Patrulheiro", "Feiticeiro", "Bruxo", "Artífice"]
+  },
+  {
+    name: "Detectar Veneno e Doença (Detect Poison and Disease)",
+    level: 1,
+    school: "Adivinhação (ritual)",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S, M (uma folha de teixo)",
+    duration: "Concentração, até 10 minutos",
+    description: "Pela duração, você pode sentir a presença e localização de venenos, criaturas venenosas e doenças a até 9 metros de você. Você também identifica o tipo de veneno, criatura venenosa ou doença em cada caso.",
+    classes: ["Clérigo", "Druida", "Paladino", "Patrulheiro"]
+  },
+  {
+    name: "Disco Flutuante de Tenser (Tenser's Floating Disk)",
+    level: 1,
+    school: "Conjuração (ritual)",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S, M (uma gota de mercúrio)",
+    duration: "1 hora",
+    description: "Esta magia cria um plano circular, horizontal, de força, com 90 cm de diâmetro e 2,5 cm de espessura, que flutua a 90 cm do chão em um espaço desocupado de sua escolha que você possa ver dentro do alcance. O disco pode suportar até 250 quilos. Se mais peso for colocado nele, a magia termina, e tudo o que estiver sobre o disco cai no chão.",
+    classes: ["Mago"]
+  },
+  {
+    name: "Disfarçar-se (Disguise Self)",
+    level: 1,
+    school: "Ilusão",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "1 hora",
+    description: "Você faz com que você mesmo – incluindo suas roupas, armadura, armas e outros pertences no seu personagem – pareça diferente até a magia acabar ou até você usar sua ação para dispensá-la. Você pode parecer 30 cm mais baixo ou mais alto, e pode parecer magro, gordo ou entre os dois. Você não pode mudar seu tipo de corpo, então você deve adotar uma forma que tenha o mesmo arranjo básico de membros. Caso contrário, a extensão da ilusão cabe a você.",
+    classes: ["Bardo", "Feiticeiro", "Mago", "Artífice"]
+  },
+  {
+    name: "Duelo Compelido (Compelled Duel)",
+    level: 1,
+    school: "Encantamento",
+    castingTime: "1 ação bônus",
+    range: "9 metros",
+    components: "V",
+    duration: "Concentração, até 1 minuto",
+    description: "Você tenta compelir uma criatura para um duelo. Uma criatura que você possa ver dentro do alcance deve fazer um teste de resistência de Sabedoria. Em uma falha, a criatura é atraída por você, compelida por sua demanda divina. Pela duração, ela tem desvantagem nas jogadas de ataque contra criaturas que não sejam você, e deve fazer um teste de resistência de Sabedoria cada vez que tentar se mover para um espaço que esteja a mais de 9 metros de você; se ela falhar neste teste de resistência, seu deslocamento não a leva para longe.",
+    classes: ["Paladino"]
+  },
+  {
+    name: "Encontrar Familiar (Find Familiar)",
+    level: 1,
+    school: "Conjuração (ritual)",
+    castingTime: "1 hora",
+    range: "3 metros",
+    components: "V, S, M (carvão, incenso e ervas no valor de 10 po que devem ser queimados em um braseiro de latão)",
+    duration: "Instantânea",
+    description: "Você ganha os serviços de um familiar, um espírito que toma uma forma animal à sua escolha: morcego, gato, caranguejo, sapo (sapo ou rã), falcão, lagarto, polvo, coruja, cobra venenosa, peixe (piraña), rato, corvo, cavalo marinho, aranha ou doninha. O familiar age de forma independente de você, mas ele sempre obedece aos seus comandos. Em combate, ele rola sua própria iniciativa e age no seu próprio turno. Um familiar não pode atacar, mas pode realizar outras ações como normal.",
+    classes: ["Mago"]
   },
   {
     name: "Enfeitiçar Pessoa (Charm Person)",
@@ -346,8 +718,195 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     range: "9 metros",
     components: "V, S",
     duration: "1 hora",
-    description: "Você tenta enfeitiçar um humanoide que você possa ver dentro do alcance. Ele deve realizar um teste de resistência de Sabedoria, e recebe vantagem nesse teste se você ou seus companheiros estiverem lutando com ele. Se ele falhar no teste de resistência, ele fica enfeitiçado por você até a magia acabar ou até você ou seus companheiros fazerem qualquer coisa nociva para ele. A criatura enfeitiçada o considera um conhecido amigável. Quando a magia acabar, a criatura saberá que foi enfeitiçada por você.",
+    description: "Você tenta enfeitiçar um humanoide que você possa ver dentro do alcance. Ele deve realizar um teste de resistência de Sabedoria. Se ele falhar no teste de resistência, ele fica enfeitiçado por você até a magia acabar ou até você ou seus companheiros fazerem qualquer coisa nociva para ele.",
     classes: ["Bardo", "Druida", "Mago", "Feiticeiro", "Bruxo"]
+  },
+  {
+    name: "Escrita Ilusória (Illusory Script)",
+    level: 1,
+    school: "Ilusão (ritual)",
+    castingTime: "1 minuto",
+    range: "Toque",
+    components: "S, M (uma tinta à base de chumbo valendo pelo menos 10 po)",
+    duration: "10 dias",
+    description: "Você escreve em um pergaminho, papel ou outro material adequado e imbui-o com uma ilusão potente que dura pela duração. Para você e quaisquer criaturas que você designar quando conjurar a magia, a escrita parece normal, escrita em sua mão, e transmite qualquer significado que você pretendia quando escreveu. Para todos os outros, a escrita parece como se fosse uma escrita desconhecida ou mágica ininteligível.",
+    classes: ["Bardo", "Bruxo", "Mago"]
+  },
+  {
+    name: "Escudo Arcano (Shield)",
+    level: 1,
+    school: "Abjuração",
+    castingTime: "1 reação",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "1 rodada",
+    description: "Uma barreira de energia invisível aparece e protege você. Até o início do seu próximo turno, você recebe +5 de bônus na CA, incluindo contra o ataque que desencadeou a magia, e você não sofre dano de mísseis mágicos.",
+    classes: ["Mago", "Feiticeiro"]
+  },
+  {
+    name: "Escudo da Fé (Shield of Faith)",
+    level: 1,
+    school: "Abjuração",
+    castingTime: "1 ação bônus",
+    range: "18 metros",
+    components: "V, S, M (um pequeno pergaminho com um texto sagrado escrito nele)",
+    duration: "Concentração, até 10 minutos",
+    description: "Um campo cintilante aparece ao redor de uma criatura de sua escolha dentro do alcance, concedendo-lhe um bônus de +2 na CA pela duração.",
+    classes: ["Clérigo", "Paladino"]
+  },
+  {
+    name: "Faca de Gelo (Ice Knife)",
+    level: 1,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "S, M (uma gota de água ou pedaço de gelo)",
+    duration: "Instantânea",
+    description: "Você cria uma lasca de gelo e a arremessa em uma criatura dentro do alcance. Faça um ataque mágico à distância contra o alvo. Se atingir, o alvo sofre 1d10 de dano perfurante. Atinja ou não, a lasca explode. O alvo e cada criatura a até 1,5 metro dele devem passar num teste de resistência de Destreza ou sofrerão 2d6 de dano de frio.",
+    classes: ["Druida", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Falar com Animais (Speak with Animals)",
+    level: 1,
+    school: "Adivinhação (ritual)",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "10 minutos",
+    description: "Você adquire a habilidade de compreender e se comunicar verbalmente com bestas pela duração. O conhecimento e consciência de muitas bestas é limitado por sua inteligência, mas, no mínimo, bestas podem dar informações sobre locais próximos e monstros.",
+    classes: ["Bardo", "Druida", "Patrulheiro"]
+  },
+  {
+    name: "Fogo das Fadas (Faerie Fire)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V",
+    duration: "Concentração, até 1 minuto",
+    description: "Cada objeto em um cubo de 6 metros dentro do alcance fica delineado em luz azul, verde ou violeta (sua escolha). Qualquer criatura na área quando a magia é conjurada também é delineada se falhar em um teste de resistência de Destreza. Pela duração, objetos e criaturas afetados emitem penumbra em um raio de 3 metros. Qualquer jogada de ataque contra uma criatura ou objeto afetado tem vantagem se o atacante puder vê-lo, e a criatura ou objeto afetado não pode se beneficiar de invisibilidade.",
+    classes: ["Bardo", "Druida", "Artífice"]
+  },
+  {
+    name: "Golpe Constritor (Ensnaring Strike)",
+    level: 1,
+    school: "Conjuração",
+    castingTime: "1 ação bônus",
+    range: "Pessoal",
+    components: "V",
+    duration: "Concentração, até 1 minuto",
+    description: "A próxima vez que você atingir uma criatura com um ataque com arma antes que a magia termine, uma massa contorcida de vinhas espinhosas aparece no ponto do impacto, e o alvo deve ser bem-sucedido em um teste de resistência de Força ou ficará impedido pelas vinhas mágicas até a magia acabar. Uma criatura Grande ou maior tem vantagem neste teste de resistência. Se a criatura for bem-sucedida no teste, as vinhas murcham e somem.",
+    classes: ["Patrulheiro"]
+  },
+  {
+    name: "Golpe Zéfiro (Zephyr Strike)",
+    level: 1,
+    school: "Transmutação",
+    castingTime: "1 ação bônus",
+    range: "Pessoal",
+    components: "V",
+    duration: "Concentração, até 1 minuto",
+    description: "Você se move como o vento. Até a magia acabar, seu movimento não provoca ataques de oportunidade. Uma vez antes da magia acabar, você pode se dar vantagem em um ataque com arma em seu turno. Esse ataque causa 1d8 de dano de força extra se acertar. Se você acertar ou errar, seu deslocamento aumenta em 9 metros até o final daquele turno.",
+    classes: ["Patrulheiro"]
+  },
+  {
+    name: "Heroísmo (Heroism)",
+    level: 1,
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S",
+    duration: "Concentração, até 1 minuto",
+    description: "Uma criatura voluntária que você toca é imune a ser amedrontada e ganha pontos de vida temporários iguais ao seu modificador de habilidade de conjuração no início de cada turno dela.",
+    classes: ["Bardo", "Paladino"]
+  },
+  {
+    name: "Identificação (Identify)",
+    level: 1,
+    school: "Adivinhação (ritual)",
+    castingTime: "1 minuto",
+    range: "Toque",
+    components: "V, S, M (uma pérola no valor de 100 po e uma pena de coruja)",
+    duration: "Instantânea",
+    description: "Você escolhe um objeto que deve tocar durante a conjuração. Se for um item mágico ou algum outro objeto imbuído por magia, você descobre suas propriedades e como usá-las, se ele requer sintonização para ser usado e quantas cargas ele tem, se houver.",
+    classes: ["Bardo", "Mago", "Artífice"]
+  },
+  {
+    name: "Imagem Silenciosa (Silent Image)",
+    level: 1,
+    school: "Ilusão",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S, M (um pouco de lã)",
+    duration: "Concentração, até 10 minutos",
+    description: "Você cria a imagem de um objeto, uma criatura ou algum outro fenômeno visível que não seja maior que um cubo de 4,5 metros. A imagem parece completamente real, incluindo sons, cheiros e temperatura apropriados para a coisa retratada. Você pode usar sua ação para fazer a imagem se mover para qualquer outro ponto dentro do alcance. Interação física com a imagem revela que ela é uma ilusão, porque as coisas podem passar através dela.",
+    classes: ["Bardo", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Infligir Ferimentos (Inflict Wounds)",
+    level: 1,
+    school: "Necromancia",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Faça um ataque corpo-a-corpo com magia contra uma criatura ao seu alcance. Se acertar, o alvo sofre 3d10 de dano necrótico.",
+    classes: ["Clérigo"]
+  },
+  {
+    name: "Leque Cromático (Color Spray)",
+    level: 1,
+    school: "Ilusão",
+    castingTime: "1 ação",
+    range: "Pessoal (cone de 4,5 metros)",
+    components: "V, S, M (um punhado de pó ou areia colorida)",
+    duration: "1 rodada",
+    description: "Um leque deslumbrante de cores brilhantes surge de sua mão. Jogue 6d10; o total é a quantidade de pontos de vida de criaturas que essa magia pode afetar. Criaturas em um cone de 4,5 metros originado de você são afetadas em ordem ascendente de seus pontos de vida atuais (ignorando criaturas inconscientes e criaturas que não podem ver).",
+    classes: ["Feiticeiro", "Mago"]
+  },
+  {
+    name: "Maldição (Hex)",
+    level: 1,
+    school: "Encantamento",
+    castingTime: "1 ação bônus",
+    range: "27 metros",
+    components: "V, S, M (a pétala de um olho de um newt)",
+    duration: "Concentração, até 1 hora",
+    description: "Você coloca uma maldição em uma criatura que você pode ver dentro do alcance. Até a magia acabar, você causa um extra 1d6 de dano necrótico ao alvo sempre que o atinge com um ataque. Além disso, escolha uma habilidade quando você conjura a magia. O alvo tem desvantagem em testes de habilidade feitos com a habilidade escolhida.",
+    classes: ["Bruxo"]
+  },
+  {
+    name: "Mãos Flamejantes (Burning Hands)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Pessoal (cone de 4,5 metros)",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Conforme você segura suas mãos com os polegares tocando e os dedos abertos, uma fina folha de chamas sai da ponta de seus dedos estendidos. Cada criatura em um cone de 4,5 metros deve fazer um teste de resistência de Destreza. Uma criatura sofre 3d6 de dano de fogo em uma falha, ou metade do dano em um sucesso.",
+    classes: ["Feiticeiro", "Mago"]
+  },
+  {
+    name: "Marca do Caçador (Hunter's Mark)",
+    level: 1,
+    school: "Adivinhação",
+    castingTime: "1 ação bônus",
+    range: "27 metros",
+    components: "V",
+    duration: "Concentração, até 1 hora",
+    description: "Você escolhe uma criatura que possa ver dentro do alcance e a marca misticamente como sua presa. Até a magia acabar, você causa 1d6 de dano extra ao alvo sempre que o atingir com um ataque com arma e você tem vantagem em qualquer teste de Sabedoria (Percepção) ou Sabedoria (Sobrevivência) feito para encontrá-lo.",
+    classes: ["Patrulheiro"]
+  },
+  {
+    name: "Mísseis Mágicos (Magic Missile)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Você cria três dardos brilhantes de energia mística. Cada dardo atinge uma criatura, à sua escolha, que você possa ver, dentro do alcance. Um dardo causa 1d4 + 1 de dano de energia ao alvo. Os dardos atingem simultaneamente e não podem ser evitados.",
+    classes: ["Mago", "Feiticeiro"]
   },
   {
     name: "Névoa Obscurecente (Fog Cloud)",
@@ -357,19 +916,96 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     range: "36 metros",
     components: "V, S",
     duration: "Concentração, até 1 hora",
-    description: "Você cria uma esfera de névoa de 6 metros de raio centrada em um ponto dentro do alcance. A esfera se espalha por cantos, e sua área é fortemente obscurecida. Ela dura pela duração ou até um vento de velocidade moderada ou maior (pelo menos 16 quilômetros por hora) a dispersar.",
+    description: "Você cria uma esfera de névoa de 6 metros de raio centrada em um ponto dentro do alcance. A esfera se espalha por cantos, e sua área é fortemente obscurecida.",
     classes: ["Mago", "Feiticeiro", "Druida", "Patrulheiro"]
   },
   {
-    name: "Salto (Jump)",
+    name: "Onda Trovejante (Thunderwave)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Pessoal (cubo de 4,5 metros)",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Uma onda de força trovejante varre a partir de você. Cada criatura em um cubo de 4,5 metros originado de você deve fazer um teste de resistência de Constituição. Em uma falha, uma criatura sofre 2d8 de dano de trovão e é empurrada 3 metros para longe de você.",
+    classes: ["Mago", "Bardo", "Feiticeiro", "Druida"]
+  },
+  {
+    name: "Orbe Cromático (Chromatic Orb)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "27 metros",
+    components: "V, S, M (um diamante valendo pelo menos 50 po)",
+    duration: "Instantânea",
+    description: "Você arremessa uma esfera de energia de 10 cm de diâmetro em uma criatura que você possa ver dentro do alcance. Você escolhe ácido, frio, fogo, relâmpago, veneno ou trovão para o tipo de orbe que você cria, e então faz um ataque à distância com magia contra o alvo. Se o ataque acertar, a criatura sofre 3d8 de dano do tipo escolhido.",
+    classes: ["Feiticeiro", "Mago"]
+  },
+  {
+    name: "Palavra Curativa (Healing Word)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação bônus",
+    range: "18 metros",
+    components: "V",
+    duration: "Instantânea",
+    description: "Uma criatura de sua escolha que você possa ver dentro do alcance recupera pontos de vida iguais a 1d4 + seu modificador de habilidade de conjuração. Esta magia não tem efeito em mortos-vivos ou construtos.",
+    classes: ["Bardo", "Clérigo", "Druida"]
+  },
+  {
+    name: "Passos Longos (Longstrider)",
     level: 1,
     school: "Transmutação",
     castingTime: "1 ação",
     range: "Toque",
-    components: "V, S, M (uma perna de gafanhoto)",
+    components: "V, S, M (um punhado de terra)",
+    duration: "1 hora",
+    description: "Você toca uma criatura. O deslocamento do alvo aumenta em 3 metros até a magia acabar.",
+    classes: ["Bardo", "Druida", "Patrulheiro", "Mago"]
+  },
+  {
+    name: "Perdição (Bane)",
+    level: 1,
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S, M (uma gota de sangue)",
+    duration: "Concentração, até 1 minuto",
+    description: "Até três criaturas à sua escolha que você possa ver dentro do alcance devem fazer testes de resistência de Carisma. Sempre que um alvo que falhou neste teste fizer uma jogada de ataque ou teste de resistência antes da magia terminar, o alvo deve rolar um d4 e subtrair o valor rolado do resultado.",
+    classes: ["Bardo", "Clérigo"]
+  },
+  {
+    name: "Proteção contra o Bem e Mal (Protection from Evil and Good)",
+    level: 1,
+    school: "Abjuração",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S, M (água benta ou pó de prata e ferro)",
+    duration: "Concentração, até 10 minutos",
+    description: "Até a magia acabar, uma criatura voluntária que você tocar é protegida contra certos tipos de criaturas: aberrações, celestiais, elementais, fadas, demônios e mortos-vivos. A proteção concede vários benefícios. Criaturas desses tipos têm desvantagem nas jogadas de ataque contra o alvo. O alvo também não pode ser enfeitiçado, amedrontado ou possuído por elas.",
+    classes: ["Clérigo", "Paladino", "Bruxo", "Mago"]
+  },
+  {
+    name: "Purificar Comida e Bebida (Purify Food and Drink)",
+    level: 1,
+    school: "Transmutação (ritual)",
+    castingTime: "1 ação",
+    range: "3 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Toda comida e bebida não mágica dentro de um raio de 1,5 metro centrado em um ponto à sua escolha dentro do alcance é purificada e livre de veneno e doenças.",
+    classes: ["Clérigo", "Druida", "Paladino", "Artífice"]
+  },
+  {
+    name: "Queda Suave (Feather Fall)",
+    level: 1,
+    school: "Transmutação",
+    castingTime: "1 reação",
+    range: "18 metros",
+    components: "V, M (uma pena pequena ou pluma)",
     duration: "1 minuto",
-    description: "Você toca uma criatura. A distância de salto da criatura é triplicada até a magia acabar.",
-    classes: ["Mago", "Feiticeiro", "Druida", "Patrulheiro"]
+    description: "Escolha até cinco criaturas caindo dentro do alcance. A taxa de descida de uma criatura caindo diminui para 18 metros por rodada até a magia acabar. Se a criatura aterrissar antes da magia acabar, ela não sofre dano de queda e pode aterrissar em pé, e a magia termina para aquela criatura.",
+    classes: ["Bardo", "Feiticeiro", "Mago", "Artífice"]
   },
   {
     name: "Raio Adoecente (Ray of Sickness)",
@@ -383,51 +1019,315 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Mago", "Feiticeiro"]
   },
   {
-    name: "Onda Trovejante (Thunderwave)",
+    name: "Raio de Bruxa (Witch Bolt)",
     level: 1,
     school: "Evocação",
     castingTime: "1 ação",
-    range: "Pessoal (cubo de 4,5 metros)",
+    range: "9 metros",
+    components: "V, S, M (um galho de árvore que foi atingido por um raio)",
+    duration: "Concentração, até 1 minuto",
+    description: "Faça um ataque à distância com magia. Se acertar, causa 1d12 de dano elétrico e cria um arco de energia. Em cada um dos seus turnos, você pode usar sua ação para causar 1d12 de dano elétrico automaticamente. O efeito termina se você usar sua ação para fazer outra coisa, se o alvo sair do alcance ou se tiver cobertura total.",
+    classes: ["Bruxo", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Raio do Caos (Chaos Bolt)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "36 metros",
     components: "V, S",
     duration: "Instantânea",
-    description: "Uma onda de força trovejante varre a partir de você. Cada criatura em um cubo de 4,5 metros originado de você deve fazer um teste de resistência de Constituição. Em uma falha, uma criatura sofre 2d8 de dano de trovão e é empurrada 3 metros para longe de você. Em um sucesso, a criatura sofre metade do dano e não é empurrada. Além disso, objetos desprotegidos que estão totalmente dentro da área de efeito são automaticamente empurrados 3 metros para longe de você pela magia, e a magia emite um estrondo trovejante audível a até 90 metros.",
-    classes: ["Mago", "Bardo", "Feiticeiro", "Druida"]
+    description: "Você arremessa uma massa ondulante de energia caótica em uma criatura ao alcance. Faça um ataque mágico à distância. Se acertar, o alvo sofre 2d8 + 1d6 de dano. Escolha um dos d8s. O número rolado nesse dado determina o tipo de ataque (1: Ácido, 2: Frio, 3: Fogo, 4: Energia, 5: Elétrico, 6: Veneno, 7: Psíquico, 8: Trovão). Se você rolar o mesmo número nos dois d8s, a energia caótica salta para outro alvo a até 9m.",
+    classes: ["Feiticeiro"]
+  },
+  {
+    name: "Raio Guiador (Guiding Bolt)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S",
+    duration: "1 rodada",
+    description: "Um flash de luz se dirige a uma criatura. Faça um ataque à distância com magia. Se acertar, causa 4d6 de dano radiante e a próxima jogada de ataque contra este alvo até o final do seu próximo turno tem vantagem.",
+    classes: ["Clérigo"]
+  },
+  {
+    name: "Recuo Acelerado (Expeditious Retreat)",
+    level: 1,
+    school: "Transmutação",
+    castingTime: "1 ação bônus",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "Concentração, até 10 minutos",
+    description: "Esta magia permite que você se mova em um ritmo incrível. Quando você conjura esta magia, e então como uma ação bônus em cada um dos seus turnos até a magia acabar, você pode realizar a ação de Disparada.",
+    classes: ["Feiticeiro", "Bruxo", "Mago", "Artífice"]
   },
   {
     name: "Repreensão Infernal (Hellish Rebuke)",
     level: 1,
     school: "Evocação",
-    castingTime: "1 reação, que você usa em resposta a sofrer dano de uma criatura dentro de 18 metros de você que você possa ver",
+    castingTime: "1 reação",
     range: "18 metros",
     components: "V, S",
     duration: "Instantânea",
     description: "Você aponta seu dedo, e a criatura que o feriu é momentaneamente cercada por chamas infernais. A criatura deve fazer um teste de resistência de Destreza. Ela sofre 2d10 de dano de fogo em uma falha, ou metade do dano em um sucesso.",
-    classes: ["Bruxo", "Tiefling"] // Tiefling racial
+    classes: ["Bruxo", "Tiefling"]
   },
   {
-    name: "Maldição (Hex)",
+    name: "Riso Histérico de Tasha (Tasha's Hideous Laughter)",
     level: 1,
     school: "Encantamento",
-    castingTime: "1 ação bônus",
-    range: "27 metros",
-    components: "V, S, M (a pétala de um olho de um newt)",
-    duration: "Concentração, até 1 hora",
-    description: "Você coloca uma maldição em uma criatura que você pode ver dentro do alcance. Até a magia acabar, você causa um extra 1d6 de dano necrótico ao alvo sempre que o atinge com um ataque. Além disso, escolha uma habilidade quando você conjura a magia. O alvo tem desvantagem em testes de habilidade feitos com a habilidade escolhida. Se o alvo cair a 0 pontos de vida antes desta magia acabar, você pode usar uma ação bônus em um turno subsequente seu para amaldiçoar uma nova criatura. Uma magia remover maldição conjurada no alvo termina esta magia precocemente.",
-    classes: ["Bruxo"]
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S, M (torta pequena e uma pena)",
+    duration: "Concentração, até 1 minuto",
+    description: "Uma criatura de sua escolha que você possa ver dentro do alcance percebe tudo como hilariantemente engraçado e cai na gargalhada se esta magia a afetar. O alvo deve ser bem-sucedido num teste de resistência de Sabedoria ou cairá no chão incapacitado e incapaz de se levantar pela duração.",
+    classes: ["Bardo", "Mago"]
   },
   {
-    name: "Escudo da Fé (Shield of Faith)",
+    name: "Salto (Jump)",
+    level: 1,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S, M (uma perna de gafanhoto)",
+    duration: "1 minuto",
+    description: "Você toca uma criatura. A distância de salto da criatura é triplicada até a magia acabar.",
+    classes: ["Mago", "Feiticeiro", "Druida", "Patrulheiro", "Artífice"]
+  },
+  {
+    name: "Santuário (Sanctuary)",
     level: 1,
     school: "Abjuração",
     castingTime: "1 ação bônus",
+    range: "9 metros",
+    components: "V, S, M (um pequeno espelho de prata)",
+    duration: "1 minuto",
+    description: "Você protege uma criatura dentro do alcance contra ataques. Até a magia acabar, qualquer criatura que mirar a criatura protegida com um ataque ou magia prejudicial deve primeiro fazer um teste de resistência de Sabedoria. Em uma falha, a criatura deve escolher um novo alvo ou perder o ataque ou magia.",
+    classes: ["Clérigo", "Artífice"]
+  },
+  {
+    name: "Saraivada de Espinhos (Hail of Thorns)",
+    level: 1,
+    school: "Conjuração",
+    castingTime: "1 ação bônus",
+    range: "Pessoal",
+    components: "V",
+    duration: "Concentração, até 1 minuto",
+    description: "A próxima vez que você atingir uma criatura com um ataque de arma à distância antes que a magia termine, o feitiço cria uma chuva de espinhos que brotam da sua arma ou munição à distância. Além do efeito normal do ataque, o alvo do ataque e cada criatura a até 1,5 metro dele devem fazer um teste de resistência de Destreza. Uma criatura sofre 1d10 de dano perfurante em uma falha na resistência, ou metade do dano em um sucesso.",
+    classes: ["Patrulheiro"]
+  },
+  {
+    name: "Servo Invisível (Unseen Servant)",
+    level: 1,
+    school: "Conjuração (ritual)",
+    castingTime: "1 ação",
     range: "18 metros",
-    components: "V, S, M (um pequeno pergaminho com um texto sagrado escrito nele)",
-    duration: "Concentração, até 10 minutos",
-    description: "Um campo cintilante aparece ao redor de uma criatura de sua escolha dentro do alcance, concedendo-lhe um bônus de +2 na CA pela duração.",
-    classes: ["Clérigo", "Paladino"]
+    components: "V, S, M (um pedaço de corda e um de madeira)",
+    duration: "1 hora",
+    description: "Esta magia cria uma força invisível, sem mente e sem forma que realiza tarefas simples ao seu comando. O servo tem CA 10, 1 PV, Força 2 e não pode atacar.",
+    classes: ["Bardo", "Bruxo", "Mago"]
+  },
+  {
+    name: "Sono (Sleep)",
+    level: 1,
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "27 metros",
+    components: "V, S, M (uma pitada de areia fina, pétalas de rosas ou um grilo)",
+    duration: "1 minuto",
+    description: "Essa magia põem as criaturas num entorpecimento mágico. Jogue 5d8; o total é a quantidade de pontos de vida de criaturas afetados pela magia. As criaturas dentro de 6 metros de um ponto que você escolher dentro do alcance são afetadas em ordem ascendente de seus pontos de vida atuais.",
+    classes: ["Mago", "Bardo", "Feiticeiro"]
+  },
+  {
+    name: "Sussurros Dissonantes (Dissonant Whispers)",
+    level: 1,
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V",
+    duration: "Instantânea",
+    description: "Você sussurra uma melodia discordante que só uma criatura à sua escolha dentro do alcance pode ouvir, atormentando-a com uma dor terrível. O alvo deve fazer um teste de resistência de Sabedoria. Se falhar, sofre 3d6 de dano psíquico e deve usar sua reação imediatamente, se disponível, para se mover o mais longe possível de você. Em um sucesso, sofre metade do dano e não precisa se mover.",
+    classes: ["Bardo"]
+  },
+  {
+    name: "Tremor de Terra (Earth Tremor)",
+    level: 1,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "3 metros (Raio)",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Você causa um tremor no solo num raio de 3 metros. Cada criatura além de você nessa área deve fazer um teste de resistência de Destreza. Se falhar, sofre 1d6 de dano de concussão e cai no chão. Se o solo na área for terra ou pedra solta, torna-se terreno difícil.",
+    classes: ["Bardo", "Druida", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Vitalia Falsa (False Life)",
+    level: 1,
+    school: "Necromancia",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S, M (uma pequena quantidade de álcool ou espíritos destilados)",
+    duration: "1 hora",
+    description: "Reforçando-se com uma simulação necromântica de vida, você ganha 1d4 + 4 pontos de vida temporários pela duração.",
+    classes: ["Mago", "Feiticeiro", "Artífice"]
   },
 
-  // 2nd Level Spells (NEW)
+  // --- NÍVEL 2 ---
+  {
+    name: "Arma Espiritual (Spiritual Weapon)",
+    level: 2,
+    school: "Evocação",
+    castingTime: "1 ação bônus",
+    range: "18 metros",
+    components: "V, S",
+    duration: "1 minuto",
+    description: "Você cria uma arma espectral flutuante dentro do alcance que dura pela duração ou até você conjurá-la novamente. Quando você conjura a magia, você pode fazer um ataque corpo-a-corpo com magia contra uma criatura a até 1,5 metro da arma. Se atingir, o alvo sofre dano de força igual a 1d8 + seu modificador de habilidade de conjuração. Como uma ação bônus no seu turno, você pode mover a arma até 6 metros e repetir o ataque.",
+    classes: ["Clérigo"]
+  },
+  {
+    name: "Arrombar (Knock)",
+    level: 2,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V",
+    duration: "Instantânea",
+    description: "Escolha um objeto que você possa ver dentro do alcance. O objeto pode ser uma porta, uma caixa, um baú, um par de algemas, um cadeado ou outro objeto que contenha um meio mundano ou mágico que o impeça de ser aberto. O alvo é destrancado, destravado ou solto.",
+    classes: ["Bardo", "Mago", "Feiticeiro"]
+  },
+  {
+    name: "Aumentar/Reduzir (Enlarge/Reduce)",
+    level: 2,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S, M (pó de ferro)",
+    duration: "Concentração, até 1 minuto",
+    description: "Você faz com que uma criatura ou objeto que você possa ver dentro do alcance fique maior ou menor pela duração. O alvo deve fazer um teste de resistência de Constituição se não quiser ser afetado.",
+    classes: ["Feiticeiro", "Mago", "Artífice"]
+  },
+  {
+    name: "Cegueira/Surdez (Blindness/Deafness)",
+    level: 2,
+    school: "Necromancia",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V",
+    duration: "1 minuto",
+    description: "Você pode cegar ou ensurdecer um oponente. Escolha uma criatura que você possa ver dentro do alcance para fazer um teste de resistência de Constituição. Se ela falhar, fica ou cega ou surda (à sua escolha) pela duração.",
+    classes: ["Bardo", "Clérigo", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Detectar Pensamentos (Detect Thoughts)",
+    level: 2,
+    school: "Adivinhação",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S, M (uma peça de cobre)",
+    duration: "Concentração, até 1 minuto",
+    description: "Pela duração, você pode ler os pensamentos de certas criaturas. Quando você conjura a magia e como sua ação em cada turno até a magia acabar, você pode focar sua mente em qualquer criatura que você possa ver a até 9 metros de você.",
+    classes: ["Bardo", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Escuridão (Darkness)",
+    level: 2,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, M (pêlo de morcego e um pouco de piche ou carvão)",
+    duration: "Concentração, até 10 minutos",
+    description: "Escuridão mágica se espalha a partir de um ponto que você escolher dentro do alcance para preencher uma esfera de 4,5 metros de raio pela duração. A escuridão se espalha ao redor de cantos. Uma criatura com visão no escuro não pode ver através dessa escuridão, e luz não mágica não pode iluminá-la.",
+    classes: ["Bruxo", "Feiticeiro", "Mago", "Monge (Caminho das Sombras)"]
+  },
+  {
+    name: "Espinho Mental (Mind Spike)",
+    level: 2,
+    school: "Adivinhação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "S",
+    duration: "Concentração, até 1 hora",
+    description: "Você atinge a mente de uma criatura que possa ver dentro do alcance. O alvo deve fazer um teste de resistência de Sabedoria. Se falhar, sofre 3d8 de dano psíquico e, enquanto você mantiver concentração, você sempre sabe a localização exata do alvo enquanto os dois estiverem no mesmo plano de existência.",
+    classes: ["Feiticeiro", "Bruxo", "Mago"]
+  },
+  {
+    name: "Espírito Curativo (Healing Spirit)",
+    level: 2,
+    school: "Conjuração",
+    castingTime: "1 ação bônus",
+    range: "18 metros",
+    components: "V, S",
+    duration: "Concentração, até 1 minuto",
+    description: "Você invoca um espírito da natureza para curar ferimentos. O espírito aparece em um espaço que você possa ver dentro do alcance. Até a magia acabar, sempre que você ou uma criatura que você possa ver se mover para o espaço do espírito pela primeira vez em um turno ou começar seu turno lá, você pode fazer com que o espírito restaure 1d6 pontos de vida para aquela criatura (limite de usos igual a 1 + mod atributo conjuração).",
+    classes: ["Druida", "Patrulheiro"]
+  },
+  {
+    name: "Estilhaçar (Shatter)",
+    level: 2,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S, M (um pedaço de mica)",
+    duration: "Instantânea",
+    description: "Um som alto e agudo, dolorosamente intenso, surge em um ponto à sua escolha dentro do alcance. Cada criatura em uma esfera de 3 metros de raio centrada no ponto deve fazer um teste de resistência de Constituição. Uma criatura sofre 3d8 de dano trovejante em uma falha.",
+    classes: ["Bardo", "Mago", "Feiticeiro", "Bruxo", "Artífice"]
+  },
+  {
+    name: "Imagem Espelhada (Mirror Image)",
+    level: 2,
+    school: "Ilusão",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "1 minuto",
+    description: "Três duplicatas ilusórias de você aparecem em seu espaço. Até a magia acabar, as duplicatas se movem com você e imitam suas ações, trocando de posição de modo que seja impossível rastrear qual imagem é a real. Cada vez que uma criatura mira você com um ataque, role um d20 para ver se ela atinge uma das duplicatas.",
+    classes: ["Mago", "Feiticeiro", "Bruxo"]
+  },
+  {
+    name: "Imobilizar Pessoa (Hold Person)",
+    level: 2,
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S, M (uma peça pequena, reta de ferro)",
+    duration: "Concentração, até 1 minuto",
+    description: "Escolha um humanoide que você possa ver dentro do alcance. O alvo deve ser bem-sucedido em um teste de resistência de Sabedoria ou ficará paralisado pela duração.",
+    classes: ["Bardo", "Clérigo", "Druida", "Mago", "Feiticeiro", "Bruxo"]
+  },
+  {
+    name: "Invisibilidade (Invisibility)",
+    level: 2,
+    school: "Ilusão",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S, M (um cílio envolto em goma arábica)",
+    duration: "Concentração, até 1 hora",
+    description: "Uma criatura que você tocar se torna invisível até a magia terminar. Qualquer coisa que o alvo esteja vestindo ou carregando é invisível enquanto estiver na posse do alvo.",
+    classes: ["Bardo", "Mago", "Feiticeiro", "Bruxo", "Artífice"]
+  },
+  {
+    name: "Lâmina Sombria (Shadow Blade)",
+    level: 2,
+    school: "Ilusão",
+    castingTime: "1 ação bônus",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "Concentração, até 1 minuto",
+    description: "Você tece fios de sombra para criar uma espada de escuridão solidificada em sua mão. Ela conta como uma arma corpo-a-corpo simples com a qual você é proficiente. Causa 2d8 de dano psíquico ao atingir e tem as propriedades acuidade, leve e arremesso (alcance 6/18m). Você tem vantagem no ataque se estiver em penumbra ou escuridão.",
+    classes: ["Feiticeiro", "Bruxo", "Mago"]
+  },
+  {
+    name: "Levitação (Levitate)",
+    level: 2,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S, M (uma pequena laço de couro ou um pedaço de fio de ouro curvado como um gancho)",
+    duration: "Concentração, até 10 minutos",
+    description: "Uma criatura ou objeto solto de sua escolha que você possa ver dentro do alcance sobe verticalmente até 6 metros e permanece suspenso ali pela duração. A magia pode levitar um alvo que pese até 250 quilos.",
+    classes: ["Mago", "Feiticeiro", "Artífice"]
+  },
   {
     name: "Passo Nebuloso (Misty Step)",
     level: 2,
@@ -440,26 +1340,26 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Mago", "Feiticeiro", "Bruxo", "Druida (Círculo da Terra - Costa)"]
   },
   {
-    name: "Imobilizar Pessoa (Hold Person)",
+    name: "Passos sem Pegadas (Pass without Trace)",
     level: 2,
-    school: "Encantamento",
+    school: "Abjuração",
     castingTime: "1 ação",
-    range: "18 metros",
-    components: "V, S, M (uma peça pequena, reta de ferro)",
-    duration: "Concentração, até 1 minuto",
-    description: "Escolha um humanoide que você possa ver dentro do alcance. O alvo deve ser bem-sucedido em um teste de resistência de Sabedoria ou ficará paralisado pela duração. No final de cada um de seus turnos, o alvo pode fazer outro teste de resistência de Sabedoria. Em um sucesso, a magia termina.",
-    classes: ["Bardo", "Clérigo", "Druida", "Mago", "Feiticeiro", "Bruxo"]
+    range: "Pessoal",
+    components: "V, S, M (cinzas de uma folha de visco queimada e um raminho de abeto)",
+    duration: "Concentração, até 1 hora",
+    description: "Um véu de sombras e silêncio irradia de você, ocultando você e seus companheiros de detecção. Pela duração, cada criatura que você escolher a até 9 metros de você (incluindo você) tem um bônus de +10 em testes de Destreza (Furtividade) e não pode ser rastreada exceto por meios mágicos. Uma criatura que receba esse bônus não deixa pegadas ou outros vestígios de sua passagem.",
+    classes: ["Druida", "Patrulheiro"]
   },
   {
-    name: "Invisibilidade (Invisibility)",
+    name: "Queimadura de Aganazzar (Aganazzar's Scorcher)",
     level: 2,
-    school: "Ilusão",
+    school: "Evocação",
     castingTime: "1 ação",
-    range: "Toque",
-    components: "V, S, M (um cílio envolto em goma arábica)",
-    duration: "Concentração, até 1 hora",
-    description: "Uma criatura que você tocar se torna invisível até a magia terminar. Qualquer coisa que o alvo esteja vestindo ou carregando é invisível enquanto estiver na posse do alvo. A magia termina para um alvo se ele atacar ou conjurar uma magia.",
-    classes: ["Bardo", "Mago", "Feiticeiro", "Bruxo"]
+    range: "9 metros",
+    components: "V, S, M (uma escama de dragão vermelho)",
+    duration: "Instantânea",
+    description: "Uma linha de chamas rugindo com 9 metros de comprimento e 1,5 metro de largura emana de você em uma direção que você escolher. Cada criatura na linha deve fazer um teste de resistência de Destreza. Uma criatura sofre 3d8 de dano de fogo em uma falha no teste, ou metade do dano em um sucesso.",
+    classes: ["Feiticeiro", "Mago"]
   },
   {
     name: "Raio Ardente (Scorching Ray)",
@@ -469,33 +1369,88 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     range: "36 metros",
     components: "V, S",
     duration: "Instantânea",
-    description: "Você cria três raios de fogo e os arremessa em alvos dentro do alcance. Você pode arremessá-los em um alvo ou em vários. Faça um ataque à distância com magia para cada raio. Se atingir, o alvo sofre 2d6 de dano de fogo.",
+    description: "Você cria três raios de fogo e os arremessa em alvos dentro do alcance. Faça um ataque à distância com magia para cada raio. Se atingir, o alvo sofre 2d6 de dano de fogo.",
     classes: ["Mago", "Feiticeiro"]
   },
   {
-    name: "Estilhaçar (Shatter)",
+    name: "Silêncio (Silence)",
     level: 2,
-    school: "Evocação",
+    school: "Ilusão (ritual)",
     castingTime: "1 ação",
-    range: "18 metros",
-    components: "V, S, M (um pedaço de mica)",
-    duration: "Instantânea",
-    description: "Um som alto e agudo, dolorosamente intenso, surge em um ponto à sua escolha dentro do alcance. Cada criatura em uma esfera de 3 metros de raio centrada no ponto deve fazer um teste de resistência de Constituição. Uma criatura sofre 3d8 de dano trovejante em uma falha, ou metade do dano em um sucesso. Criaturas feitas de material inorgânico como pedra, cristal ou metal têm desvantagem no teste de resistência.",
-    classes: ["Bardo", "Mago", "Feiticeiro", "Bruxo"]
+    range: "36 metros",
+    components: "V, S",
+    duration: "Concentração, até 10 minutos",
+    description: "Pela duração, nenhum som pode ser criado dentro ou passar através de uma esfera de 6 metros de raio centrada em um ponto que você escolher dentro do alcance. Qualquer criatura ou objeto inteiramente dentro da esfera é imune a dano de trovão, e criaturas são surdas enquanto estiverem inteiramente dentro dela. Conjurar uma magia que inclua um componente verbal é impossível ali.",
+    classes: ["Bardo", "Clérigo", "Patrulheiro"]
   },
   {
-    name: "Arma Espiritual (Spiritual Weapon)",
+    name: "Sopro de Dragão (Dragon's Breath)",
     level: 2,
-    school: "Evocação",
+    school: "Transmutação",
     castingTime: "1 ação bônus",
+    range: "Toque",
+    components: "V, S, M (uma pimenta)",
+    duration: "Concentração, até 1 minuto",
+    description: "Você toca uma criatura voluntária e a imbui com o poder de cuspir energia mágica. Até a magia acabar, a criatura pode usar uma ação para exalar energia num cone de 4,5 metros. Cada criatura na área deve fazer um teste de resistência de Destreza, sofrendo 3d6 de dano (ácido, frio, fogo, elétrico ou veneno - escolhido ao conjurar) em caso de falha, ou metade num sucesso.",
+    classes: ["Feiticeiro", "Mago", "Artífice"]
+  },
+  {
+    name: "Sugestão (Suggestion)",
+    level: 2,
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, M (uma língua de cobra e um favo de mel ou uma gota de óleo doce)",
+    duration: "Concentração, até 8 horas",
+    description: "Você sugere um curso de atividade (limitado a uma sentença ou duas) e magicamente influencia uma criatura que você possa ver dentro do alcance que possa ouvir e entender você. Criaturas que não podem ser enfeitiçadas são imunes a este efeito.",
+    classes: ["Bardo", "Feiticeiro", "Bruxo", "Mago"]
+  },
+  {
+    name: "Teia (Web)",
+    level: 2,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S, M (um pouco de teia de aranha)",
+    duration: "Concentração, até 1 hora",
+    description: "Você conjura uma massa de teias espessas e pegajosas em um ponto de sua escolha dentro do alcance. As teias preenchem um cubo de 6 metros desse ponto pela duração. As teias são terreno difícil e obscurecem levemente a área.",
+    classes: ["Mago", "Feiticeiro", "Artífice"]
+  },
+  {
+    name: "Ver o Invisível (See Invisibility)",
+    level: 2,
+    school: "Adivinhação",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S, M (uma pitada de talco e uma pequena quantidade de pó de prata)",
+    duration: "1 hora",
+    description: "Pela duração, você vê criaturas e objetos invisíveis como se fossem visíveis, e pode ver no Plano Etéreo. Criaturas e objetos etéreos parecem fantasmagóricos e translúcidos.",
+    classes: ["Bardo", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Vínculo de Proteção (Warding Bond)",
+    level: 2,
+    school: "Abjuração",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S, M (um par de anéis de platina de 50po cada)",
+    duration: "1 hora",
+    description: "Esta magia protege uma criatura voluntária que você toca e cria uma conexão mística entre vocês. Enquanto o alvo estiver a até 18 metros de você, ele ganha +1 de bônus na CA e testes de resistência, e tem resistência a todo dano. Além disso, cada vez que ele sofre dano, você sofre a mesma quantidade de dano.",
+    classes: ["Clérigo", "Paladino"]
+  },
+  {
+    name: "Zona da Verdade (Zone of Truth)",
+    level: 2,
+    school: "Encantamento",
+    castingTime: "1 ação",
     range: "18 metros",
     components: "V, S",
-    duration: "1 minuto",
-    description: "Você cria uma arma espectral flutuante dentro do alcance que dura pela duração ou até você conjurá-la novamente. Quando você conjura a magia, você pode fazer um ataque corpo-a-corpo com magia contra uma criatura a até 1,5 metro da arma. Se atingir, o alvo sofre dano de força igual a 1d8 + seu modificador de habilidade de conjuração. Como uma ação bônus no seu turno, você pode mover a arma até 6 metros e repetir o ataque.",
-    classes: ["Clérigo"]
+    duration: "10 minutos",
+    description: "Você cria uma zona mágica que protege contra o engano em uma esfera de 4,5 metros de raio centrada em um ponto de sua escolha dentro do alcance. Até a magia acabar, uma criatura que entrar na área da magia pela primeira vez em um turno ou começar seu turno lá, deve fazer um teste de resistência de Carisma. Em uma falha, a criatura não pode falar uma mentira deliberada enquanto estiver no raio.",
+    classes: ["Bardo", "Clérigo", "Paladino"]
   },
 
-  // 3rd Level Spells (NEW)
+  // --- NÍVEL 3 ---
   {
     name: "Bola de Fogo (Fireball)",
     level: 3,
@@ -505,18 +1460,18 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     components: "V, S, M (uma pequena bola de guano de morcego e enxofre)",
     duration: "Instantânea",
     description: "Um raio brilhante de luz pisca do seu dedo indicador para um ponto que você escolher dentro do alcance e então floresce com um rugido baixo em uma explosão de chamas. Cada criatura em uma esfera de 6 metros de raio centrada no ponto deve fazer um teste de resistência de Destreza. Um alvo sofre 8d6 de dano de fogo em uma falha, ou metade do dano em um sucesso.",
-    classes: ["Mago", "Feiticeiro"]
+    classes: ["Mago", "Feiticeiro", "Artífice"]
   },
   {
-    name: "Relâmpago (Lightning Bolt)",
+    name: "Catapultar (Catnap - Soneca)",
     level: 3,
-    school: "Evocação",
+    school: "Encantamento",
     castingTime: "1 ação",
-    range: "Pessoal (linha de 30 metros)",
-    components: "V, S, M (um pouco de pele e um bastão de vidro ou cristal)",
-    duration: "Instantânea",
-    description: "Um relâmpago formando uma linha de 30 metros de comprimento e 1,5 metro de largura explode de você em uma direção à sua escolha. Cada criatura na linha deve fazer um teste de resistência de Destreza. Uma criatura sofre 8d6 de dano elétrico em uma falha, ou metade do dano em um sucesso.",
-    classes: ["Mago", "Feiticeiro"]
+    range: "9 metros",
+    components: "S, M (uma pitada de areia)",
+    duration: "10 minutos",
+    description: "Você faz um gesto calmante e até três criaturas voluntárias à sua escolha que você possa ver dentro do alcance caem inconscientes pela duração da magia. A magia termina em um alvo se ele sofrer dano ou se alguém usar uma ação para acordá-lo. Se o alvo permanecer inconsciente por toda a duração, ele ganha o benefício de um descanso curto.",
+    classes: ["Bardo", "Feiticeiro", "Mago", "Artífice"]
   },
   {
     name: "Contra-mágica (Counterspell)",
@@ -526,7 +1481,7 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     range: "18 metros",
     components: "S",
     duration: "Instantânea",
-    description: "Você tenta interromper uma criatura no processo de conjurar uma magia. Se a criatura estiver conjurando uma magia de 3º nível ou inferior, a magia falha e não tem efeito. Se estiver conjurando uma magia de 4º nível ou superior, faça um teste de habilidade usando sua habilidade de conjuração. A CD é 10 + o nível da magia. Em um sucesso, a magia da criatura falha.",
+    description: "Você tenta interromper uma criatura no processo de conjurar uma magia. Se a criatura estiver conjurando uma magia de 3º nível ou inferior, a magia falha e não tem efeito. Se estiver conjurando uma magia de 4º nível ou superior, faça um teste de habilidade usando sua habilidade de conjuração. A CD é 10 + o nível da magia.",
     classes: ["Mago", "Feiticeiro", "Bruxo"]
   },
   {
@@ -537,8 +1492,173 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     range: "36 metros",
     components: "V, S",
     duration: "Instantânea",
-    description: "Escolha uma criatura, objeto ou efeito mágico dentro do alcance. Qualquer magia de 3º nível ou inferior no alvo termina. Para cada magia de 4º nível ou superior no alvo, faça um teste de habilidade usando sua habilidade de conjuração. A CD é 10 + o nível da magia. Em um sucesso, a magia termina.",
-    classes: ["Bardo", "Clérigo", "Druida", "Mago", "Feiticeiro", "Paladino", "Bruxo"]
+    description: "Escolha uma criatura, objeto ou efeito mágico dentro do alcance. Qualquer magia de 3º nível ou inferior no alvo termina. Para cada magia de 4º nível ou superior no alvo, faça um teste de habilidade usando sua habilidade de conjuração. A CD é 10 + o nível da magia.",
+    classes: ["Bardo", "Clérigo", "Druida", "Mago", "Feiticeiro", "Paladino", "Bruxo", "Artífice"]
+  },
+  {
+    name: "Espíritos Guardiões (Spirit Guardians)",
+    level: 3,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "Pessoal (4,5 metros de raio)",
+    components: "V, S, M (um símbolo sagrado)",
+    duration: "Concentração, até 10 minutos",
+    description: "Você convoca espíritos para protegê-lo. Eles flutuam ao seu redor a uma distância de 4,5 metros pela duração. A área afetada é considerada terreno difícil para inimigos. Quando uma criatura entra na área pela primeira vez em um turno ou começa seu turno nela, ela deve fazer um teste de resistência de Sabedoria. Em uma falha, a criatura sofre 3d8 de dano radiante (ou necrótico).",
+    classes: ["Clérigo"]
+  },
+  {
+    name: "Flecha Relampejante (Lightning Arrow)",
+    level: 3,
+    school: "Transmutação",
+    castingTime: "1 ação bônus",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "Concentração, até 1 minuto",
+    description: "A próxima vez que você fizer um ataque à distância com arma durante a duração da magia, a munição da arma, ou a própria arma se for de arremesso, se transforma em um raio de relâmpago. Faça a jogada de ataque normalmente. O alvo sofre 4d8 de dano elétrico em um acerto, ou metade em um erro, em vez do dano normal da arma.",
+    classes: ["Patrulheiro"]
+  },
+  {
+    name: "Flechas de Fogo (Flame Arrows)",
+    level: 3,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S",
+    duration: "Concentração, até 1 hora",
+    description: "Você toca uma aljava contendo flechas ou virotes. Até doze munições se tornam mágicas. Ao atingir um alvo com uma munição dessas, o alvo sofre 1d6 de dano de fogo extra.",
+    classes: ["Druida", "Patrulheiro", "Feiticeiro", "Mago", "Artífice"]
+  },
+  {
+    name: "Inimigos em Abundância (Enemies Abound)",
+    level: 3,
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S",
+    duration: "Concentração, até 1 minuto",
+    description: "Você alcança a mente de uma criatura que você pode ver e a força a fazer um teste de resistência de Inteligência. Se falhar, a criatura perde a capacidade de distinguir amigo de inimigo, considerando todas as criaturas como inimigas até a magia acabar. Sempre que a criatura afetada sofrer dano, ela pode repetir o teste de resistência.",
+    classes: ["Bardo", "Feiticeiro", "Bruxo", "Mago"]
+  },
+  {
+    name: "Meteoros Minúsculos de Melf (Melf's Minute Meteors)",
+    level: 3,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S, M (contas de nitrato e enxofre)",
+    duration: "Concentração, até 10 minutos",
+    description: "Seis meteoros minúsculos orbitam sua cabeça. Quando você conjura a magia — e como uma ação bônus em cada um de seus turnos seguintes — você pode gastar um ou dois meteoros, enviando-os para pontos que você escolher a até 36 metros de você. Cada criatura a até 1,5 metro do ponto deve fazer um teste de resistência de Destreza, sofrendo 2d6 de dano de fogo em caso de falha.",
+    classes: ["Feiticeiro", "Mago"]
+  },
+  {
+    name: "Muralha de Água (Wall of Water)",
+    level: 3,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S, M (uma gota d'água)",
+    duration: "Concentração, até 10 minutos",
+    description: "Você conjura uma muralha de água no chão em um ponto que você possa ver dentro do alcance. A muralha pode ter até 9 metros de comprimento, 3 metros de altura e 30 centímetros de espessura. Ataques à distância que entram na muralha têm desvantagem, e dano de fogo é reduzido pela metade se passar pela muralha.",
+    classes: ["Druida", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Onda de Maré (Tidal Wave)",
+    level: 3,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S, M (uma gota d'água)",
+    duration: "Instantânea",
+    description: "Você conjura uma onda de água que desaba sobre uma área dentro do alcance. A área pode ter até 9 metros de comprimento, até 3 metros de largura e até 3 metros de altura. Cada criatura na área deve fazer um teste de resistência de Destreza. Se falhar, sofre 4d8 de dano de concussão e fica caída no chão.",
+    classes: ["Druida", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Palavra Curativa em Massa (Mass Healing Word)",
+    level: 3,
+    school: "Evocação",
+    castingTime: "1 ação bônus",
+    range: "18 metros",
+    components: "V",
+    duration: "Instantânea",
+    description: "Conforme você recita palavras de restauração, até seis criaturas à sua escolha que você possa ver dentro do alcance recuperam pontos de vida iguais a 1d4 + seu modificador de habilidade de conjuração.",
+    classes: ["Bardo", "Clérigo"]
+  },
+  {
+    name: "Passo do Trovão (Thunder Step)",
+    level: 3,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "27 metros",
+    components: "V",
+    duration: "Instantânea",
+    description: "Você se teleporta para um espaço desocupado que você possa ver dentro do alcance. Imediatamente após desaparecer, um estrondo trovejante soa, e cada criatura a até 3 metros do espaço que você deixou deve fazer um teste de resistência de Constituição, sofrendo 3d10 de dano trovejante numa falha. Você pode levar objetos ou uma criatura voluntária do seu tamanho ou menor.",
+    classes: ["Feiticeiro", "Bruxo", "Mago"]
+  },
+  {
+    name: "Pequeno Servo (Tiny Servant)",
+    level: 3,
+    school: "Transmutação",
+    castingTime: "1 minuto",
+    range: "Toque",
+    components: "V, S",
+    duration: "8 horas",
+    description: "Você toca um objeto Minúsculo e não mágico que não esteja preso a outro objeto ou superfície e lhe dá uma vida simulada. O alvo se torna uma criatura (constructo) sob seu controle até a magia acabar ou até ser reduzido a 0 pontos de vida.",
+    classes: ["Mago", "Artífice"]
+  },
+  {
+    name: "Relâmpago (Lightning Bolt)",
+    level: 3,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Pessoal (linha de 30 metros)",
+    components: "V, S, M (um pouco de pele e um bastão de vidro ou cristal)",
+    duration: "Instantânea",
+    description: "Um relâmpago formando uma linha de 30 metros de comprimento e 1,5 metro de largura explode de você em uma direção à sua escolha. Cada criatura na linha deve fazer um teste de resistência de Destreza. Uma criatura sofre 8d6 de dano elétrico em uma falha, ou metade do dano em um sucesso.",
+    classes: ["Mago", "Feiticeiro", "Artífice"]
+  },
+  {
+    name: "Revivificar (Revivify)",
+    level: 3,
+    school: "Necromancia",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S, M (diamantes no valor de 300 po, que a magia consome)",
+    duration: "Instantânea",
+    description: "Você toca uma criatura que tenha morrido no último minuto. Essa criatura retorna à vida com 1 ponto de vida.",
+    classes: ["Clérigo", "Paladino", "Artífice", "Patrulheiro (Tasha)"]
+  },
+  {
+    name: "Terra Eruptiva (Erupting Earth)",
+    level: 3,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S, M (um pedaço de obsidiana)",
+    duration: "Instantânea",
+    description: "Escolha um ponto no chão. Uma fonte de terra batida e pedra irrompe em um cubo de 6 metros centrado nesse ponto. Cada criatura na área deve fazer um teste de resistência de Destreza. Uma criatura sofre 3d12 de dano de concussão em caso de falha. Além disso, o chão nessa área torna-se terreno difícil.",
+    classes: ["Druida", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Transferência de Vida (Life Transference)",
+    level: 3,
+    school: "Necromancia",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Você sacrifica parte de sua saúde para curar as feridas de outro. Você sofre 4d8 de dano necrótico, que não pode ser reduzido de forma alguma. Uma criatura à sua escolha que você possa ver dentro do alcance recupera um número de pontos de vida igual ao dobro do dano necrótico que você sofreu.",
+    classes: ["Clérigo", "Mago"]
+  },
+  {
+    name: "Velocidade (Haste)",
+    level: 3,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V, S, M (uma lasca de raiz de alcaçuz)",
+    duration: "Concentração, até 1 minuto",
+    description: "Escolha uma criatura voluntária que você possa ver dentro do alcance. Até a magia acabar, o deslocamento do alvo é dobrado, ele ganha um bônus de +2 na CA, tem vantagem em testes de resistência de Destreza e ganha uma ação adicional em cada um de seus turnos.",
+    classes: ["Mago", "Feiticeiro", "Artífice", "Patrulheiro (Horizon Walker)"]
   },
   {
     name: "Voo (Fly)",
@@ -549,40 +1669,176 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     components: "V, S, M (uma pena de asa de qualquer ave)",
     duration: "Concentração, até 10 minutos",
     description: "Você toca uma criatura voluntária. O alvo ganha um deslocamento de voo de 18 metros pela duração. Quando a magia acabar, o alvo cai se ainda estiver no ar, a menos que possa parar a queda.",
-    classes: ["Mago", "Feiticeiro", "Bruxo"]
+    classes: ["Mago", "Feiticeiro", "Bruxo", "Artífice"]
   },
+
+  // --- NÍVEL 4 ---
   {
-    name: "Velocidade (Haste)",
-    level: 3,
-    school: "Transmutação",
+    name: "Banimento (Banishment)",
+    level: 4,
+    school: "Abjuração",
     castingTime: "1 ação",
-    range: "9 metros",
-    components: "V, S, M (uma lasca de raiz de alcaçuz)",
+    range: "18 metros",
+    components: "V, S, M (um item desagradável ao alvo)",
     duration: "Concentração, até 1 minuto",
-    description: "Escolha uma criatura voluntária que você possa ver dentro do alcance. Até a magia acabar, o deslocamento do alvo é dobrado, ele ganha um bônus de +2 na CA, tem vantagem em testes de resistência de Destreza e ganha uma ação adicional em cada um de seus turnos. Essa ação pode ser usada apenas para realizar as ações de Ataque (um ataque com arma apenas), Disparada, Desengajar, Esconder ou Usar um Objeto. Quando a magia acaba, o alvo não pode se mover ou realizar ações até depois do seu próximo turno, pois uma onda de letargia o percorre.",
-    classes: ["Mago", "Feiticeiro"]
+    description: "Você tenta enviar uma criatura que você pode ver dentro do alcance para outro plano de existência. O alvo deve ser bem-sucedido em um teste de resistência de Carisma ou será banido.",
+    classes: ["Clérigo", "Paladino", "Feiticeiro", "Bruxo", "Mago"]
   },
   {
-    name: "Revivificar (Revivify)",
-    level: 3,
-    school: "Necromancia",
+    name: "Esfera Vitriólica (Vitriolic Sphere)",
+    level: 4,
+    school: "Evocação",
     castingTime: "1 ação",
-    range: "Toque",
-    components: "V, S, M (diamantes no valor de 300 po, que a magia consome)",
+    range: "45 metros",
+    components: "V, S, M (uma gota de bile de lesma gigante)",
     duration: "Instantânea",
-    description: "Você toca uma criatura que tenha morrido no último minuto. Essa criatura retorna à vida com 1 ponto de vida. Essa magia não pode retornar à vida uma criatura que tenha morrido de velhice, nem pode restaurar quaisquer partes do corpo perdidas.",
-    classes: ["Clérigo", "Paladino", "Patrulheiro (Tasha)"]
+    description: "Você aponta para um local dentro do alcance, e uma bola brilhante de 30 cm de ácido esmeralda corre para lá e explode em uma esfera de 6 metros de raio. Cada criatura na área deve fazer um teste de resistência de Destreza. Se falhar, sofre 10d4 de dano ácido imediatamente e 5d4 no final de seu próximo turno.",
+    classes: ["Feiticeiro", "Mago"]
   },
   {
-    name: "Espíritos Guardiões (Spirit Guardians)",
-    level: 3,
+    name: "Golpe de Vento de Aço (Steel Wind Strike)",
+    level: 4,
     school: "Conjuração",
     castingTime: "1 ação",
-    range: "Pessoal (4,5 metros de raio)",
-    components: "V, S, M (um símbolo sagrado)",
+    range: "9 metros",
+    components: "S, M (uma arma corpo-a-corpo valendo pelo menos 1 pp)",
+    duration: "Instantânea",
+    description: "Você floresce a arma usada na conjuração e então desaparece para golpear como o vento. Escolha até cinco criaturas que você possa ver dentro do alcance. Faça um ataque corpo a corpo com magia contra cada alvo. Se acertar, um alvo sofre 6d10 de dano de força.",
+    classes: ["Patrulheiro", "Mago"]
+  },
+  {
+    name: "Invisibilidade Maior (Greater Invisibility)",
+    level: 4,
+    school: "Ilusão",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S",
+    duration: "Concentração, até 1 minuto",
+    description: "Você ou uma criatura que você tocar torna-se invisível até a magia terminar. Qualquer coisa que o alvo esteja vestindo ou carregando fica invisível enquanto estiver na posse dele. A magia não termina se o alvo atacar ou conjurar uma magia.",
+    classes: ["Bardo", "Mago", "Feiticeiro"]
+  },
+  {
+    name: "Muralha de Fogo (Wall of Fire)",
+    level: 4,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S, M (um pequeno pedaço de fósforo)",
+    duration: "Concentração, até 1 minuto",
+    description: "Você cria uma muralha de fogo em uma superfície sólida dentro do alcance. Você pode fazer a muralha com até 18 metros de comprimento, 6 metros de altura e 30 cm de espessura, ou uma muralha anelar com até 6 metros de diâmetro. Causa 5d8 de dano de fogo a quem entra ou termina o turno perto.",
+    classes: ["Druida", "Feiticeiro", "Mago"]
+  },
+  {
+    name: "Polimorfia (Polymorph)",
+    level: 4,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S, M (um casulo de lagarta)",
+    duration: "Concentração, até 1 hora",
+    description: "Esta magia transforma uma criatura que você possa ver dentro do alcance em uma nova forma. O alvo assume os pontos de vida e estatísticas da nova forma.",
+    classes: ["Bardo", "Druida", "Mago", "Feiticeiro"]
+  },
+  {
+    name: "Porta Dimensional (Dimension Door)",
+    level: 4,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "150 metros",
+    components: "V",
+    duration: "Instantânea",
+    description: "Você se teleporta para outro local dentro do alcance. Você não precisa ver o local de destino.",
+    classes: ["Bardo", "Mago", "Feiticeiro", "Bruxo"]
+  },
+  {
+    name: "Radiação Enferma (Sickening Radiance)",
+    level: 4,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S",
     duration: "Concentração, até 10 minutos",
-    description: "Você convoca espíritos para protegê-lo. Eles flutuam ao seu redor a uma distância de 4,5 metros pela duração. Quando você conjura essa magia, você pode designar qualquer número de criaturas que você possa ver para serem ignoradas por ela. A área afetada é considerada terreno difícil para inimigos. Quando uma criatura entra na área pela primeira vez em um turno ou começa seu turno nela, ela deve fazer um teste de resistência de Sabedoria. Em uma falha, a criatura sofre 3d8 de dano radiante (se você for bom ou neutro) ou necrótico (se você for mau). Em um sucesso, a criatura sofre metade do dano.",
-    classes: ["Clérigo"]
+    description: "Luz esverdeada e difusa se espalha em uma esfera de 9 metros de raio. Quando uma criatura se move para a área ou começa seu turno lá, ela deve fazer um teste de resistência de Constituição. Se falhar, sofre 4d10 de dano radiante e um nível de exaustão.",
+    classes: ["Feiticeiro", "Bruxo", "Mago"]
+  },
+
+  // --- NÍVEL 5 ---
+  {
+    name: "Caminho da Natureza (Commune with Nature)",
+    level: 5,
+    school: "Adivinhação (ritual)",
+    castingTime: "1 minuto",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Você se torna um com a natureza e ganha conhecimento do território ao redor. Ao ar livre, o raio é de 5 km; em cavernas, 90 metros.",
+    classes: ["Druida", "Patrulheiro"]
+  },
+  {
+    name: "Cone de Frio (Cone of Cold)",
+    level: 5,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Pessoal (cone de 18 metros)",
+    components: "V, S, M (um pequeno cristal ou cone de vidro)",
+    duration: "Instantânea",
+    description: "Uma explosão de ar frio irrompe de suas mãos. Cada criatura em um cone de 18 metros deve fazer um teste de resistência de Constituição. Uma criatura sofre 8d8 de dano de frio em uma falha, ou metade em um sucesso.",
+    classes: ["Feiticeiro", "Mago"]
+  },
+  {
+    name: "Cura em Massa (Mass Cure Wounds)",
+    level: 5,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Uma onda de energia curativa emana de um ponto à sua escolha. Escolha até seis criaturas num raio de 9 metros desse ponto. Cada alvo recupera 3d8 + mod. conjuração PV.",
+    classes: ["Bardo", "Clérigo", "Druida"]
+  },
+  {
+    name: "Golpe de Vento de Aço (Steel Wind Strike)",
+    level: 5,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "S, M (uma arma corpo-a-corpo)",
+    duration: "Instantânea",
+    description: "Você floresce a arma e desaparece. Escolha até 5 criaturas. Faça um ataque corpo-a-corpo com magia contra cada uma. Acerto causa 6d10 de dano de força.",
+    classes: ["Patrulheiro", "Mago"]
+  },
+  {
+    name: "Muralha de Força (Wall of Force)",
+    level: 5,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S, M (pó de diamante)",
+    duration: "Concentração, até 10 minutos",
+    description: "Uma parede invisível de força aparece. Nada pode passar fisicamente através dela.",
+    classes: ["Mago"]
+  },
+  {
+    name: "Reviver os Mortos (Raise Dead)",
+    level: 5,
+    school: "Necromancia",
+    castingTime: "1 hora",
+    range: "Toque",
+    components: "V, S, M (diamante de 500 po)",
+    duration: "Instantânea",
+    description: "Você retorna uma criatura morta à vida, desde que ela não esteja morta há mais de 10 dias.",
+    classes: ["Bardo", "Clérigo", "Paladino"]
+  },
+  {
+    name: "Sinapses Estáticas (Synaptic Static)",
+    level: 5,
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Uma explosão de energia psíquica irrompe em uma esfera de 6 metros. Criaturas falhando em INT sofrem 8d6 psíquico e têm -1d6 em ataques e testes.",
+    classes: ["Bardo", "Feiticeiro", "Bruxo", "Mago"]
   }
 ];
 

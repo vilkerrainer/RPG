@@ -1,5 +1,5 @@
 
-import { AttributeName, RANKS as RANK_OPTIONS, BackgroundDefinition } from './types'; // Import RANK_OPTIONS from types
+import { AttributeName, RANKS as RANK_OPTIONS, BackgroundDefinition, RacialFeatureSelection } from './types'; // Import RANK_OPTIONS from types
 import { calculateModifier } from './components/AttributeField';
 
 
@@ -60,6 +60,98 @@ export const BACKGROUNDS = [
   "Acólito", "Artesão de Guilda", "Artista", "Charlatão", "Criminoso",
   "Eremita", "Forasteiro", "Herói do Povo", "Marinheiro", "Nobre", "Órfão", "Sábio", "Soldado"
 ];
+
+export const RACIAL_ATTRIBUTE_BONUSES: Record<string, Partial<Record<AttributeName, number>>> = {
+  "Humano": { strength: 1, dexterity: 1, constitution: 1, intelligence: 1, wisdom: 1, charisma: 1 },
+  "Draconato": { strength: 2, charisma: 1 },
+  "Anão da Colina": { constitution: 2, wisdom: 1 },
+  "Anão da Montanha": { constitution: 2, strength: 2 },
+  "Alto Elfo": { dexterity: 2, intelligence: 1 },
+  "Elfo da Floresta": { dexterity: 2, wisdom: 1 },
+  "Elfo Negro (Drow)": { dexterity: 2, charisma: 1 },
+  "Elfo do Mar": { dexterity: 2, constitution: 1 },
+  "Shadar-Kai": { dexterity: 2, constitution: 1 },
+  "Meio-Elfo": { charisma: 2 }, // +1 to two others via choice
+  "Meio-Orc": { strength: 2, constitution: 1 },
+  "Halfling Pés Leves": { dexterity: 2, charisma: 1 },
+  "Halfling Robusto": { dexterity: 2, constitution: 1 },
+  "Tiefling": { charisma: 2, intelligence: 1 },
+  "Gnomo da Floresta": { intelligence: 2, dexterity: 1 },
+  "Gnomo das Rochas": { intelligence: 2, constitution: 1 },
+  "Gnomo das Profundezas (Svirfneblin)": { intelligence: 2, dexterity: 1 },
+  "Aarakocra": { dexterity: 2, wisdom: 1 },
+  "Aasimar": { charisma: 2 },
+  // Anadino is dynamic via choice
+  "Genasi do Ar": { constitution: 2, dexterity: 1 },
+  "Genasi da Terra": { constitution: 2, strength: 1 },
+  "Genasi do Fogo": { constitution: 2, intelligence: 1 },
+  "Genasi da Água": { constitution: 2, wisdom: 1 },
+  "Golias": { strength: 2, constitution: 1 },
+  "Tabaxi": { dexterity: 2, charisma: 1 },
+  "Bugbear": { strength: 2, dexterity: 1 },
+  "Centauro": { strength: 2, wisdom: 1 },
+  "Duergar": { constitution: 2, strength: 1 },
+  "Eladrin": { dexterity: 2, charisma: 1 },
+  "Fada (Fairy)": { dexterity: 2, wisdom: 1 }, // Genérico para fadas
+  "Firbolg": { wisdom: 2, strength: 1 },
+  "Githyanki": { strength: 2, intelligence: 1 },
+  "Githzerai": { wisdom: 2, intelligence: 1 },
+  "Goblin": { dexterity: 2, constitution: 1 },
+  "Grung": { dexterity: 2, constitution: 1 },
+  "Harengon": { dexterity: 2, wisdom: 1 }, // Genérico
+  "Hobgoblin": { constitution: 2, intelligence: 1 },
+  "Kenku": { dexterity: 2, wisdom: 1 },
+  "Kobold": { dexterity: 2 },
+  "Lizardfolk (Povo Lagarto)": { constitution: 2, wisdom: 1 },
+  "Locathah": { strength: 2, dexterity: 1 },
+  "Minotauro": { strength: 2, constitution: 1 },
+  "Orc": { strength: 2, constitution: 1 },
+  "Owlin": { dexterity: 2, charisma: 1 }, // Genérico
+  "Sátiro": { charisma: 2, dexterity: 1 },
+  "Shifter (Transformista)": { dexterity: 1 }, // Base, sub-raça adiciona
+  "Tortle": { strength: 2, wisdom: 1 },
+  "Tritão (Triton)": { strength: 1, constitution: 1, charisma: 1 },
+  "Verdan": { charisma: 2, constitution: 1 },
+  "Yuan-Ti": { charisma: 2, intelligence: 1 },
+};
+
+export const calculateRaceAttributeBonuses = (race: string, racialFeatures: RacialFeatureSelection[] = []): Partial<Record<AttributeName, number>> => {
+  const bonuses: Partial<Record<AttributeName, number>> = {};
+  
+  // 1. Static Bonuses
+  const staticData = RACIAL_ATTRIBUTE_BONUSES[race];
+  if (staticData) {
+    Object.entries(staticData).forEach(([key, value]) => {
+      const attr = key as AttributeName;
+      bonuses[attr] = (bonuses[attr] || 0) + value;
+    });
+  }
+
+  // 2. Dynamic Bonuses from Feature Selections
+  racialFeatures.forEach(feature => {
+    // Anadino Choice
+    if (feature.featureId === 'anadino_asi' && feature.choiceValue) {
+       if (feature.choiceValue === 'dex_cha') {
+         bonuses.dexterity = (bonuses.dexterity || 0) + 2;
+         bonuses.charisma = (bonuses.charisma || 0) + 1;
+       } else if (feature.choiceValue === 'cha_dex') {
+         bonuses.charisma = (bonuses.charisma || 0) + 2;
+         bonuses.dexterity = (bonuses.dexterity || 0) + 1;
+       }
+    }
+    // Half-Elf Choice
+    if (feature.featureId === 'half_elf_asi' && feature.customChoiceText) {
+        feature.customChoiceText.split(',').forEach(attr => {
+            if (['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'].includes(attr)) {
+                const a = attr as AttributeName;
+                bonuses[a] = (bonuses[a] || 0) + 1;
+            }
+        });
+    }
+  });
+
+  return bonuses;
+};
 
 export const BACKGROUND_DETAILS: Record<string, BackgroundDefinition> = {
     "Acólito": { name: "Acólito", skillProficiencies: ["insight", "religion"], toolProficiencies: [], languages: ["any_two"] },

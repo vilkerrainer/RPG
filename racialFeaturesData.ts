@@ -198,6 +198,20 @@ const DEEP_GNOME_RACIAL_FEATURES: RacialFeatureDefinition[] = [
 const HALF_ELF_RACIAL_FEATURES: RacialFeatureDefinition[] = [
     { id: "half_elf_darkvision", name: "Visão no Escuro (Meio-Elfo)", description: "Graças ao seu sangue élfico, você tem visão superior em condições de escuridão e penumbra...", type: 'auto' },
     ELF_FEY_ANCESTRY, 
+    { 
+        id: "half_elf_asi", 
+        name: "Aumento no Valor de Habilidade (Versatilidade)", 
+        description: "Seu valor de Carisma aumenta em 2 (já aplicado). Escolha outros dois valores de habilidade para aumentar em 1.", 
+        type: 'choice',
+        maxChoices: 2,
+        choices: [
+            { value: 'strength', label: 'Força' },
+            { value: 'dexterity', label: 'Destreza' },
+            { value: 'constitution', label: 'Constituição' },
+            { value: 'intelligence', label: 'Inteligência' },
+            { value: 'wisdom', label: 'Sabedoria' }
+        ]
+    },
     { id: "half_elf_skill_versatility", name: "Versatilidade em Perícia", description: "Você ganha proficiência em duas perícias, à sua escolha (selecione abaixo).", type: 'auto' } 
 ];
 
@@ -213,8 +227,13 @@ const HALF_ORC_RACIAL_FEATURES: RacialFeatureDefinition[] = [
 const ANADINO_RACIAL_FEATURES: RacialFeatureDefinition[] = [
     {
         id: "anadino_asi", name: "Aumento no Valor de Habilidade (Anadino)",
-        description: "+2 em Destreza e +1 em Carisma (ou vice-versa, ajuste manualmente se necessário). Crescem rápido (adultos aos 5), vivem até 60 anos.",
-        type: 'auto'
+        description: "Escolha seus bônus de atributo.",
+        type: 'choice',
+        choices: [
+            { value: 'dex_cha', label: '+2 Destreza, +1 Carisma' },
+            { value: 'cha_dex', label: '+2 Carisma, +1 Destreza' }
+        ],
+        maxChoices: 1
     },
     {
         id: "anadino_speed", name: "Deslocamento e Natação",
