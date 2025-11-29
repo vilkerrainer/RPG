@@ -1,6 +1,8 @@
 
 
 
+
+
 export interface Feat {
   id: string;
   name: string;
@@ -187,22 +189,26 @@ export const WIZARD_ARCANE_TRADITION_CHOICES: FeatureChoiceDefinition[] = [
     { value: "illusion", label: "Escola de Ilusão", description: "Foco em magias de engano e falsidade."},
     { value: "necromancy", label: "Escola de Necromancia", description: "Foco em magias que manipulam vida e morte."},
     { value: "transmutation", label: "Escola de Transmutação", description: "Foco em magias que alteram matéria e energia."},
+    { value: "war_magic", label: "Magia de Guerra", description: "Combina princípios de evocação e abjuração para dominar o campo de batalha." },
 ];
 
 export const FIGHTER_MARTIAL_ARCHETYPE_CHOICES: FeatureChoiceDefinition[] = [
     { value: "champion", label: "Campeão", description: "O arquétipo Campeão foca no desenvolvimento de poder físico bruto, levado a uma perfeição mortal." },
     { value: "battle_master", label: "Mestre de Batalha", description: "Mestres de Batalha usam técnicas especiais conhecidas como manobras para controlar o campo de batalha e capacitar seus ataques." },
     { value: "eldritch_knight", label: "Cavaleiro Arcano", description: "Cavaleiros Arcanos combinam a maestria marcial com o estudo cuidadoso da magia." },
+    { value: "samurai", label: "Samurai", description: "Guerreiros que usam seu espírito inquebrável para superar adversidades." },
 ];
 
 export const BARBARIAN_PRIMAL_PATH_CHOICES: FeatureChoiceDefinition[] = [
     { value: "berserker", label: "Caminho do Furioso (Berserker)", description: "Para alguns bárbaros, a fúria é um meio para um fim – esse fim é a violência." },
     { value: "totem_warrior", label: "Caminho do Guerreiro Totêmico (Totem Warrior)", description: "O Caminho do Guerreiro Totêmico é uma jornada espiritual, à medida que o bárbaro aceita um espírito animal como guia." },
+    { value: "zealot", label: "Caminho do Fanático", description: "Guerreiros que canalizam sua fúria em demonstrações poderosas de poder divino." },
 ];
 
 export const BARD_COLLEGE_CHOICES: FeatureChoiceDefinition[] = [
     { value: "lore", label: "Colégio do Conhecimento", description: "Bardos do Colégio do Conhecimento conhecem algo sobre a maioria das coisas." },
     { value: "valor", label: "Colégio da Bravura", description: "Bardos do Colégio da Bravura são escaldos destemidos cujos contos mantêm viva a memória dos grandes heróis." },
+    { value: "glamour", label: "Colégio do Glamour", description: "Bardos que dominaram sua arte no reino das fadas." },
 ];
 
 export const CLERIC_DOMAIN_CHOICES: FeatureChoiceDefinition[] = [
@@ -213,12 +219,14 @@ export const CLERIC_DOMAIN_CHOICES: FeatureChoiceDefinition[] = [
     { value: "tempest", label: "Domínio da Tempestade", description: "Deuses cujo portfólio contenha o domínio da Tempestade governam tormentas, mares e céus." },
     { value: "trickery", label: "Domínio da Enganação", description: "Deuses da enganação são causadores de travessuras e instigadores." },
     { value: "war", label: "Domínio da Guerra", description: "A guerra tem muitas manifestações. Os clérigos de tais deuses se sobressaem em batalha." },
+    { value: "grave", label: "Domínio da Sepultura", description: "Deuses da sepultura vigiam a linha entre a vida e a morte." },
 ];
 
 export const WARLOCK_PATRON_CHOICES: FeatureChoiceDefinition[] = [
   { value: "archfey", label: "A Arquifada", description: "Seu patrono é um senhor ou senhora das fadas, uma criatura de lenda." },
   { value: "fiend", label: "O Corruptor", description: "Você fez um pacto com um corruptor dos planos inferiores." },
   { value: "great_old_one", label: "O Grande Antigo", description: "Seu patrono é uma entidade misteriosa cuja natureza é totalmente alheia ao tecido da realidade." },
+  { value: "hexblade", label: "O Hexblade (Lâmina Maldita)", description: "Você fez um pacto com uma entidade misteriosa de Shadowfell – uma força que se manifesta em armas mágicas sencientes." },
 ];
 
 export const WARLOCK_PACT_BOON_CHOICES: FeatureChoiceDefinition[] = [
@@ -231,17 +239,20 @@ export const WARLOCK_INVOCATION_CHOICES: FeatureChoiceDefinition[] = [
   { value: "agonizing_blast", label: "Rajada Agonizante", description: "Pré-requisito: truque rajada mística. Adiciona mod. Carisma ao dano de rajada mística." },
   { value: "armor_of_shadows", label: "Armadura de Sombras", description: "Pode conjurar armadura arcana à vontade." },
   { value: "eldritch_spear", label: "Lança Mística", description: "Pré-requisito: truque rajada mística. Alcance de rajada mística torna-se 90m." },
-  // Many more needed
+  { value: "devil_sight", label: "Visão Diabólica", description: "Você pode ver normalmente na escuridão, tanto mágica quanto não mágica, a uma distância de 36 metros." },
+  { value: "thirsting_blade", label: "Lâmina Sedenta", description: "Pré-requisito: 5º nível, Pacto da Lâmina. Você pode atacar com sua arma de pacto duas vezes, ao invés de uma, quando usa a ação de Ataque." },
 ];
 
 export const DRUID_CIRCLE_CHOICES: FeatureChoiceDefinition[] = [
   { value: "land", label: "Círculo da Terra", description: "Místicos e sábios que salvaguardam conhecimento e ritos antigos." },
   { value: "moon", label: "Círculo da Lua", description: "Ferrenhos guardiões na natureza, mestres da transformação em besta." },
+  { value: "dreams", label: "Círculo dos Sonhos", description: "Druidas que têm fortes laços com a Feywild e seus reinos oníricos." },
 ];
 
 export const SORCERER_ORIGIN_CHOICES: FeatureChoiceDefinition[] = [
   { value: "draconic", label: "Linhagem Dracônica", description: "Sua magia inata vem de magia dracônica misturada ao seu sangue." },
   { value: "wild_magic", label: "Magia Selvagem", description: "Sua magia inata vem das forças selvagens do caos." },
+  { value: "divine_soul", label: "Alma Favorecida (Divine Soul)", description: "Sua magia vem de uma fonte divina que foi infundida em sua alma." },
 ];
 
 export const METAMAGIC_OPTIONS_CHOICES: FeatureChoiceDefinition[] = [
@@ -259,18 +270,21 @@ export const PALADIN_OATH_CHOICES: FeatureChoiceDefinition[] = [
     { value: "devotion", label: "Juramento de Devoção", description: "Vincula o paladino aos mais sublimes ideias de justiça, virtude e ordem." },
     { value: "ancients", label: "Juramento dos Anciões", description: "Antigo quanto a raça dos elfos e os rituais dos druidas, focado na luz e na vida." },
     { value: "vengeance", label: "Juramento de Vingança", description: "Um comprometimento solene de punir aqueles que cometeram pecados graves." },
+    { value: "conquest", label: "Juramento da Conquista", description: "Aqueles que fazem este juramento buscam trazer ordem através do poder esmagador." },
 ];
 
 export const ROGUE_ARCHETYPE_CHOICES: FeatureChoiceDefinition[] = [
     { value: "thief", label: "Ladrão (Thief)", description: "Aprimora habilidades de furto, agilidade e uso de objetos." },
     { value: "assassin", label: "Assassino (Assassin)", description: "Foca na arte da morte, disfarce e ataques surpresa mortais." },
     { value: "arcane_trickster", label: "Trapaceiro Arcano (Arcane Trickster)", description: "Incrementa furtividade e agilidade com magia, principalmente ilusão e encantamento." },
+    { value: "swashbuckler", label: "Espadachim", description: "Foca na velocidade, elegância e charme em combate." },
 ];
 
 export const MONK_MONASTIC_TRADITION_CHOICES: FeatureChoiceDefinition[] = [
     { value: "open_hand", label: "Caminho da Mão Aberta", description: "Mestres das artes marciais, usando técnicas para controlar oponentes e curar a si mesmos." },
     { value: "shadow", label: "Caminho da Sombra", description: "Ninjas ou dançarinos das sombras, focados em furtividade e subterfúgio." },
     { value: "four_elements", label: "Caminho dos Quatro Elementos", description: "Ensina a dominar os elementos, moldando-os como uma extensão do próprio corpo." },
+    { value: "kensei", label: "Caminho do Kensei", description: "Monges que treinam incansavelmente com suas armas até que a arma se torne uma extensão do corpo." },
 ];
 
 

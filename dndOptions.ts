@@ -5,14 +5,50 @@ import { calculateModifier } from './components/AttributeField';
 
 export const RACES = [
   "Anão da Colina", "Anão da Montanha", 
-  "Alto Elfo", "Elfo da Floresta", "Elfo Negro (Drow)",
+  "Alto Elfo", "Elfo da Floresta", "Elfo Negro (Drow)", "Elfo do Mar", "Shadar-Kai",
   "Halfling Pés Leves", "Halfling Robusto",
   "Humano", 
   "Draconato", 
-  "Gnomo da Floresta", "Gnomo das Rochas",
+  "Gnomo da Floresta", "Gnomo das Rochas", "Gnomo das Profundezas (Svirfneblin)",
   "Meio-Elfo", 
   "Meio-Orc", 
-  "Tiefling"
+  "Tiefling",
+  // Exóticas / Outras
+  "Aarakocra",
+  "Aasimar",
+  "Anadino",
+  "Bugbear",
+  "Centauro",
+  "Changeling (Metamorfo)",
+  "Duergar",
+  "Eladrin",
+  "Fada (Fairy)",
+  "Firbolg",
+  "Genasi do Ar",
+  "Genasi da Terra",
+  "Genasi do Fogo",
+  "Genasi da Água",
+  "Githyanki",
+  "Githzerai",
+  "Goblin",
+  "Golias",
+  "Grung",
+  "Harengon",
+  "Hobgoblin",
+  "Kenku",
+  "Kobold",
+  "Lizardfolk (Povo Lagarto)",
+  "Locathah",
+  "Minotauro",
+  "Orc",
+  "Owlin",
+  "Sátiro",
+  "Shifter (Transformista)",
+  "Tabaxi",
+  "Tortle",
+  "Tritão (Triton)",
+  "Verdan",
+  "Yuan-Ti"
 ];
 
 export const CLASSES = [
@@ -166,7 +202,7 @@ export const getMaxChannelDivinityUses = (className: string, level: number): num
 };
 
 export const getMaxRelentlessEnduranceUses = (race: string): number => {
-  return race === "Meio-Orc" ? 1 : 0;
+  return (race === "Meio-Orc" || race === "Orc") ? 1 : 0;
 };
 
 export const getMaxSecondWindUses = (charClass: string): number => {

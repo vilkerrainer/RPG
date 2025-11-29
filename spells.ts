@@ -1,4 +1,6 @@
 
+
+
 import { Spell } from './types';
 
 // Example spells - a full list would be extensive
@@ -425,18 +427,7 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Clérigo", "Paladino"]
   },
 
-  // 2nd Level Spells
-  {
-    name: "Arma Mágica (Magic Weapon)",
-    level: 2,
-    school: "Transmutação",
-    castingTime: "1 ação bônus",
-    range: "Toque",
-    components: "V, S",
-    duration: "Concentração, até 1 hora",
-    description: "Você toca uma arma não-mágica. Até a magia acabar, essa arma se torna uma arma mágica com +1 de bônus nas jogadas de ataque e dano.",
-    classes: ["Mago", "Paladino", "Clérigo"] // Adicionado Clérigo (Forge Domain)
-  },
+  // 2nd Level Spells (NEW)
   {
     name: "Passo Nebuloso (Misty Step)",
     level: 2,
@@ -446,7 +437,29 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     components: "V",
     duration: "Instantânea",
     description: "Brevemente cercado por uma névoa prateada, você se teleporta até 9 metros para um espaço desocupado que você possa ver.",
-    classes: ["Mago", "Feiticeiro", "Bruxo", "Patrulheiro", "Bardo"] // Bardo (Segredos Mágicos)
+    classes: ["Mago", "Feiticeiro", "Bruxo", "Druida (Círculo da Terra - Costa)"]
+  },
+  {
+    name: "Imobilizar Pessoa (Hold Person)",
+    level: 2,
+    school: "Encantamento",
+    castingTime: "1 ação",
+    range: "18 metros",
+    components: "V, S, M (uma peça pequena, reta de ferro)",
+    duration: "Concentração, até 1 minuto",
+    description: "Escolha um humanoide que você possa ver dentro do alcance. O alvo deve ser bem-sucedido em um teste de resistência de Sabedoria ou ficará paralisado pela duração. No final de cada um de seus turnos, o alvo pode fazer outro teste de resistência de Sabedoria. Em um sucesso, a magia termina.",
+    classes: ["Bardo", "Clérigo", "Druida", "Mago", "Feiticeiro", "Bruxo"]
+  },
+  {
+    name: "Invisibilidade (Invisibility)",
+    level: 2,
+    school: "Ilusão",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S, M (um cílio envolto em goma arábica)",
+    duration: "Concentração, até 1 hora",
+    description: "Uma criatura que você tocar se torna invisível até a magia terminar. Qualquer coisa que o alvo esteja vestindo ou carregando é invisível enquanto estiver na posse do alvo. A magia termina para um alvo se ele atacar ou conjurar uma magia.",
+    classes: ["Bardo", "Mago", "Feiticeiro", "Bruxo"]
   },
   {
     name: "Raio Ardente (Scorching Ray)",
@@ -456,63 +469,19 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     range: "36 metros",
     components: "V, S",
     duration: "Instantânea",
-    description: "Você cria três raios de fogo e os arremessa contra alvos dentro do alcance. Você pode arremessá-los em um alvo ou em vários. Faça um ataque à distância com magia para cada raio. Se atingir, o alvo sofre 2d6 de dano de fogo.",
+    description: "Você cria três raios de fogo e os arremessa em alvos dentro do alcance. Você pode arremessá-los em um alvo ou em vários. Faça um ataque à distância com magia para cada raio. Se atingir, o alvo sofre 2d6 de dano de fogo.",
     classes: ["Mago", "Feiticeiro"]
   },
   {
-    name: "Invisibilidade (Invisibility)",
-    level: 2,
-    school: "Ilusão",
-    castingTime: "1 ação",
-    range: "Toque",
-    components: "V, S, M (uma pestana envolta em goma arábica)",
-    duration: "Concentração, até 1 hora",
-    description: "Uma criatura que você toca se torna invisível até a magia acabar. Qualquer coisa que o alvo esteja vestindo ou carregando é invisível enquanto estiver no corpo do alvo. A magia termina para um alvo que ataca ou conjura uma magia.",
-    classes: ["Mago", "Bardo", "Feiticeiro", "Bruxo", "Patrulheiro"]
-  },
-  {
-    name: "Teia (Web)",
-    level: 2,
-    school: "Conjuração",
-    castingTime: "1 ação",
-    range: "18 metros",
-    components: "V, S, M (um pouco de teia de aranha)",
-    duration: "Concentração, até 1 hora",
-    description: "Você conjura uma massa de teias espessas e pegajosas em um ponto de sua escolha dentro do alcance. As teias preenchem um cubo de 6 metros a partir desse ponto pela duração. As teias são terreno difícil e obscurecem levemente sua área. Se as teias não estiverem ancoradas entre duas superfícies sólidas (como paredes ou árvores) ou em camadas sobre uma superfície plana (como um chão ou teto), a teia conjurada colapsa sobre si mesma, e a magia termina no início do seu próximo turno. Teias em camadas sobre uma superfície plana têm uma profundidade de 1,5 metro. Cada criatura que começa seu turno nas teias ou que entra nelas durante seu turno deve fazer um teste de resistência de Destreza. Em uma falha, a criatura é contida enquanto permanecer nas teias ou até se libertar. Uma criatura contida pelas teias pode usar sua ação para fazer um teste de Força contra sua CD de magia. Se for bem-sucedida, ela se liberta. As teias são inflamáveis. Qualquer cubo de 1,5 metro de teias exposto ao fogo queima em 1 rodada, causando 2d4 de dano de fogo a qualquer criatura que comece seu turno nas chamas.",
-    classes: ["Mago", "Feiticeiro"]
-  },
-  {
-    name: "Sopro do Dragão (Dragon's Breath)",
-    level: 2,
-    school: "Transmutação",
-    castingTime: "1 ação bônus",
-    range: "Toque",
-    components: "V, S, M (uma pimenta malagueta)",
-    duration: "Concentração, até 1 minuto",
-    description: "Você toca uma criatura voluntária e a imbui com o poder de cuspir energia mágica de sua boca, desde que ela tenha uma boca. Escolha ácido, frio, fogo, relâmpago ou veneno. Até a magia acabar, a criatura pode usar uma ação para exalar energia do tipo escolhido em um cone de 4,5 metros. Cada criatura nessa área deve fazer um teste de resistência de Destreza, sofrendo 3d6 de dano do tipo escolhido em uma falha, ou metade do dano em um sucesso.",
-    classes: ["Mago", "Feiticeiro"]
-  },
-  {
-    name: "Ver Invisibilidade (See Invisibility)",
-    level: 2,
-    school: "Adivinhação",
-    castingTime: "1 ação",
-    range: "Pessoal",
-    components: "V, S, M (um pouco de talco e uma pequena quantidade de pó de prata)",
-    duration: "1 hora",
-    description: "Pela duração, você vê criaturas e objetos invisíveis como se fossem visíveis, e você pode ver no Plano Etéreo. Criaturas etéreas e objetos aparecem como formas fantasmagóricas e translúcidas.",
-    classes: ["Mago", "Bardo", "Feiticeiro"]
-  },
-  {
-    name: "Despedaçar (Shatter)",
+    name: "Estilhaçar (Shatter)",
     level: 2,
     school: "Evocação",
     castingTime: "1 ação",
     range: "18 metros",
-    components: "V, S, M (um chip de mica)",
+    components: "V, S, M (um pedaço de mica)",
     duration: "Instantânea",
-    description: "Um súbito som alto e ressonante, dolorosamente intenso, emana de um ponto de sua escolha dentro do alcance. Cada criatura em uma esfera de 3 metros de raio centrada nesse ponto deve fazer um teste de resistência de Constituição. Uma criatura sofre 3d8 de dano de trovão em uma falha, ou metade do dano em um sucesso. Uma criatura feita de material inorgânico como pedra, cristal ou metal tem desvantagem neste teste de resistência. Um objeto não mágico que não está sendo vestido ou carregado também sofre o dano se estiver na área da magia.",
-    classes: ["Mago", "Bardo", "Feiticeiro", "Bruxo", "Clérigo"] // Tempest Cleric
+    description: "Um som alto e agudo, dolorosamente intenso, surge em um ponto à sua escolha dentro do alcance. Cada criatura em uma esfera de 3 metros de raio centrada no ponto deve fazer um teste de resistência de Constituição. Uma criatura sofre 3d8 de dano trovejante em uma falha, ou metade do dano em um sucesso. Criaturas feitas de material inorgânico como pedra, cristal ou metal têm desvantagem no teste de resistência.",
+    classes: ["Bardo", "Mago", "Feiticeiro", "Bruxo"]
   },
   {
     name: "Arma Espiritual (Spiritual Weapon)",
@@ -522,105 +491,110 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     range: "18 metros",
     components: "V, S",
     duration: "1 minuto",
-    description: "Você cria uma arma espectral flutuante dentro do alcance que dura pela duração ou até você conjurar esta magia novamente. Quando você conjura a magia, você pode fazer um ataque mágico corpo a corpo contra uma criatura a até 1,5 metro da arma. Se atingir, o alvo sofre dano de energia igual a 1d8 + seu modificador de habilidade de conjuração. Como uma ação bônus em seu turno, você pode mover a arma até 6 metros e repetir o ataque contra uma criatura a até 1,5 metro dela.",
+    description: "Você cria uma arma espectral flutuante dentro do alcance que dura pela duração ou até você conjurá-la novamente. Quando você conjura a magia, você pode fazer um ataque corpo-a-corpo com magia contra uma criatura a até 1,5 metro da arma. Se atingir, o alvo sofre dano de força igual a 1d8 + seu modificador de habilidade de conjuração. Como uma ação bônus no seu turno, você pode mover a arma até 6 metros e repetir o ataque.",
     classes: ["Clérigo"]
   },
+
+  // 3rd Level Spells (NEW)
   {
-    name: "Crescer Espinhos (Spike Growth)",
-    level: 2,
-    school: "Transmutação",
+    name: "Bola de Fogo (Fireball)",
+    level: 3,
+    school: "Evocação",
     castingTime: "1 ação",
     range: "45 metros",
-    components: "V, S, M (sete espinhos afiados ou sete pequenos galhos, cada um afiado em uma ponta)",
-    duration: "Concentração, até 10 minutos",
-    description: "O chão em um raio de 6 metros centrado em um ponto dentro do alcance se retorce e brota com espinhos duros e espigões. A área se torna terreno difícil pela duração. Quando uma criatura se move para dentro ou dentro da área, ela sofre 2d4 de dano perfurante para cada 1,5 metro que viaja. A transformação do solo é camuflada para parecer natural. Qualquer criatura que não possa ver a área no momento em que a magia é conjurada deve fazer um teste de Sabedoria (Percepção) contra sua CD de magia para reconhecer o terreno como perigoso antes de entrar nele.",
-    classes: ["Druida", "Patrulheiro"]
-  },
-  {
-    name: "Ajuda (Aid)",
-    level: 2,
-    school: "Abjuração",
-    castingTime: "1 ação",
-    range: "9 metros",
-    components: "V, S, M (uma pequena tira de tecido branco)",
-    duration: "8 horas",
-    description: "Sua magia infunde seus aliados com resistência e determinação. Escolha até três criaturas dentro do alcance. Os pontos de vida máximos e os pontos de vida atuais de cada alvo aumentam em 5 pela duração.",
-    classes: ["Clérigo", "Paladino"]
-  },
-  {
-    name: "Restauração Menor (Lesser Restoration)",
-    level: 2,
-    school: "Abjuração",
-    castingTime: "1 ação",
-    range: "Toque",
-    components: "V, S",
+    components: "V, S, M (uma pequena bola de guano de morcego e enxofre)",
     duration: "Instantânea",
-    description: "Você toca uma criatura e pode acabar com uma doença ou uma condição que a aflige. A condição pode ser cego, surdo, paralisado ou envenenado.",
-    classes: ["Bardo", "Clérigo", "Druida", "Paladino", "Patrulheiro"]
+    description: "Um raio brilhante de luz pisca do seu dedo indicador para um ponto que você escolher dentro do alcance e então floresce com um rugido baixo em uma explosão de chamas. Cada criatura em uma esfera de 6 metros de raio centrada no ponto deve fazer um teste de resistência de Destreza. Um alvo sofre 8d6 de dano de fogo em uma falha, ou metade do dano em um sucesso.",
+    classes: ["Mago", "Feiticeiro"]
   },
   {
-    name: "Silêncio (Silence)",
-    level: 2,
-    school: "Ilusão (ritual)",
+    name: "Relâmpago (Lightning Bolt)",
+    level: 3,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Pessoal (linha de 30 metros)",
+    components: "V, S, M (um pouco de pele e um bastão de vidro ou cristal)",
+    duration: "Instantânea",
+    description: "Um relâmpago formando uma linha de 30 metros de comprimento e 1,5 metro de largura explode de você em uma direção à sua escolha. Cada criatura na linha deve fazer um teste de resistência de Destreza. Uma criatura sofre 8d6 de dano elétrico em uma falha, ou metade do dano em um sucesso.",
+    classes: ["Mago", "Feiticeiro"]
+  },
+  {
+    name: "Contra-mágica (Counterspell)",
+    level: 3,
+    school: "Abjuração",
+    castingTime: "1 reação",
+    range: "18 metros",
+    components: "S",
+    duration: "Instantânea",
+    description: "Você tenta interromper uma criatura no processo de conjurar uma magia. Se a criatura estiver conjurando uma magia de 3º nível ou inferior, a magia falha e não tem efeito. Se estiver conjurando uma magia de 4º nível ou superior, faça um teste de habilidade usando sua habilidade de conjuração. A CD é 10 + o nível da magia. Em um sucesso, a magia da criatura falha.",
+    classes: ["Mago", "Feiticeiro", "Bruxo"]
+  },
+  {
+    name: "Dissipar Magia (Dispel Magic)",
+    level: 3,
+    school: "Abjuração",
     castingTime: "1 ação",
     range: "36 metros",
     components: "V, S",
-    duration: "Concentração, até 10 minutos",
-    description: "Pela duração, nenhum som pode ser criado dentro ou passar por uma esfera de 6 metros de raio centrada em um ponto de sua escolha dentro do alcance. Qualquer criatura ou objeto totalmente dentro da esfera é imune a dano de trovão, e criaturas estão surdas enquanto totalmente dentro dela. Conjurar uma magia que inclua um componente verbal é impossível lá.",
-    classes: ["Bardo", "Clérigo", "Patrulheiro"]
+    duration: "Instantânea",
+    description: "Escolha uma criatura, objeto ou efeito mágico dentro do alcance. Qualquer magia de 3º nível ou inferior no alvo termina. Para cada magia de 4º nível ou superior no alvo, faça um teste de habilidade usando sua habilidade de conjuração. A CD é 10 + o nível da magia. Em um sucesso, a magia termina.",
+    classes: ["Bardo", "Clérigo", "Druida", "Mago", "Feiticeiro", "Paladino", "Bruxo"]
   },
   {
-    name: "Nublar (Blur)",
-    level: 2,
-    school: "Ilusão",
-    castingTime: "1 ação",
-    range: "Pessoal",
-    components: "V",
-    duration: "Concentração, até 1 minuto",
-    description: "Seu corpo se torna nublado, instável e indistinto. Qualquer criatura tem desvantagem em jogadas de ataque contra você. Um atacante é imune a este efeito se não depender da visão, como com visão cega, ou se puder ver através de ilusões, como com visão verdadeira.",
-    classes: ["Mago", "Feiticeiro", "Bardo"]
-  },
-  {
-    name: "Patas de Aranha (Spider Climb)",
-    level: 2,
+    name: "Voo (Fly)",
+    level: 3,
     school: "Transmutação",
     castingTime: "1 ação",
     range: "Toque",
-    components: "V, S, M (uma gota de betume e uma aranha)",
-    duration: "Concentração, até 1 hora",
-    description: "Até a magia acabar, uma criatura voluntária que você tocar ganha a habilidade de se mover para cima, para baixo, e através de superfícies verticais e de cabeça para baixo em tetos, enquanto deixa suas mãos livres. A criatura também ganha um deslocamento de escalada igual ao seu deslocamento de caminhada.",
-    classes: ["Mago", "Feiticeiro", "Bruxo", "Druida"] // Druida Circle of the Land (Underdark)
+    components: "V, S, M (uma pena de asa de qualquer ave)",
+    duration: "Concentração, até 10 minutos",
+    description: "Você toca uma criatura voluntária. O alvo ganha um deslocamento de voo de 18 metros pela duração. Quando a magia acabar, o alvo cai se ainda estiver no ar, a menos que possa parar a queda.",
+    classes: ["Mago", "Feiticeiro", "Bruxo"]
   },
   {
-    name: "Levitação (Levitate)",
-    level: 2,
+    name: "Velocidade (Haste)",
+    level: 3,
     school: "Transmutação",
     castingTime: "1 ação",
-    range: "18 metros",
-    components: "V, S, M (ou um pequeno laço de couro ou um pedaço de arame dourado dobrado em forma de copo com uma haste longa em uma extremidade)",
-    duration: "Concentração, até 10 minutos",
-    description: "Uma criatura ou objeto de sua escolha que você pode ver dentro do alcance sobe verticalmente, até 6 metros, e permanece suspenso lá pela duração. A magia pode levitar um alvo que pese até 250 quilos. Uma criatura não voluntária que seja bem-sucedida em um teste de resistência de Constituição não é afetada. O alvo pode se mover apenas puxando ou empurrando contra um objeto fixo ou superfície ao alcance (como uma parede ou teto), o que permite que ele se mova como se estivesse escalando. Você pode mudar a altitude do alvo em até 6 metros em qualquer direção em seu turno. Se você for o alvo, você pode se mover para cima ou para baixo como parte de seu movimento. Caso contrário, você pode usar sua ação para mover o alvo, que deve permanecer dentro do alcance da magia. Quando a magia termina, o alvo flutua gentilmente para o chão se ainda estiver no ar.",
+    range: "9 metros",
+    components: "V, S, M (uma lasca de raiz de alcaçuz)",
+    duration: "Concentração, até 1 minuto",
+    description: "Escolha uma criatura voluntária que você possa ver dentro do alcance. Até a magia acabar, o deslocamento do alvo é dobrado, ele ganha um bônus de +2 na CA, tem vantagem em testes de resistência de Destreza e ganha uma ação adicional em cada um de seus turnos. Essa ação pode ser usada apenas para realizar as ações de Ataque (um ataque com arma apenas), Disparada, Desengajar, Esconder ou Usar um Objeto. Quando a magia acaba, o alvo não pode se mover ou realizar ações até depois do seu próximo turno, pois uma onda de letargia o percorre.",
     classes: ["Mago", "Feiticeiro"]
   },
-
+  {
+    name: "Revivificar (Revivify)",
+    level: 3,
+    school: "Necromancia",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S, M (diamantes no valor de 300 po, que a magia consome)",
+    duration: "Instantânea",
+    description: "Você toca uma criatura que tenha morrido no último minuto. Essa criatura retorna à vida com 1 ponto de vida. Essa magia não pode retornar à vida uma criatura que tenha morrido de velhice, nem pode restaurar quaisquer partes do corpo perdidas.",
+    classes: ["Clérigo", "Paladino", "Patrulheiro (Tasha)"]
+  },
+  {
+    name: "Espíritos Guardiões (Spirit Guardians)",
+    level: 3,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "Pessoal (4,5 metros de raio)",
+    components: "V, S, M (um símbolo sagrado)",
+    duration: "Concentração, até 10 minutos",
+    description: "Você convoca espíritos para protegê-lo. Eles flutuam ao seu redor a uma distância de 4,5 metros pela duração. Quando você conjura essa magia, você pode designar qualquer número de criaturas que você possa ver para serem ignoradas por ela. A área afetada é considerada terreno difícil para inimigos. Quando uma criatura entra na área pela primeira vez em um turno ou começa seu turno nela, ela deve fazer um teste de resistência de Sabedoria. Em uma falha, a criatura sofre 3d8 de dano radiante (se você for bom ou neutro) ou necrótico (se você for mau). Em um sucesso, a criatura sofre metade do dano.",
+    classes: ["Clérigo"]
+  }
 ];
 
-// Mantendo WIZARD_SPELLS como um subconjunto para compatibilidade com lógica existente se necessário, 
-// mas idealmente toda a lógica usaria ALL_AVAILABLE_SPELLS e filtraria por classe.
-export const WIZARD_SPELLS: Spell[] = ALL_AVAILABLE_SPELLS.filter(spell => spell.classes.includes("Mago"));
-
-
 export const ALL_SPELLS_MAP: Record<string, Spell> = ALL_AVAILABLE_SPELLS.reduce((acc, spell) => {
-  acc[spell.name] = spell;
-  return acc;
+    acc[spell.name] = spell;
+    return acc;
 }, {} as Record<string, Spell>);
 
-export const getSpellsByClassAndLevel = (className: string, spellLevel: number): Spell[] => {
-  return ALL_AVAILABLE_SPELLS.filter(spell => spell.classes.includes(className) && spell.level === spellLevel)
-    .sort((a,b) => a.name.localeCompare(b.name)); // Sort alphabetically
+export const getCantripsByClass = (className: string): Spell[] => {
+  return ALL_AVAILABLE_SPELLS.filter(spell => spell.level === 0 && spell.classes.includes(className));
 };
 
-export const getCantripsByClass = (className: string): Spell[] => {
-  return ALL_AVAILABLE_SPELLS.filter(spell => spell.classes.includes(className) && spell.level === 0)
-    .sort((a,b) => a.name.localeCompare(b.name)); // Sort alphabetically
+export const getSpellsByClassAndLevel = (className: string, level: number): Spell[] => {
+  return ALL_AVAILABLE_SPELLS.filter(spell => spell.level === level && spell.classes.includes(className));
 };
