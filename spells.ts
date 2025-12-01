@@ -27,6 +27,17 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Bardo", "Feiticeiro", "Mago", "Bruxo"]
   },
   {
+    name: "Bordão Místico (Shillelagh)",
+    level: 0,
+    school: "Transmutação",
+    castingTime: "1 ação bônus",
+    range: "Toque",
+    components: "V, S, M (visco, uma folha de trevo e uma clava ou bordão)",
+    duration: "1 minuto",
+    description: "A madeira de uma clava ou bordão que você estiver segurando é imbuída com o poder da natureza. Pela duração, você pode usar sua habilidade de conjuração em vez de Força para as jogadas de ataque e dano corpo a corpo usando essa arma, e o dado de dano da arma se torna um d8. A arma também se torna mágica, se ela já não for. A magia acaba se você conjurá-la novamente ou se você soltar a arma.",
+    classes: ["Druida"]
+  },
+  {
     name: "Chicote Elétrico (Lightning Lure)",
     level: 0,
     school: "Evocação",
@@ -82,6 +93,17 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Druida", "Feiticeiro", "Mago"]
   },
   {
+    name: "Criar Chamas (Produce Flame)",
+    level: 0,
+    school: "Conjuração",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "10 minutos",
+    description: "Uma chama tremulante aparece na sua mão. A chama permanece lá pela duração e não fere nem você nem seu equipamento. A chama emite luz plena num raio de 3 metros e penumbra por mais 3 metros. A magia acaba se você dissipá-la com uma ação ou se conjurá-la novamente. Você também pode atacar com a chama, embora isso acabe com a magia. Quando você conjura essa magia, ou com uma ação em um turno posterior, você pode arremessar a chama em uma criatura a até 9 metros de você. Faça um ataque à distância com magia. Se atingir, o alvo sofre 1d8 de dano de fogo.",
+    classes: ["Druida"]
+  },
+  {
     name: "Criar Fogueira (Create Bonfire)",
     level: 0,
     school: "Conjuração",
@@ -126,6 +148,17 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Mago", "Feiticeiro", "Artífice"]
   },
   {
+    name: "Estabilizar (Spare the Dying)",
+    level: 0,
+    school: "Necromancia",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Você toca uma criatura viva que tem 0 pontos de vida. A criatura se torna estável. Esta magia não tem efeito em mortos-vivos ou construtos.",
+    classes: ["Clérigo", "Artífice"]
+  },
+  {
     name: "Estouro de Trovão (Thunderclap)",
     level: 0,
     school: "Evocação",
@@ -148,7 +181,18 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Feiticeiro", "Bruxo", "Mago"]
   },
   {
-    name: "Golpe Certeiro (Boaming Blade - Lâmina Estrondosa)",
+    name: "Globos de Luz (Dancing Lights)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "36 metros",
+    components: "V, S, M (um pouco de fósforo ou madeira podre, ou um vaga-lume)",
+    duration: "Concentração, até 1 minuto",
+    description: "Você cria até quatro luzes do tamanho de tochas dentro do alcance, fazendo-as parecerem tochas, lanternas ou esferas brilhantes que flutuam no ar pela duração. Você também pode combinar as quatro luzes em uma forma brilhante vagamente humanoide de tamanho Médio. Qualquer que seja a forma que você escolher, cada luz emite penumbra num raio de 3 metros.",
+    classes: ["Bardo", "Feiticeiro", "Mago", "Artífice"]
+  },
+  {
+    name: "Lâmina Estrondosa (Booming Blade)",
     level: 0,
     school: "Evocação",
     castingTime: "1 ação",
@@ -302,6 +346,17 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Mago", "Bardo", "Bruxo", "Feiticeiro", "Druida", "Artífice"]
   },
   {
+    name: "Proteção contra Lâminas (Blade Ward)",
+    level: 0,
+    school: "Abjuração",
+    castingTime: "1 ação",
+    range: "Pessoal",
+    components: "V, S",
+    duration: "1 rodada",
+    description: "Você estende a mão e traça um sigilo de proteção no ar. Até o final do seu próximo turno, você tem resistência contra dano de concussão, cortante e perfurante causado por ataques com armas.",
+    classes: ["Bardo", "Feiticeiro", "Bruxo", "Mago"]
+  },
+  {
     name: "Raio de Gelo (Ray of Frost)",
     level: 0,
     school: "Evocação",
@@ -390,6 +445,17 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Druida"]
   },
   {
+    name: "Taumaturgia (Thaumaturgy)",
+    level: 0,
+    school: "Transmutação",
+    castingTime: "1 ação",
+    range: "9 metros",
+    components: "V",
+    duration: "Até 1 minuto",
+    description: "Você manifesta uma pequena maravilha, um sinal de poder sobrenatural, dentro do alcance. Você cria um dos seguintes efeitos mágicos dentro do alcance: Sua voz ressoa até três vezes mais alto que o normal; Você faz chamas tremularem, clarearem, escurecerem ou mudarem de cor; Você causa tremores inofensivos no solo; Você cria um som instantâneo (trovão, corvo, sussurros); Você faz uma porta ou janela destrancada se abrir ou fechar; Você altera a aparência de seus olhos.",
+    classes: ["Clérigo"]
+  },
+  {
     name: "Toque Arrepiante (Chill Touch)",
     level: 0,
     school: "Necromancia",
@@ -399,6 +465,17 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     duration: "1 rodada",
     description: "Você cria uma mão esquelética fantasmagórica no espaço de uma criatura dentro do alcance. Faça um ataque à distância com magia contra a criatura para atingi-la com o toque fantasmagórico. Se atingir, a criatura sofre 1d8 de dano necrótico, e não pode recuperar pontos de vida até o início do seu próximo turno. Se você atingir um alvo morto-vivo, ele também tem desvantagem nas jogadas de ataque contra você até o final do seu próximo turno.",
     classes: ["Mago", "Feiticeiro", "Bruxo"]
+  },
+  {
+    name: "Toque Chocante (Shocking Grasp)",
+    level: 0,
+    school: "Evocação",
+    castingTime: "1 ação",
+    range: "Toque",
+    components: "V, S",
+    duration: "Instantânea",
+    description: "Eletricidade surge de sua mão para aplicar um choque em uma criatura que você tentar tocar. Faça um ataque corpo-a-corpo com magia contra o alvo. Você tem vantagem na jogada de ataque se o alvo estiver vestindo qualquer armadura feita de metal. Se atingir, o alvo sofre 1d8 de dano elétrico e não pode usar reações até o início do próximo turno dele.",
+    classes: ["Feiticeiro", "Mago", "Artífice"]
   },
   {
     name: "Zombaria Viciosa (Vicious Mockery)",
@@ -1162,7 +1239,7 @@ export const ALL_AVAILABLE_SPELLS: Spell[] = [
     classes: ["Bardo", "Druida", "Feiticeiro", "Mago"]
   },
   {
-    name: "Vitalia Falsa (False Life)",
+    name: "Vitalidade Falsa (False Life)",
     level: 1,
     school: "Necromancia",
     castingTime: "1 ação",

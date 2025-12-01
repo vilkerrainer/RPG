@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Character, ATTRIBUTE_NAMES, ATTRIBUTE_LABELS, AttributeName, MagicInfo, Spell, ClassFeatureSelection, RacialFeatureSelection, RANKS, Rank, FeatSelection } from '../types';
+import { Character, ATTRIBUTE_NAMES, ATTRIBUTE_LABELS, AttributeName, MagicInfo, Spell, ClassFeatureSelection, RacialFeatureSelection, RANKS, Rank, FeatSelection, METAMAGIC_OPTIONS_CHOICES } from '../types';
 import AttributeField, { calculateModifier, formatModifier } from './AttributeField';
 import Button from './ui/Button';
 import Input from './ui/Input'; 
@@ -105,7 +105,6 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
     spellcastingAbilityLabel = ATTRIBUTE_LABELS[magicInfo.spellcastingAbilityName];
   }
 
-  // ... (renderSpellDetails, displaySpellListWithDetails remain same) ...
   const renderSpellDetails = (spell: Spell) => (
     <div className="mt-2 p-3 bg-sky-100 dark:bg-slate-600/80 rounded text-xs text-slate-700 dark:text-slate-300 space-y-1 shadow-inner">
       <p><strong>Nível:</strong> {spell.level === 0 ? "Truque" : spell.level}</p>
@@ -157,7 +156,6 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
     );
   };
 
-  // ... (handlePlayerHeal, handlePlayerTakeDamage, etc. remain same) ...
   const handlePlayerHeal = () => {
     if (!onCharacterUpdate || !healAmount) return;
     const amount = parseInt(healAmount, 10);
@@ -228,38 +226,23 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
       if (!onCharacterUpdate) return;
       const updates: Partial<Character> = {};
       switch (abilityType) {
-          case 'rage':
-              if ((character.currentRages ?? 0) > 0) updates.currentRages = (character.currentRages ?? 0) - 1;
-              break;
-          case 'bardicInspiration':
-              if ((character.currentBardicInspirations ?? 0) > 0) updates.currentBardicInspirations = (character.currentBardicInspirations ?? 0) - 1;
-              break;
-          case 'channelDivinity':
-              if ((character.currentChannelDivinityUses ?? 0) > 0) updates.currentChannelDivinityUses = (character.currentChannelDivinityUses ?? 0) - 1;
-              break;
-          case 'secondWind':
+          case 'rage': if ((character.currentRages ?? 0) > 0) updates.currentRages = (character.currentRages ?? 0) - 1; break;
+          case 'bardicInspiration': if ((character.currentBardicInspirations ?? 0) > 0) updates.currentBardicInspirations = (character.currentBardicInspirations ?? 0) - 1; break;
+          case 'channelDivinity': if ((character.currentChannelDivinityUses ?? 0) > 0) updates.currentChannelDivinityUses = (character.currentChannelDivinityUses ?? 0) - 1; break;
+          case 'secondWind': 
               if ((character.currentSecondWindUses ?? 0) > 0) {
                   updates.currentSecondWindUses = (character.currentSecondWindUses ?? 0) - 1;
-                  // Player applies HP gain manually: 1d10 + Fighter level
-                  const fighterLevel = character.level; // Assuming level is correct
+                  const fighterLevel = character.level;
                   const roll = Math.floor(Math.random() * 10) + 1;
                   const healed = roll + fighterLevel;
                   updates.hp = Math.min(character.hpt, character.hp + healed);
                   setRestMessage(`Retomar o Fôlego usado! Curado ${healed} PV (Rolagem: ${roll} + Nível ${fighterLevel}).`);
               }
               break;
-          case 'actionSurge':
-              if ((character.currentActionSurgeUses ?? 0) > 0) updates.currentActionSurgeUses = (character.currentActionSurgeUses ?? 0) - 1;
-              break;
-          case 'kiPoints':
-              if ((character.currentKiPoints ?? 0) > 0) updates.currentKiPoints = (character.currentKiPoints ?? 0) - 1;
-              break;
-          case 'relentlessEndurance':
-              if ((character.currentRelentlessEnduranceUses ?? 0) > 0) updates.currentRelentlessEnduranceUses = (character.currentRelentlessEnduranceUses ?? 0) - 1;
-              break;
-          case 'breathWeapon':
-              if ((character.currentBreathWeaponUses ?? 0) > 0) updates.currentBreathWeaponUses = (character.currentBreathWeaponUses ?? 0) - 1;
-              break;
+          case 'actionSurge': if ((character.currentActionSurgeUses ?? 0) > 0) updates.currentActionSurgeUses = (character.currentActionSurgeUses ?? 0) - 1; break;
+          case 'kiPoints': if ((character.currentKiPoints ?? 0) > 0) updates.currentKiPoints = (character.currentKiPoints ?? 0) - 1; break;
+          case 'relentlessEndurance': if ((character.currentRelentlessEnduranceUses ?? 0) > 0) updates.currentRelentlessEnduranceUses = (character.currentRelentlessEnduranceUses ?? 0) - 1; break;
+          case 'breathWeapon': if ((character.currentBreathWeaponUses ?? 0) > 0) updates.currentBreathWeaponUses = (character.currentBreathWeaponUses ?? 0) - 1; break;
       }
       if (Object.keys(updates).length > 0) {
           onCharacterUpdate(character.id, updates);
@@ -270,30 +253,14 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
       if (!onCharacterUpdate) return;
       const updates: Partial<Character> = {};
       switch (abilityType) {
-          case 'rage':
-              if ((character.currentRages ?? 0) < (character.maxRages ?? 0)) updates.currentRages = (character.currentRages ?? 0) + 1;
-              break;
-          case 'bardicInspiration':
-              if ((character.currentBardicInspirations ?? 0) < (character.maxBardicInspirations ?? 0)) updates.currentBardicInspirations = (character.currentBardicInspirations ?? 0) + 1;
-              break;
-          case 'channelDivinity':
-              if ((character.currentChannelDivinityUses ?? 0) < (character.maxChannelDivinityUses ?? 0)) updates.currentChannelDivinityUses = (character.currentChannelDivinityUses ?? 0) + 1;
-              break;
-          case 'secondWind':
-              if ((character.currentSecondWindUses ?? 0) < (character.maxSecondWindUses ?? 0)) updates.currentSecondWindUses = (character.currentSecondWindUses ?? 0) + 1;
-              break;
-          case 'actionSurge':
-              if ((character.currentActionSurgeUses ?? 0) < (character.maxActionSurgeUses ?? 0)) updates.currentActionSurgeUses = (character.currentActionSurgeUses ?? 0) + 1;
-              break;
-          case 'kiPoints':
-              if ((character.currentKiPoints ?? 0) < (character.maxKiPoints ?? 0)) updates.currentKiPoints = (character.currentKiPoints ?? 0) + 1;
-              break;
-          case 'relentlessEndurance':
-              if ((character.currentRelentlessEnduranceUses ?? 0) < (character.maxRelentlessEnduranceUses ?? 0)) updates.currentRelentlessEnduranceUses = (character.currentRelentlessEnduranceUses ?? 0) + 1;
-              break;
-          case 'breathWeapon':
-              if ((character.currentBreathWeaponUses ?? 0) < (character.maxBreathWeaponUses ?? 0)) updates.currentBreathWeaponUses = (character.currentBreathWeaponUses ?? 0) + 1;
-              break;
+          case 'rage': if ((character.currentRages ?? 0) < (character.maxRages ?? 0)) updates.currentRages = (character.currentRages ?? 0) + 1; break;
+          case 'bardicInspiration': if ((character.currentBardicInspirations ?? 0) < (character.maxBardicInspirations ?? 0)) updates.currentBardicInspirations = (character.currentBardicInspirations ?? 0) + 1; break;
+          case 'channelDivinity': if ((character.currentChannelDivinityUses ?? 0) < (character.maxChannelDivinityUses ?? 0)) updates.currentChannelDivinityUses = (character.currentChannelDivinityUses ?? 0) + 1; break;
+          case 'secondWind': if ((character.currentSecondWindUses ?? 0) < (character.maxSecondWindUses ?? 0)) updates.currentSecondWindUses = (character.currentSecondWindUses ?? 0) + 1; break;
+          case 'actionSurge': if ((character.currentActionSurgeUses ?? 0) < (character.maxActionSurgeUses ?? 0)) updates.currentActionSurgeUses = (character.currentActionSurgeUses ?? 0) + 1; break;
+          case 'kiPoints': if ((character.currentKiPoints ?? 0) < (character.maxKiPoints ?? 0)) updates.currentKiPoints = (character.currentKiPoints ?? 0) + 1; break;
+          case 'relentlessEndurance': if ((character.currentRelentlessEnduranceUses ?? 0) < (character.maxRelentlessEnduranceUses ?? 0)) updates.currentRelentlessEnduranceUses = (character.currentRelentlessEnduranceUses ?? 0) + 1; break;
+          case 'breathWeapon': if ((character.currentBreathWeaponUses ?? 0) < (character.maxBreathWeaponUses ?? 0)) updates.currentBreathWeaponUses = (character.currentBreathWeaponUses ?? 0) + 1; break;
       }
       if (Object.keys(updates).length > 0) {
           onCharacterUpdate(character.id, updates);
@@ -302,25 +269,72 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
   
   const handleUseLayOnHands = (amount: number, isCureDiseasePoison: boolean = false) => {
     if (!onCharacterUpdate || !character.currentLayOnHandsPool === undefined) return;
-    
     const cost = isCureDiseasePoison ? 5 : amount;
     if (cost <= 0 || (character.currentLayOnHandsPool ?? 0) < cost) {
         setRestMessage("Reserva de Cura pelas Mãos insuficiente.");
         return;
     }
-
     const updates: Partial<Character> = {};
     updates.currentLayOnHandsPool = (character.currentLayOnHandsPool ?? 0) - cost;
-
     if (!isCureDiseasePoison) {
         updates.hp = Math.min(character.hpt, character.hp + amount);
         setRestMessage(`Curado ${amount} PV com Cura pelas Mãos. Reserva restante: ${updates.currentLayOnHandsPool}`);
     } else {
         setRestMessage(`Doença/Veneno curado com Cura pelas Mãos (custo 5 PV). Reserva restante: ${updates.currentLayOnHandsPool}`);
     }
-    
     onCharacterUpdate(character.id, updates);
     setLayOnHandsHealAmount('1');
+  };
+
+  const handleUseDynamicResource = (featureId: string, type: 'class'|'race') => {
+      if (!onCharacterUpdate) return;
+      const updates: Partial<Character> = {};
+      const features = type === 'class' ? [...(character.classFeatures || [])] : [...(character.racialFeatures || [])];
+      const index = features.findIndex(f => f.featureId === featureId);
+      if (index > -1) {
+          const feature = features[index];
+          if ((feature.currentUses ?? 0) > 0) {
+              features[index] = { ...feature, currentUses: (feature.currentUses ?? 0) - 1 };
+              if (type === 'class') updates.classFeatures = features as ClassFeatureSelection[];
+              else updates.racialFeatures = features as RacialFeatureSelection[];
+              onCharacterUpdate(character.id, updates);
+          }
+      }
+  };
+
+  const handleConsumeResource = (targetFeatureId: string, amount: number) => {
+      if (!onCharacterUpdate) return;
+      const updates: Partial<Character> = {};
+      // Resource is usually a class feature (e.g. Sorcery Points)
+      const features = [...(character.classFeatures || [])];
+      const index = features.findIndex(f => f.featureId === targetFeatureId);
+      
+      if (index > -1) {
+          const feature = features[index];
+          if ((feature.currentUses ?? 0) >= amount) {
+              features[index] = { ...feature, currentUses: (feature.currentUses ?? 0) - amount };
+              updates.classFeatures = features;
+              onCharacterUpdate(character.id, updates);
+          } else {
+              setRestMessage("Recurso insuficiente!");
+          }
+      }
+  };
+
+  const handleRecoverDynamicResource = (featureId: string, type: 'class'|'race') => {
+      if (!onCharacterUpdate) return;
+      const updates: Partial<Character> = {};
+      const features = type === 'class' ? [...(character.classFeatures || [])] : [...(character.racialFeatures || [])];
+      const index = features.findIndex(f => f.featureId === featureId);
+      if (index > -1) {
+          const feature = features[index];
+          if ((feature.currentUses ?? 0) < (feature.maxUses ?? 0)) {
+              features[index] = { ...feature, currentUses: (feature.currentUses ?? 0) + 1 };
+              if (type === 'class') updates.classFeatures = features as ClassFeatureSelection[];
+              else updates.racialFeatures = features as RacialFeatureSelection[];
+              onCharacterUpdate(character.id, updates);
+          }
+      }
   };
 
 
@@ -331,7 +345,6 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
       setRestMessage("Número inválido de Dados de Vida para gastar.");
       return;
     }
-
     const racialBonuses = calculateRaceAttributeBonuses(character.race, character.racialFeatures);
     const conBonus = racialBonuses.constitution || 0;
     const conModifier = calculateModifier(character.attributes.constitution + conBonus);
@@ -368,34 +381,36 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
         messages.push("Espaços de Magia de Pacto do Bruxo recuperados.");
     }
     
-    // ... (rest of short rest logic) ...
     if (character.charClass === 'Clérigo' || character.charClass === 'Paladino') {
         if(character.maxChannelDivinityUses !== undefined) updates.currentChannelDivinityUses = character.maxChannelDivinityUses;
-        messages.push("Usos de Canalizar Divindade recuperados.");
     }
-
     if (character.charClass === 'Bardo' && character.level >= 5 && character.maxBardicInspirations !== undefined) {
         updates.currentBardicInspirations = character.maxBardicInspirations;
-        messages.push("Usos de Inspiração de Bardo recuperados.");
     }
-    
     if (character.charClass === 'Guerreiro') {
         if (character.maxSecondWindUses !== undefined) updates.currentSecondWindUses = character.maxSecondWindUses;
         if (character.maxActionSurgeUses !== undefined) updates.currentActionSurgeUses = character.maxActionSurgeUses;
-        messages.push("Usos de Retomar o Fôlego e Surto de Ação recuperados.");
     }
-    
     if (character.race === 'Draconato' && character.maxBreathWeaponUses !== undefined) {
         updates.currentBreathWeaponUses = character.maxBreathWeaponUses;
-        messages.push("Uso da Arma de Sopro recuperado.");
     }
-
     if (character.charClass === 'Monge' && character.maxKiPoints !== undefined) {
         updates.currentKiPoints = character.maxKiPoints;
-        messages.push("Pontos de Chi recuperados.");
     }
-    
-    messages.push("Lembre-se de recuperar usos de habilidades que recarregam em descanso curto (ex: Ki de Monge, Retomar Fôlego de Guerreiro).");
+
+    // Recover dynamic resources marked as 'short'
+    const newClassFeatures = character.classFeatures?.map(f => {
+        if (f.recoveryType === 'short' && f.maxUses) return { ...f, currentUses: f.maxUses };
+        return f;
+    });
+    const newRacialFeatures = character.racialFeatures?.map(f => {
+        if (f.recoveryType === 'short' && f.maxUses) return { ...f, currentUses: f.maxUses };
+        return f;
+    });
+    if (JSON.stringify(newClassFeatures) !== JSON.stringify(character.classFeatures)) updates.classFeatures = newClassFeatures;
+    if (JSON.stringify(newRacialFeatures) !== JSON.stringify(character.racialFeatures)) updates.racialFeatures = newRacialFeatures;
+
+    messages.push("Recursos de descanso curto recuperados.");
 
     onCharacterUpdate(character.id, updates);
     setRestMessage(messages.join(" "));
@@ -405,7 +420,6 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
   };
 
   const applyLongRestBenefits = () => {
-    // ... (long rest logic) ...
     if (!onCharacterUpdate) return;
     const updates: Partial<Character> = { ...character };
     let messages = ["Descanso Longo finalizado."];
@@ -415,16 +429,15 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
 
     const hitDiceRecovered = Math.max(1, Math.floor(character.maxHitDice / 2));
     updates.currentHitDice = Math.min(character.maxHitDice, character.currentHitDice + hitDiceRecovered);
-    messages.push(`${hitDiceRecovered} Dados de Vida recuperados (Total agora: ${updates.currentHitDice}/${character.maxHitDice}).`);
+    messages.push(`${hitDiceRecovered} Dados de Vida recuperados.`);
 
     if (updates.magic) {
         const maxSpellSlots = getClassSpellSlots(character.charClass, character.level);
         updates.magic.spellSlots = maxSpellSlots; 
         updates.magic.currentSpellSlots = [...maxSpellSlots]; 
-        messages.push("Todos os espaços de magia recuperados.");
+        messages.push("Espaços de magia recuperados.");
     }
     
-    // Restore all trackable limited use abilities
     if (character.maxRages !== undefined) updates.currentRages = character.maxRages;
     if (character.maxBardicInspirations !== undefined) updates.currentBardicInspirations = character.maxBardicInspirations;
     if (character.maxChannelDivinityUses !== undefined) updates.currentChannelDivinityUses = character.maxChannelDivinityUses;
@@ -435,8 +448,21 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
     if (character.maxRelentlessEnduranceUses !== undefined) updates.currentRelentlessEnduranceUses = character.maxRelentlessEnduranceUses;
     if (character.maxBreathWeaponUses !== undefined) updates.currentBreathWeaponUses = character.maxBreathWeaponUses;
 
-    messages.push("Todos os usos de habilidades rastreáveis recuperados.");
-    messages.push("Lembre-se de recuperar usos de habilidades que recarregam em descanso longo.");
+    // Recover all dynamic resources (short and long)
+    const newClassFeatures = character.classFeatures?.map(f => {
+        if ((f.recoveryType === 'short' || f.recoveryType === 'long') && f.maxUses) return { ...f, currentUses: f.maxUses };
+        // Reset Sorcery Points too
+        if (f.featureId === 'sorcerer_font_magic' && f.maxUses) return { ...f, currentUses: f.maxUses };
+        return f;
+    });
+    const newRacialFeatures = character.racialFeatures?.map(f => {
+        if ((f.recoveryType === 'short' || f.recoveryType === 'long') && f.maxUses) return { ...f, currentUses: f.maxUses };
+        return f;
+    });
+    if (JSON.stringify(newClassFeatures) !== JSON.stringify(character.classFeatures)) updates.classFeatures = newClassFeatures;
+    if (JSON.stringify(newRacialFeatures) !== JSON.stringify(character.racialFeatures)) updates.racialFeatures = newRacialFeatures;
+
+    messages.push("Todos os recursos recuperados.");
 
     onCharacterUpdate(character.id, updates);
     setRestMessage(messages.join(" "));
@@ -445,12 +471,19 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
 
 
   const renderClassFeatures = (features?: ClassFeatureSelection[]) => {
-    // ... (same as original) ...
     if (!features || features.length === 0) {
       return <p className="text-slate-800 dark:text-slate-100">Nenhuma característica de classe específica listada.</p>;
     }
     const featuresByLevel: Record<number, ClassFeatureSelection[]> = {};
     features.forEach(feature => {
+        // Filter out features that are displayed as resources at the top to avoid duplication
+        let cost = feature.cost;
+        if ((!cost || cost === 0) && feature.choiceValue) {
+             const metaOption = METAMAGIC_OPTIONS_CHOICES.find(o => o.value === feature.choiceValue);
+             if (metaOption) cost = metaOption.cost;
+        }
+        if (cost && cost > 0 && character.charClass === 'Feiticeiro') return; // Skip metamagic in list
+
         if (!featuresByLevel[feature.levelAcquired]) {
             featuresByLevel[feature.levelAcquired] = [];
         }
@@ -460,66 +493,66 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
     return Object.entries(featuresByLevel)
       .sort(([levelA], [levelB]) => parseInt(levelA) - parseInt(levelB)) 
       .map(([level, levelFeatures]) => (
-        <div key={`level-${level}-display`} className="mb-3">
-          <h4 className="text-md font-semibold text-slate-700 dark:text-slate-300">Nível {level}:</h4>
-          <ul className="list-disc list-inside ml-4 space-y-1">
-            {levelFeatures.map(feature => (
+        <div key={`level-${level}-display`} className="mb-4">
+          <h4 className="text-md font-semibold text-slate-700 dark:text-slate-300 border-b border-slate-200 dark:border-slate-600 mb-2">Nível {level}</h4>
+          <ul className="space-y-3">
+            {levelFeatures.map(feature => {
+              return (
               <li key={feature.featureId} className="text-sm text-slate-800 dark:text-slate-100">
-                <span className="font-medium">{feature.featureName}</span>
-                {feature.type === 'choice' && feature.choiceLabel && (
-                  <span>: <span className="italic">{feature.choiceLabel}</span></span>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
+                    <div>
+                        <span className="font-bold text-sky-700 dark:text-sky-400">{feature.featureName}</span>
+                        {feature.type === 'choice' && feature.choiceLabel && (
+                        <span>: <span className="italic font-medium text-slate-600 dark:text-slate-300">{feature.choiceLabel}</span></span>
+                        )}
+                        {feature.maxUses !== undefined && (
+                            <span className="text-xs font-semibold text-sky-600 dark:text-sky-400 ml-2 bg-sky-100 dark:bg-sky-900/50 px-1.5 py-0.5 rounded">
+                                {feature.currentUses ?? feature.maxUses}/{feature.maxUses}
+                            </span>
+                        )}
+                    </div>
+                </div>
+                {feature.description && (feature.type !== 'choice' || !feature.choiceLabel || feature.choiceLabel) && (
+                    <div className="text-slate-600 dark:text-slate-400 text-xs pl-2 border-l-2 border-slate-200 dark:border-slate-600">
+                        <p className="whitespace-pre-wrap text-justify leading-relaxed">{feature.description}</p>
+                    </div>
                 )}
-                {feature.type === 'asi' && feature.asiChoice === 'feat' && feature.choiceLabel && (
-                   <span>: <span className="italic">{feature.choiceLabel}</span></span>
-                )}
-                {feature.type === 'asi' && (!feature.asiChoice || feature.asiChoice === 'asi') && (
-                  <span className="italic"> (Incremento no Valor de Habilidade)</span>
-                )}
-                {feature.description && (feature.type !== 'choice' || !feature.choiceLabel) && ( 
-                    <details className="text-xs text-slate-600 dark:text-slate-400 pl-2 cursor-pointer">
-                        <summary className="hover:text-sky-500 dark:hover:text-sky-400">Ver descrição</summary>
-                        <p className="mt-1 whitespace-pre-wrap text-justify">{feature.description}</p>
-                     </details>
-                )}
-                 {feature.type === 'choice' && feature.choiceLabel && feature.description && (
-                     <details className="text-xs text-slate-600 dark:text-slate-400 pl-2 cursor-pointer">
-                        <summary className="hover:text-sky-500 dark:hover:text-sky-400">Ver descrição da característica</summary>
-                        <p className="mt-1 whitespace-pre-wrap text-justify">{feature.description}</p>
-                     </details>
-                 )}
               </li>
-            ))}
+            )})}
           </ul>
         </div>
       ));
   };
   
   const renderRacialFeaturesDisplay = (features?: RacialFeatureSelection[]) => {
-    // ... (same as original) ...
     if (!features || features.length === 0) {
         return <p className="text-slate-800 dark:text-slate-100">Nenhuma característica racial específica listada.</p>;
     }
     return (
-        <ul className="list-disc list-inside ml-4 space-y-1">
+        <ul className="space-y-3">
             {features.map(feature => {
                 let displayLabel = feature.choiceLabel;
-                // Specifically for ASI choice type where we use customChoiceText
                 if ((feature.featureId === 'half_elf_asi') && feature.customChoiceText) {
                     const chosenAttrs = feature.customChoiceText.split(',').map(attr => ATTRIBUTE_LABELS[attr as AttributeName]).join(', ');
                     displayLabel = chosenAttrs;
                 }
-
                 return (
                 <li key={feature.featureId} className="text-sm text-slate-800 dark:text-slate-100">
-                    <span className="font-medium">{feature.featureName}</span>
-                    {feature.type === 'choice' && displayLabel && (
-                        <span>: <span className="italic">{displayLabel}</span></span>
-                    )}
+                    <div className="flex items-center mb-1">
+                        <span className="font-bold text-sky-700 dark:text-sky-400">{feature.featureName}</span>
+                        {feature.type === 'choice' && displayLabel && (
+                            <span>: <span className="italic font-medium text-slate-600 dark:text-slate-300">{displayLabel}</span></span>
+                        )}
+                        {feature.maxUses !== undefined && (
+                            <span className="text-xs font-semibold text-sky-600 dark:text-sky-400 ml-2 bg-sky-100 dark:bg-sky-900/50 px-1.5 py-0.5 rounded">
+                                {feature.currentUses ?? feature.maxUses}/{feature.maxUses}
+                            </span>
+                        )}
+                    </div>
                     {feature.description && (
-                        <details className="text-xs text-slate-600 dark:text-slate-400 pl-2 cursor-pointer">
-                            <summary className="hover:text-sky-500 dark:hover:text-sky-400">Ver descrição</summary>
-                            <p className="mt-1 whitespace-pre-wrap text-justify">{feature.description}</p>
-                        </details>
+                        <div className="text-slate-600 dark:text-slate-400 text-xs pl-2 border-l-2 border-slate-200 dark:border-slate-600">
+                            <p className="whitespace-pre-wrap text-justify leading-relaxed">{feature.description}</p>
+                        </div>
                     )}
                 </li>
             )})}
@@ -530,6 +563,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
 
   return (
     <div className="max-w-4xl mx-auto my-8 p-6 bg-white dark:bg-slate-800 shadow-2xl rounded-lg">
+      {/* ... header ... */}
       <div className="flex justify-between items-start mb-6">
         <h2 className="text-4xl font-bold text-sky-700 dark:text-sky-400">{character.name}</h2>
         <div>
@@ -542,6 +576,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
         </div>
       </div>
 
+      {/* ... attributes ... */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="md:col-span-1">
           <img 
@@ -564,9 +599,8 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
       </div>
 
        <Section title="Recursos e Habilidades de Uso Limitado">
-            {/* ... (Limited use abilities UI remains same) ... */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* Class Abilities */}
+                {/* Standard Legacy Resources */}
                 {character.charClass === 'Bárbaro' && character.maxRages !== undefined && (
                     <div className="p-3 bg-slate-100 dark:bg-slate-600/50 rounded-md">
                         <InfoItem label="Fúrias" value={`${character.currentRages ?? 0} / ${character.maxRages ?? 0}`} />
@@ -576,6 +610,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
                         </div>
                     </div>
                 )}
+                {/* ... other legacy blocks (Bardo, Clérigo, Guerreiro, Monge, Paladino LoH, Racial) ... */}
                 {character.charClass === 'Bardo' && character.maxBardicInspirations !== undefined && (
                     <div className="p-3 bg-slate-100 dark:bg-slate-600/50 rounded-md">
                         <InfoItem label="Inspirações de Bardo" value={`${character.currentBardicInspirations ?? 0} / ${character.maxBardicInspirations ?? 0}`} />
@@ -616,14 +651,14 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
                      <div className="p-3 bg-slate-100 dark:bg-slate-600/50 rounded-md">
                         <InfoItem label="Pontos de Chi" value={`${character.currentKiPoints ?? 0} / ${character.maxKiPoints ?? 0}`} />
                         <div className="flex space-x-1 mt-1">
-                            <Button onClick={() => handleUseGenericAbility('kiPoints')} size="sm" className="text-xs px-2 py-1 flex-1" disabled={(character.currentKiPoints ?? 0) === 0}>Gastar Ponto</Button>
-                            <Button onClick={() => handleRecoverGenericAbilityUse('kiPoints')} variant="secondary" size="sm" className="text-xs px-2 py-1 flex-1" disabled={(character.currentKiPoints ?? 0) >= (character.maxKiPoints ?? 0)}>Recuperar Ponto</Button>
+                            <Button onClick={() => handleUseGenericAbility('kiPoints')} size="sm" className="text-xs px-2 py-1 flex-1" disabled={(character.currentKiPoints ?? 0) === 0}>Gastar</Button>
+                            <Button onClick={() => handleRecoverGenericAbilityUse('kiPoints')} variant="secondary" size="sm" className="text-xs px-2 py-1 flex-1" disabled={(character.currentKiPoints ?? 0) >= (character.maxKiPoints ?? 0)}>Recuperar</Button>
                         </div>
                     </div>
                 )}
                  {character.charClass === 'Paladino' && character.maxLayOnHandsPool !== undefined && (
                      <div className="p-3 bg-slate-100 dark:bg-slate-600/50 rounded-md md:col-span-2 lg:col-span-1">
-                        <InfoItem label="Cura Pelas Mãos (Reserva)" value={`${character.currentLayOnHandsPool ?? 0} / ${character.maxLayOnHandsPool ?? 0} PV`} />
+                        <InfoItem label="Cura Pelas Mãos" value={`${character.currentLayOnHandsPool ?? 0} / ${character.maxLayOnHandsPool ?? 0} PV`} />
                         <div className="mt-1">
                              <Input 
                                 label="PV para Curar"
@@ -640,8 +675,6 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
                         </div>
                     </div>
                 )}
-
-                {/* Racial Abilities */}
                 {character.race === 'Meio-Orc' && character.maxRelentlessEnduranceUses !== undefined && (
                     <div className="p-3 bg-slate-100 dark:bg-slate-600/50 rounded-md">
                         <InfoItem label="Resistência Implacável" value={`${character.currentRelentlessEnduranceUses ?? 0} / ${character.maxRelentlessEnduranceUses ?? 0}`} />
@@ -660,11 +693,69 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
                         </div>
                     </div>
                 )}
+
+                {/* DYNAMIC CLASS RESOURCES */}
+                {character.classFeatures?.filter(f => f.maxUses && f.maxUses > 0).map(f => (
+                    <div key={f.featureId} className="p-3 bg-slate-100 dark:bg-slate-600/50 rounded-md">
+                        <InfoItem label={f.featureName} value={`${f.currentUses ?? f.maxUses} / ${f.maxUses}`} />
+                        <div className="flex space-x-1 mt-1">
+                            <Button onClick={() => handleUseDynamicResource(f.featureId, 'class')} size="sm" className="text-xs px-2 py-1 flex-1" disabled={(f.currentUses ?? 0) === 0}>Usar</Button>
+                            <Button onClick={() => handleRecoverDynamicResource(f.featureId, 'class')} variant="secondary" size="sm" className="text-xs px-2 py-1 flex-1" disabled={(f.currentUses ?? 0) >= (f.maxUses ?? 0)}>Recuperar</Button>
+                        </div>
+                    </div>
+                ))}
+
+                {/* SPECIFIC METAMAGIC ACTION BUTTONS */}
+                {character.charClass === 'Feiticeiro' && (
+                    character.classFeatures?.filter(f => f.featureId.startsWith('sorcerer_metamagic')).map(f => {
+                        let cost = f.cost;
+                        // Fallback lookup if cost missing
+                        if ((!cost || cost === 0) && f.choiceValue) {
+                            const metaOption = METAMAGIC_OPTIONS_CHOICES.find(o => o.value === f.choiceValue);
+                            if (metaOption) cost = metaOption.cost;
+                        }
+                        
+                        const sorceryPointsFeature = character.classFeatures?.find(sf => sf.featureId === 'sorcerer_font_magic');
+                        const currentPoints = sorceryPointsFeature?.currentUses ?? 0;
+
+                        if (cost && cost > 0) {
+                            return (
+                                <div key={`meta-btn-${f.featureId}`} className="p-3 bg-purple-100 dark:bg-purple-900/40 rounded-md border border-purple-200 dark:border-purple-800">
+                                    <div className="text-sm font-semibold text-purple-800 dark:text-purple-200 mb-1">{f.choiceLabel || f.featureName}</div>
+                                    <Button 
+                                        onClick={() => handleConsumeResource('sorcerer_font_magic', cost!)}
+                                        size="sm" 
+                                        className="w-full text-xs px-2 py-1 bg-purple-600 hover:bg-purple-700 text-white border-purple-600 focus:ring-purple-500"
+                                        disabled={currentPoints < cost}
+                                    >
+                                        Gastar {cost} Ponto{cost > 1 ? 's' : ''}
+                                    </Button>
+                                    <div className="text-xs text-purple-600 dark:text-purple-300 mt-1 text-center">
+                                        Pontos Restantes: {currentPoints}
+                                    </div>
+                                </div>
+                            );
+                        }
+                        return null;
+                    })
+                )}
+
+                {/* DYNAMIC RACIAL RESOURCES */}
+                {character.racialFeatures?.filter(f => f.maxUses && f.maxUses > 0).map(f => (
+                    <div key={f.featureId} className="p-3 bg-slate-100 dark:bg-slate-600/50 rounded-md">
+                        <InfoItem label={f.featureName} value={`${f.currentUses ?? f.maxUses} / ${f.maxUses}`} />
+                        <div className="flex space-x-1 mt-1">
+                            <Button onClick={() => handleUseDynamicResource(f.featureId, 'race')} size="sm" className="text-xs px-2 py-1 flex-1" disabled={(f.currentUses ?? 0) === 0}>Usar</Button>
+                            <Button onClick={() => handleRecoverDynamicResource(f.featureId, 'race')} variant="secondary" size="sm" className="text-xs px-2 py-1 flex-1" disabled={(f.currentUses ?? 0) >= (f.maxUses ?? 0)}>Recuperar</Button>
+                        </div>
+                    </div>
+                ))}
             </div>
         </Section>
 
-
+      {/* ... rest of component ... */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-center">
+        {/* ... stats ... */}
         <div className="p-4 bg-sky-100 dark:bg-slate-700/70 rounded-lg shadow">
             <div className="text-sm font-medium text-slate-700 dark:text-slate-300">HP</div>
             <div className="text-3xl font-bold text-slate-800 dark:text-slate-100">{character.hp} / {character.hpt}</div>
@@ -681,7 +772,7 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
       
       {onCharacterUpdate && ( 
         <Section title="Ações do Personagem">
-          {/* ... (Actions UI remains same) ... */}
+          {/* ... */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
             <div className="p-3 bg-slate-100 dark:bg-slate-600/50 rounded-md">
               <Input 
@@ -723,9 +814,9 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
         </Section>
       )}
 
-      {/* ... (Rest Section remains same) ... */}
       {onCharacterUpdate && (
         <Section title="Descanso">
+          {/* ... (rest modals and logic) ... */}
           <div className="flex space-x-2 mb-4">
             <Button onClick={() => { setShowRestModal('short'); setRestMessage(null); setHdRollResults([]); setTotalHdHealed(0); }} variant="primary">Descanso Curto</Button>
             <Button onClick={() => { setShowRestModal('long'); setRestMessage(null);}} variant="primary">Descanso Longo</Button>
@@ -790,7 +881,6 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
         <Section title="Atributos">
           <div className="grid grid-cols-1 gap-2">
             {ATTRIBUTE_NAMES.map(attrName => {
-              // Calculate Racial Bonus for Display
               const racialBonuses = calculateRaceAttributeBonuses(character.race, character.racialFeatures);
               const racialBonus = racialBonuses[attrName] || 0;
               const bonusText = racialBonus > 0 ? ` (+${racialBonus} Racial)` : '';
@@ -825,7 +915,6 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
           <InfoItem label="Bônus de Proficiência" value={formatModifier(proficiencyBonus)} />
           <div className="grid grid-cols-1 gap-2 mt-2">
             {ALL_SKILLS.map((skill: SkillDefinition) => {
-              // Calculate attributes including racial bonus
               const racialBonuses = calculateRaceAttributeBonuses(character.race, character.racialFeatures);
               const attrBonus = racialBonuses[skill.attribute] || 0;
               const attributeScore = character.attributes[skill.attribute] + attrBonus;
@@ -896,7 +985,6 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
         {renderClassFeatures(character.classFeatures)}
       </Section>
       
-      {/* ... (Items, Abilities, Notes, Fighting Style sections remain same) ... */}
       <Section 
         title="Inventário (Itens)"
         titleActions={onCharacterUpdate && (
@@ -975,7 +1063,6 @@ const CharacterSheetDisplay: React.FC<CharacterSheetDisplayProps> = ({ character
             <h4 className="font-semibold text-slate-700 dark:text-slate-300 mb-1">Espaços de Magia por Nível:</h4>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {magicInfo.spellSlots?.map((maxSlots, i) => {
-                // ... (spell slot rendering logic remains same) ...
                 if (maxSlots === 0 && (magicInfo.currentSpellSlots?.[i] ?? 0) === 0 && character.charClass !== 'Bruxo') return null; 
                 
                 let displayLevel = i + 1;
